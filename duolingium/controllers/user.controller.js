@@ -46,9 +46,17 @@ const controller = {
     })
   },
   updateUser: function(req, res) {
-    let updateObject = {}
-    checkUsername(req.params.userId, function(err, data) {
-      console.log(data)
+    if (req.body.username) {
+      res.status(400).send(errors(1020)); 
+      return;
+    }
+    let sql = 'UPDATE `user` SET ? WHERE id = ?';
+    connection.query(sql, [req.body, req.params.userId], function(error, results, fields) {
+      if (error) {
+        if (error.errno==1054) {res.status(400).send(errors(1054)); return;} 
+        else if (error.errno==1062){res.status(400).send(errors(1011)); return;}
+        else {res.status(400).send(errors(4000)); return;}
+      } else {res.status(200).send(req.body)}
     })
   },
   getProfile: function(req, res) {
@@ -66,9 +74,12 @@ const controller = {
       console.log("getting from db")
       let sql = 'SELECT id, first_name, last_name, email FROM user WHERE id = ?'
       connection.query(sql, [req.params.userId], function(error, results, fields) {
-        if (error) {res.status(400).send(errors(4000)); return;}
+        if (error) {
+          if (error.errno==1054) {res.status(400).send(errors(1054)); return;} 
+          else if (error.errno==1062){res.status(400).send(errors(1011)); return;}
+          else {res.status(400).send(errors(4000)); return;}}
         res.status(200);
-        res.send(results);
+        res.send(req.body);
       })
     })
   }
