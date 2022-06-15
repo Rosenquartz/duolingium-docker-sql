@@ -57,8 +57,25 @@ createUser = (fields) => {
     })
 }
 
+updateUser = (fields, userId) => {
+    return getConnection().then((connection)=>{
+        let sql = 'UPDATE `user` SET ? WHERE id = ?';
+        return connection.query(sql, [fields, userId]).then((results)=>{
+            console.log("CHANGED ", userId)
+            return (fields);
+        }).catch((error)=>{
+            throw error
+        }).finally(()=>{
+            connection.end()
+        })
+    }).catch((error)=>{
+        throw(error)
+    })
+}
+
 module.exports = {
     getUsers: getUsers,
     getProfile: getProfile,
-    createUser: createUser
+    createUser: createUser,
+    updateUser: updateUser,
 }

@@ -59,16 +59,29 @@ const controller = {
       res.status(400).send(errors(1020)); 
       return;
     }
-    let sql = 'UPDATE `user` SET ? WHERE id = ?';
-    connection.query(sql, [req.body, req.params.userId], function(error, results, fields) {
-      if (error) {
-        if (error.errno==1054) {res.status(400).send(errors(1021)); return;} 
-        else if (error.errno==1062){res.status(400).send(errors(1011)); return;}
-        else {res.status(400).send(errors(4000)); return;}
-      } else {
-        res.status(200).send(req.body)
-      }
+    db.getProfile(req.params.userId).then(results=>{
+      if (!results[0]) {
+        res.status(400);
+        res.send(errors(1012));
+        return;
+      } db.updateUser(req.body, req.params.userId).then(results=>{
+        delete results.password;
+        res.status(200);
+        res.send(results)
+      }).catch(err=>{
+        if (err.errno == 1054) {
+          res.status(400).send(errors(1021));
+        } else if (err.errno == 1062) {
+          res.status(400).send(errors(1011));
+        } else {
+          res.status(400).send(errors(4000));
+        }
+      })
+    }).catch(err=>{
+      res.status(400);
+      res.send(errors(4000));
     })
+    
   },
 
   getProfile: function(req, res) {
