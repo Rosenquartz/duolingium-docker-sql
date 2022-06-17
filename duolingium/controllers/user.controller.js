@@ -1,12 +1,7 @@
-const path = require('path');
-const errors = require(path.resolve( __dirname, "./error.messages.js" ) );
-const db = require(path.resolve( __dirname, "./db.connection.js" ) );
-const progressController = require('../controllers/progress.controller')
-const { nanoid } = require('nanoid');
-
-const controller = {
-  getUsers: async function(req,res) {
-    db.getUsers().then(results=>{
+const controller = (userDB, errorDB) => {
+  const getUsers = (req, res) => {
+    console.log("Getting users")
+    userDB.getUsers().then(results=>{
       let users = [];
       results.forEach(user=>{
         users.push(user.id);
@@ -16,134 +11,102 @@ const controller = {
     }).catch(err=>{
       console.log(err)
       res.status(400);
-      res.send(errors(4000));
+      res.send(errorDB(4000));
     })
-  },
+  };
 
-  createUser: function(req,res) {
+  const getProfile = (req, res) => {
+    console.log("Getting profile")
+    userDB.getProfile(req.params.userId).then(results=>{
+      if (!results[0]) throw {errno: 1012};
+      res.status(200);
+      res.send(results[0]);
+    }).catch(err=>{
+      if (err.errno) {
+        res.status(400);
+        res.send(errorDB(err.errno));
+      } else {
+        res.status(400);
+        res.send(errorDB(4000));
+      }
+    })
+  };
+
+  const createUser = (req, res) => {
+    console.log("Creating user")
     // First check if any of the fields are missing, and return the appropriate error
     if (!req.body.username) {
-      res.status(200).send(errors(1000));
+      res.status(200).send(errorDB(1000));
       return;
     } else if (!req.body.password) {
-      res.status(200).send(errors(1001));
+      res.status(200).send(errorDB(1001));
       return;
     } if (!req.body.firstname) {
-      res.status(200).send(errors(1002));
+      res.status(200).send(errorDB(1002));
       return;
     } if (!req.body.lastname) {
-      res.status(200).send(errors(1003));
+      res.status(200).send(errorDB(1003));
       return;
     } else if (!req.body.email) {
-      res.status(200).send(errors(1004)); 
+      res.status(200).send(errorDB(1004)); 
       return;
     }
-    console.log("A")
-    db.createUser(req.body).then(results=>{
-      // Make progress fields
-      console.log("B")
-      db.createProgress(req.body.username).then(results=>{
-        delete req.body.password;
-        res.status(200);
-        res.send(req.body)
-        console.log(results)
-      }).catch(err=>{
-        console.error(err);
-      })
+    
+    userDB.createUser(req.body).then(results=>{
+      return userDB.createProgress(req.body.username)
+    }).then(results=>{
+      delete req.body.password;
+      res.status(200);
+      res.send(req.body)
     }).catch(err=>{
       if (err.errno == 1062) {
         if (err.sqlMessage.includes("'email'")) {
-          res.status(400).send(errors(1011));
+          res.status(400).send(errorsDB(1011));
         } else {
-          res.status(400).send(errors(1010));
+          res.status(400).send(errorsDB(1010));
         }
       } else {
-        res.status(400).send(errors(4000));
+        res.status(400).send(errorsDB(4000));
       }
     })
-  },
+  };
 
-  updateUser: function(req, res) {
+  const updateUser = (req, res) => {
+    console.log("Updating user")
     if (req.body.username) {
       res.status(400).send(errors(1020)); 
       return;
     }
-    db.getProfile(req.params.userId).then(results=>{
-      if (!results[0]) {
-        res.status(400);
-        res.send(errors(1012));
-        return;
-      } db.updateUser(req.body, req.params.userId).then(results=>{
-        delete results.password;
-        res.status(200);
-        res.send(results)
-      }).catch(err=>{
-        if (err.errno == 1054) {
-          res.status(400).send(errors(1021));
-        } else if (err.errno == 1062) {
-          res.status(400).send(errors(1011));
-        } else {
-          res.status(400).send(errors(4000));
-        }
-      })
-    }).catch(err=>{
-      res.status(400);
-      res.send(errors(4000));
-    })
-    
-  },
-
-  getProfile: function(req, res) {
-    // First check if user is specified
-    if (!req.params.userId) {res.status(400).send(errors(1000)); return;}
-
-    // Then check if user is in the database
-    db.getProfile(req.params.userId).then(results=>{
-      if (!results[0]) {
-        res.status(400);
-        res.send(errors(1012));
-        return;
-      }
+    userDB.getProfile(req.params.userId).then(results=>{
+      if (!results[0]) throw {errno: 1012}
+      return userDB.updateUser(req.body, req.params.userId)
+    }).then(results=>{
+      console.log("HEY")
+      delete results.password;
       res.status(200);
-      res.send(JSON.stringify({
-        user: results
-      }));
+      res.send(results)
     }).catch(err=>{
+      if (err.errno) {
+        if (err.errno == 1062) {
+          res.status(400);
+          res.send(errorDB(1011));
+        } else {
+          res.status(400);
+          res.send(errorDB(4000))
+        }
+      } else {
       res.status(400);
-      res.send(errors(4000));
+      res.send(errorDB(4000));
+      }
     })
   }
-}
 
-const checkUsername = (username, callback) => {
-  let sql = 'SELECT id FROM user';
-  connection.query(sql, function(error, results, fields) {
-    if (error) {
-      callback(err, null);
-      return;
-    } 
-    let userIds = []
-    results.forEach((row)=>{userIds.push(row.id)})
-    if (userIds.includes(username)) callback(null, true)
-    else callback(null, false)
-  })
-}
-
-const checkEmail = (email, callback) => {
-  // First check email validity (regexp):
-  
-  // Then check if email is existing:
-  let sql = 'SELECT email FROM user';
-  connection.query(sql, function(error, results, fields) {
-    if (error) {
-      callback(err, null);
-      return;
-    } 
-    let userEmails = []
-    results.forEach((row)=>{userEmails.push(row.email)})
-    if (userEmails.includes(email)) callback(null, true)
-    else callback(null, false)
-  })
+  return {
+    getUsers: getUsers,
+    getProfile: getProfile,
+    createUser: createUser,
+    updateUser: updateUser
+  }
 }
 
 module.exports = controller;
