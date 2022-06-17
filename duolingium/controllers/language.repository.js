@@ -1,5 +1,4 @@
 const mysql = require('mysql2/promise');
-const { v4: uuidv4 } = require('uuid');
 
 getConnection = () => {
     return mysql.createConnection({
@@ -53,4 +52,10 @@ getModules = (languageId) => {
     }).catch((error)=>{
         throw error
     })
+}
+
+module.exports = {
+    getLanguages: getLanguages,
+    getModules: getModules,
+    getItems: getItems
 }

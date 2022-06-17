@@ -61,12 +61,12 @@ const controller = (userDB, errorDB) => {
     }).catch(err=>{
       if (err.errno == 1062) {
         if (err.sqlMessage.includes("'email'")) {
-          res.status(400).send(errorsDB(1011));
+          res.status(400).send(errorDB(1011));
         } else {
-          res.status(400).send(errorsDB(1010));
+          res.status(400).send(errorDB(1010));
         }
       } else {
-        res.status(400).send(errorsDB(4000));
+        res.status(400).send(errorDB(4000));
       }
     })
   };
@@ -101,11 +101,33 @@ const controller = (userDB, errorDB) => {
     })
   }
 
+  const getProgress = (req, res) => {
+    userDB.getProgress(req.params.userId, req.query.lang).then(results=>{
+      res.status(200);
+      res.send(results);
+    }).catch(err=>{
+      res.status(400);
+      res.send(err);
+    })
+  }
+
+  const updateProgress = (req, res) => {
+    userDB.updateProgress(req.params.userId, req.body).then(results=>{
+      res.status(200);
+      res.send(results);
+    }).catch(err=>{
+      res.status(400);
+      res.send(err);
+    })
+  }
+
   return {
     getUsers: getUsers,
     getProfile: getProfile,
     createUser: createUser,
-    updateUser: updateUser
+    updateUser: updateUser,
+    getProgress: getProgress,
+    updateProgress: updateProgress
   }
 }
 

@@ -8,12 +8,10 @@ const controller = userController(userRepository, errorRepository)
 
 
 router.get('/', controller.getUsers)
-
 router.post('/create', controller.createUser)
 router.get('/:userId', controller.getProfile)
 router.put('/:userId/update', controller.updateUser)
-/*
-router.get('/:userId/getProgress', progressController.getProgress)
-router.put('/:userId/updateProgress', progressController.updateProgress)
-*/
+router.get('/:userId/getProgress', controller.getProgress)
+router.put('/:userId/updateProgress', controller.updateProgress)
+
 module.exports = router;
