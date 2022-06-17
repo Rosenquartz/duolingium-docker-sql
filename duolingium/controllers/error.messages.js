@@ -9,6 +9,8 @@ const errorMessages = {
     error1012: {error_code: 1012, error_message: "User does not exist"},
     error1020: {error_code: 1020, error_message: "Cannot change username"},
     error1021: {error_code: 1021, error_message: "Unrecognized field(s)"},
+    error1030: {error_code: 1030, error_message: "Error: both 'english' and 'native' fields are set."},
+    
     error4000: {error_code: 4000, error_message: "Database error"}
 }
 

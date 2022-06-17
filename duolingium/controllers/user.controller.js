@@ -1,7 +1,8 @@
-const { resolveSoa } = require('dns');
 const path = require('path');
 const errors = require(path.resolve( __dirname, "./error.messages.js" ) );
 const db = require(path.resolve( __dirname, "./db.connection.js" ) );
+const progressController = require('../controllers/progress.controller')
+const { nanoid } = require('nanoid');
 
 const controller = {
   getUsers: async function(req,res) {
@@ -13,6 +14,7 @@ const controller = {
       res.status(200);
       res.send(JSON.stringify({users: users}));
     }).catch(err=>{
+      console.log(err)
       res.status(400);
       res.send(errors(4000));
     })
@@ -36,11 +38,18 @@ const controller = {
       res.status(200).send(errors(1004)); 
       return;
     }
-
+    console.log("A")
     db.createUser(req.body).then(results=>{
-      delete results.password;
-      res.status(200);
-      res.send(results)
+      // Make progress fields
+      console.log("B")
+      db.createProgress(req.body.username).then(results=>{
+        delete req.body.password;
+        res.status(200);
+        res.send(req.body)
+        console.log(results)
+      }).catch(err=>{
+        console.error(err);
+      })
     }).catch(err=>{
       if (err.errno == 1062) {
         if (err.sqlMessage.includes("'email'")) {
