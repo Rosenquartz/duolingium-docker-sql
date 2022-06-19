@@ -11,7 +11,7 @@ router.get('/', controller.getUsers)
 router.post('/create', controller.createUser)
 router.get('/:userId', controller.getProfile)
 router.put('/:userId/update', controller.updateUser)
-router.get('/:userId/getProgress', controller.getProgress)
-router.put('/:userId/updateProgress', controller.updateProgress)
+router.get('/:userId/progress', controller.getProgress)
+router.patch('/:userId/progress', controller.updateProgress)
 
 module.exports = router;
