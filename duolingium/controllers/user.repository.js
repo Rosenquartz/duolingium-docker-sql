@@ -80,41 +80,6 @@ getProgress = async (userId, languageId) => {
     } catch (err) {
         throw err
     }
-    /*
-    return getConnection().then((connection)=>{
-        let returnObject = {}
-        let sql = 'CALL GetModuleList(?)'
-        return connection.query(sql, [languageId]).then((results)=>{
-            returnObject.language = languageId;
-            returnObject.modules = []
-            let promises = []
-            results[0][0].forEach(mod=>{
-                console.log(userId, mod.moduleId)
-                let total; let correct;
-                sql = 'CALL GetModuleProgress(?, ?)'
-                promises.push(connection.query(sql, [mod.moduleId, userId]).then(results=>{
-                    console.log(results[0][0][0], results[0][1][0])
-                    console.log("TOTAL: ", total, " CORRECT: ", correct);
-                    returnObject.modules.push({
-                        moduleId: mod.moduleId,
-                        correct: results[0][1][0].correct,
-                        total: results[0][0][0].total
-                    })
-                }))
-            })
-            return Promise.all(promises).then((result)=>{
-                return(returnObject)
-            })
-        }).catch((error)=>{
-            console.error("ERR1")
-            throw error
-        }).finally(()=>{
-            connection.end()
-        })
-    }).catch((error)=>{
-        console.error("ERR2")
-        throw error
-    })*/
 }
 
 updateProgress = async (userId, request) => {
@@ -139,35 +104,6 @@ updateProgress = async (userId, request) => {
     } catch (err) {
         throw err
     }
-    /*
-    let connection;
-    let correct;
-    return getConnection().then((results)=>{
-        connection = results;
-        if (request.english && request.native) {
-            let err = {errno:1030}
-            throw err;
-        } else if (!request.english && !request.native) {
-            let err = {errno:1031}
-            throw err;
-        }
-        let sql = "CALL GetItem(?)"
-        return connection.query(sql, request.itemId)
-    }).then(results=>{
-        if (request.english) {
-            correct = request.english==results[0][0][0].english ? 1 : 0;
-        } else {
-            correct = request.native==results[0][0][0].native ? 1 : 0;
-        }
-        let sql = 'CALL UpdateProgress(?, ?, ?)';
-        return connection.query(sql, [userId, request.itemId, correct]);
-    }).then(results=>{
-        return {correct: correct};
-    }).catch(err=>{
-        throw err;
-    }).finally(()=>{
-        connection.end()
-    })*/
 }
 
 getNewItems = (userId) => {}
