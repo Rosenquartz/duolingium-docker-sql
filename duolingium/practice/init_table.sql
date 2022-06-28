@@ -1,0 +1,9 @@
+CREATE DATABASE  IF NOT EXISTS `mydb`;
+USE `mydb`;
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+    `userId` VARCHAR(16) NOT NULL,
+    
+    PRIMARY KEY (`userId`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

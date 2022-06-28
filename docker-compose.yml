@@ -23,3 +23,9 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=mydb
+  angular-app:
+    build: ./duolingium-ui
+    ports:
+      - "4202:4200"
+    volumes:
+      - ./duolingium-ui/:/ng-app
