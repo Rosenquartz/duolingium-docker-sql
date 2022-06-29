@@ -20,6 +20,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// CORS Fix
+const cors = require('cors');
+app.use(cors())
+/*
+app.use(cors({
+    origin: '*',
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH','OPTIONS'],
+    allowedHeaders: "Access-Control-Allow-Origin"
+}));
+*/
+
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/languages', languagesRouter);
@@ -39,5 +51,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;

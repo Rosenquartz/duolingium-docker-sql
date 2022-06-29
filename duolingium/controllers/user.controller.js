@@ -1,7 +1,8 @@
 const { nanoid } = require('nanoid');
-const { bcrypt } = require('bcrypt')
+const bcrypt = require('bcrypt')
 
 const controller = (userRepository, errorRepository) => {
+
     const getUsers = async (req, res) => {
         try {
             let results = await userRepository.getUsers();
@@ -9,10 +10,8 @@ const controller = (userRepository, errorRepository) => {
             results.forEach(user=>{
                 users.push(user.userId);
             })
-            res.status(200);
-            res.send(JSON.stringify({users: users}));
+            res.status(200).json({users: users});
         } catch (err) {
-            console.error(err)
             res.status(400);
             res.send(errorRepository(4000));
         }
@@ -43,20 +42,15 @@ const controller = (userRepository, errorRepository) => {
             if (!req.body.lastname) throw {errno: 1003};
             if (!req.body.email) throw {errno:1004};
 
-            var regexp = /\S+@\S+\.\S+/;
+            let regexp = /\S+@\S+\.\S+/;
             if (!regexp.test(req.body.email)) throw {errno: 1005};
 
+            const salt = await bcrypt.genSalt(10);
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+
             await userRepository.createUser(req.body);
-            let results = await userRepository.getAllItems();
-            //console.log(a);
-            //await userRepository.createProgress(req.body.username);
-            for (let item of results) {
-                let inputList = [nanoid(8), item.languageId, item.moduleId, item.itemId, req.body.username]
-                await userRepository.createProgressItem(inputList);
-            }
             delete req.body.password;
-            res.status(201);
-            res.send(req.body);
+            res.status(201).json(req.body);
         } catch (err) {
             console.error(err);
             if (err.errno == 1062) {
@@ -77,16 +71,16 @@ const controller = (userRepository, errorRepository) => {
         try {
             if (req.body.username) throw {errno: 1020};
             if (req.body.email) {
-                var regexp = /\S+@\S+\.\S+/;
+                let regexp = /\S+@\S+\.\S+/;
                 if (!regexp.test(req.body.email)) throw {errno: 1005};
             }
+
             let results = await userRepository.getProfile(req.params.userId);
             if (!results[0]) throw {errno: 1012};
-            results = await userRepository.updateUser(req.body, req.params.userId);
-            console.log("SHEE")
+
+            await userRepository.updateUser(req.body, req.params.userId);
             delete req.body.password;
-            res.status(200);
-            res.send(req.body);
+            res.status(200).json(req.body);
         } catch (err) {
             if (err.errno) {
                 if (err.errno == 1062) {
@@ -101,114 +95,44 @@ const controller = (userRepository, errorRepository) => {
                 res.send(errorRepository(err.errno));
             }
         }
-    }
+    };
 
     const checkLogin = async(req, res) => {
         try {
             console.log("Logging in")
-            if (!req.body.username) throw errorRepository(1000);
+            console.log(req.body)
+            if (!req.body.userId) throw errorRepository(1000);
             if (!req.body.password) throw errorRepository(1000);
             
-            let userPassword = await userRepository.checkLogin(req.body.username);
-            console.log(bcrypt.compare(req.body.password, userPassword));
+            let results = await userRepository.checkLogin(req.body.userId);
+            let auth = await bcrypt.compare(req.body.password, results[0].password)
+            res.status(200).json({auth: auth, userId: req.body.userId})
         } catch (err) {
-            res.status(400).json(errorRepository(err.errno))
+            console.log(err)
+            res.status(400).json(errorRepository(1002))
+        }
+    }
+    
+    const setPreferredLanguage = async(req, res) => {
+        try {
+            if (!req.body.userId) throw errorRepository(4000)
+            if (!req.body.preferredLanguage) throw errorRepository(4000)
+
+            await userRepository.setPreferredLanguage(req.body)
+            res.status(200).json(req.body)
+        } catch (err) {
+            res.status(400).json(errorRepository(4000))
         }
     }
 
-    const getProgress = async (req, res) => {
+    const getPreferredLanguage = async(req, res) => {
         try {
-            if (!req.query.lang) throw {errno: 1032}
-            let results = await userRepository.getModules(req.query.lang);
-            let modules = [];
-            console.log(modules);
-            for (let mod of results) {
-                let total = 0; let correct = 0;
-                let neww = await userRepository.getItemsForUser(req.params.userId, mod.moduleId);
-                console.log('------------')
-                neww.forEach(item=>{
-                    total += 1;
-                    correct += item.correctAttempts > 0 ? 1 : 0;
-                })
-                console.log(total, correct)
-                modules.push({
-                    moduleId: mod.moduleId,
-                    total: total,
-                    correct: correct
-                })
-                console.log(modules)
-            }
-            if (modules.length == 0) throw {errno: 1035};
-            res.status(200);
-            res.send({modules: modules});
+            if (!req.params.userId) throw errorRepository(4000)
+            console.log(req.params.userId)
+            let results = await userRepository.getPreferredLanguage(req.params.userId)
+            res.status(200).json(results[0][0])
         } catch (err) {
-            if (err.errno) {
-                res.status(404);
-                res.send(errorRepository(err.errno))
-            }
-            res.status(400);
-            res.send(errorRepository(4000));
-        }
-    }
-
-    const updateProgress = async (req, res) => {
-        try {
-            console.log(req.params.userId, req.body)
-            let results = await userRepository.updateProgress(req.params.userId, req.body);
-            res.status(200);
-            res.send(results);
-        } catch (err) {
-            res.status(400);
-            res.send(errorRepository(4000));
-        }
-    }
-
-    const getItemsForUser = async(req, res) => {
-        try {
-            if (!req.query.moduleId) throw {errno: 1034}
-            console.log(req.params.userId, req.query.moduleId)
-            let results = await userRepository.getItemsForUser(req.params.userId, req.query.moduleId);
-
-            res.status(200);
-            console.log(results)
-            if (req.query.new == 'true' && req.query.review == 'true') {
-                throw {errno: 1033};
-            } else if (req.query.new == 'true') {
-                results = results.filter(item=>{
-                    return item.correctAttempts == 0
-                });
-            } else if (req.query.review == 'true') {
-                results = results.filter(item=>{
-                    return item.correctAttempts > 0
-                });
-                results = results.sort((a,b)=>{
-                    return (a.correctAttempts/a.totalAttempts - b.correctAttempts/b.totalAttempts)
-                })
-                console.log(results);
-            }
-            results.forEach(row=>{
-                delete row.correctAttempts;
-                delete row.totalAttempts;
-            })
-            delete results.correctAttempts;
-            delete results.totalAttempts;
-            console.log(results)
-            let ret = []
-            if (req.query.number) {
-                let temp = 0;
-                for (let i = 0; i < results.length; i++) {
-                    if (i==req.query.number) break;
-                    ret.push(results[i])
-                    console.log("yea")
-                }
-                res.send(ret);
-                return;
-            }
-            res.send(results);
-        } catch (err) {
-            console.error(err);
-            res.status(400);
-            res.send(err.errno ? errorRepository(err.errno) : errorRepository(4000));
+            res.status(400).json(errorRepository(4000))
         }
     }
 
@@ -218,9 +142,8 @@ const controller = (userRepository, errorRepository) => {
         createUser: createUser,
         updateUser: updateUser,
         checkLogin: checkLogin,
-        getProgress: getProgress,
-        updateProgress: updateProgress,
-        getItemsForUser: getItemsForUser
+        setPreferredLanguage: setPreferredLanguage,
+        getPreferredLanguage: getPreferredLanguage
     }
 }
 

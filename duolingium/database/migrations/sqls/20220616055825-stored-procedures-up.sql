@@ -20,7 +20,7 @@ CREATE PROCEDURE `CreateUser`(
     IN inputFirstname VARCHAR(45),
     IN inputLastName VARCHAR(45),
     IN inputEmail VARCHAR(45),
-    IN inputPassword VARCHAR(45)
+    IN inputPassword VARCHAR(100)
 )
 BEGIN
     INSERT INTO `user` 
@@ -32,7 +32,7 @@ CREATE PROCEDURE `UpdateUser`(
     IN inputUserId VARCHAR(16),
     IN inputFirstname VARCHAR(45),
     IN inputLastname VARCHAR(45),
-    IN inputPassword VARCHAR(45),
+    IN inputPassword VARCHAR(100),
     IN inputEmail VARCHAR(45)
 )
 BEGIN
@@ -45,3 +45,31 @@ BEGIN
     WHERE
         userId = inputUserId;
 END;
+
+CREATE PROCEDURE `CheckLogin`(
+    IN inputUserId VARCHAR(16)
+)
+BEGIN
+    SELECT password
+    FROM `user` 
+    WHERE userId = inputUserId;
+END;
+
+CREATE PROCEDURE `SetPreferredLanguage` (
+    IN inputUserId VARCHAR(16),
+    IN inputLanguageId VARCHAR(2)
+)
+BEGIN
+    UPDATE `user`
+    SET preferredLanguage = inputLanguageId
+    WHERE userId = inputUserId;
+END;
+
+CREATE PROCEDURE `GetPreferredLanguage`(
+    IN inputUserId VARCHAR(16)
+)
+BEGIN
+    SELECT `module`.moduleId, `module`.type, `module`.displayName
+    FROM `user` INNER JOIN `module` on `user`.preferredLanguage = `module`.languageId
+    WHERE userId = inputUserId;
+END

@@ -7,7 +7,7 @@ CREATE TABLE `user` (
     `firstname` VARCHAR(45) NOT NULL,
     `lastname` VARCHAR(45) NOT NULL,
     `email` VARCHAR(45) NOT NULL,
-    `password` VARCHAR(45) NOT NULL,
+    `password` VARCHAR(100) NOT NULL,
     `preferredLanguage` VARCHAR(45) DEFAULT NULL,
     PRIMARY KEY (`userId`),
     UNIQUE KEY `email` (`email`)
@@ -51,3 +51,34 @@ CREATE TABLE `progressItem` (
   PRIMARY KEY (`progressItemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+
+INSERT INTO `item` VALUES 
+  ('03ed2674','947f1764','라','ra'),
+  ('329r0joe','a6886c66','사회','society'),
+  ('3mjs4ds2','ba0f0f6c','ア','a'),
+  ('51127610','947f1764','마','ma'),
+  ('58865fca','76e4aca6','사과','apple'),
+  ('7c1ba7b1','76e4aca6','쌀','rice'),
+  ('92orp378','a6886c66','교육','education'),
+  ('9cf1cbab','76e4aca6','강아지','dog'),
+  ('a2f1e3e2','947f1764','다','da'),
+  ('b6e27b3d','76e4aca6','사람','human'),
+  ('cbf751d6','947f1764','나','na'),
+  ('e707ed7c','947f1764','가','ka'),
+  ('ff32b3b3','76e4aca6','고양이','cat'),
+  ('gjnq4aru','d46703bf','あ','a'),
+  ('sdfif32p','1a0b034f','わたし','me');
+
+
+INSERT INTO `language` VALUES 
+  ('jp','Japanese','日本語'),
+  ('kr','Korean','한글');
+
+
+INSERT INTO `module` VALUES 
+  ('1a0b034f','jp','vocabulary','Vocabulary'),
+  ('76e4aca6','kr','vocabulary','Vocabulary (Easy)'),
+  ('947f1764','kr','alphabet','Hangul'),
+  ('a6886c66','kr','vocabulary','Vocabulary (Hard)'),
+  ('ba0f0f6c','jp','alphabet','Katakana'),
+  ('d46703bf','jp','alphabet','Hiragana');

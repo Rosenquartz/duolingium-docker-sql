@@ -13,8 +13,11 @@ router.post('/login', controller.checkLogin)
 router.get('/:userId', controller.getProfile)
 router.put('/:userId/update', controller.updateUser)
 
+router.get('/:userId/preferred', controller.getPreferredLanguage);
+router.put('/:userId/preferred', controller.setPreferredLanguage);
+/*
 router.get('/:userId/progress', controller.getProgress)
 router.patch('/:userId/progress', controller.updateProgress)
 router.get('/:userId/items', controller.getItemsForUser)
-
+*/
 module.exports = router;
