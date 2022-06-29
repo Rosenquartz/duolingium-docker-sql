@@ -1,14 +1,106 @@
+const { nanoid } = require('nanoid');
+
+const controller = (progressRepository, errorRepository) => {
+
+    const getProgressModules = async (req, res) => {
+        // Get all progress module entities for one user, one language
+        // Used to display current progress in 'learn' screen
+        try {
+            console.log(req.params.userId, req.params.lang)
+            let results = await progressRepository.getProgressModules(req.params.userId, req.params.lang);
+            res.status(200).json(results)
+        } catch (err) {
+            res.status(400).json(errorRepository(4000));
+        }
+    }
+
+    const getProgressModule = async (req, res) => {
+        // Get progress on one module
+        // Creates if it doesnt exist
+        try {
+            console.log("a")
+            let results = await progressRepository.getProgressModule(req.params.userId, req.params.moduleId);
+            if (results.length==0) {
+                let newId = await nanoid(8);
+                await progressRepository.createProgressModule(newId, req.params.lang, req.params.moduleId, req.params.userId);
+                let items = await progressRepository.getModuleItems(req.params.moduleId);
+                for (let item of items) {
+                    newId = await nanoid(8);
+                    await progressRepository.createProgressItem(newId, req.params.lang, req.params.moduleId, item.itemId, req.params.userId);
+                }
+                res.status(200).json({status: "progressModule created"})
+            } else {
+                res.status(200).json(results)
+            }
+        } catch (err) {
+            res.status(400).json(errorRepository(4000));
+        }
+    }
+
+    const updateProgressItem = async (req, res) => {
+        // 1. Check item 2. Update progressItem entity 3. Update progressModuleEntity
+        try {
+            let itemAnswers = await progressRepository.checkitem(req.query.itemId);
+            if (req.native && req.english) throw errorRepository(4000);
+            if (!req.native && !req.english) throw errorRepository(4000);
+            if (!itemAnswers) throw errorRepository(4000);
+
+            let correct = false;
+            if (req.native == itemAnswers.native) correct = true;
+            else if (req.english == itemAnswers.english) correct = true;
+
+            await progressRepository.updateProgressItem(req.params.userId, req.query.itemId, correct);
+            await progressRepository.updateProgressModule(req.params.userId, req.query.moduleId);
+
+            res.status(200).json({correct: correct});
+        } catch (err) {
+            res.status(400).json(errorRepository(4000));
+        }
+    }
+
+    const checkItem = async (req, res) => {
+        // Might move to languages.controller
+        try {
+            let itemAnswers = await progressRepository.checkitem(req.query.itemId);
+            if (req.native && req.english) throw errorRepository(4000);
+            if (!req.native && !req.english) throw errorRepository(4000);
+            if (!itemAnswers) throw errorRepository(4000);
+
+            let correct = false;
+            if (req.native == itemAnswers.native) correct = true;
+            else if (req.english == itemAnswers.english) correct = true;      
+            
+            res.status(200).json({correct: correct});
+        } catch (err) {
+            res.status(400).json(errorRepository(4000));
+        }
+    }
+    
+    return {
+        getProgressModules: getProgressModules,
+        getProgressModule: getProgressModule,
+        updateProgressItem: updateProgressItem,
+        checkItem: checkItem
+      }
+
+}
+
+module.exports = controller;
+
+/*
 const { resolveSoa } = require('dns');
 const path = require('path');
 const errors = require(path.resolve( __dirname, "./error.messages.js" ) );
 const db = require(path.resolve( __dirname, "./db.connection.js" ) );
 
 const controller = {
+
     getProgress: async function(req,res) {
         db.getProgress(req.params.userId, req.query.lang).then(results=>{
           res.status(200).send(results)
         })
-      },
+    },
+
     updateProgress: async function(req, res) {
         db.updateProgress(req.params.userId, req.body).then(results=>{
             console.log(results)
@@ -18,7 +110,12 @@ const controller = {
             res.status(400).send(err);
         });
     },
-    getNewItems: async function(req, res) {
+
+    reviewItems: async function(req, res) {
+        ;
+    },
+
+    startModule: async function(req, res) {
         ;
     }
 
@@ -119,7 +216,6 @@ const controller = {
             res.send(err.errno ? errorRepository(err.errno) : errorRepository(4000));
         }
     }
-    */
+    
 }
-
-module.exports = controller;
+*/

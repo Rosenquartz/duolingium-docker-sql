@@ -12,6 +12,7 @@ const controller = (userRepository, errorRepository) => {
             })
             res.status(200).json({users: users});
         } catch (err) {
+            console.log(err);
             res.status(400);
             res.send(errorRepository(4000));
         }

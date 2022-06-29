@@ -12,7 +12,8 @@ CREATE PROCEDURE `GetModuleList`(
 BEGIN
     SELECT * 
     FROM `module` 
-    WHERE languageId = inputLanguageId;
+    WHERE languageId = inputLanguageId
+    ORDER BY `module`.order;
 END;
 
 CREATE PROCEDURE `GetItemList`(
@@ -21,7 +22,8 @@ CREATE PROCEDURE `GetItemList`(
 BEGIN
     SELECT itemId, english, native 
     FROM `item` 
-    WHERE moduleId = inputModuleId;
+    WHERE moduleId = inputModuleId
+    ORDER BY `item`.order;
 END;
 
 CREATE PROCEDURE `GetItem`(
