@@ -37,8 +37,7 @@ getModuleItems = async (moduleId) => {
     try {
         let connection = await getConnection();
         let sql = 'CALL GetItemList(?)'
-        let results = await connection.query(sql, moduleId);
-        console.log("FROM GET MODULE ITEMS: ", results[0][0])
+        let results = await connection.query(sql, [moduleId]);
         await connection.end();
         return results[0][0];
     } catch (err) {
@@ -46,8 +45,16 @@ getModuleItems = async (moduleId) => {
     }
 }
 
-checkitem = async(itemId) => {
-    
+checkItem = async(itemId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetItem(?)'
+        let results = await connection.query(sql, [itemId]);
+        await connection.end();
+        return results[0][0][0];
+    } catch (err) {
+        throw err;
+    }
 }
 
 updateProgressItem = async (userId, itemId, correct) => {
@@ -88,7 +95,6 @@ getProgressModules = async (userId, languageId) => {
 
 getProgressModule = async (userId, moduleId) => {
     try {
-        console.log(userId, moduleId);
         let connection = await getConnection();
         let sql = 'CALL GetProgressModule(?,?)';
         let results = await connection.query(sql, [userId, moduleId]);
@@ -104,7 +110,10 @@ module.exports = {
     getProgressModule: getProgressModule,
     getModuleItems: getModuleItems,
     createProgressModule: createProgressModule,
-    createProgressItem: createProgressItem
+    createProgressItem: createProgressItem,
+    checkItem: checkItem,
+    updateProgressModule: updateProgressModule,
+    updateProgressItem: updateProgressItem
 }
 
 /*

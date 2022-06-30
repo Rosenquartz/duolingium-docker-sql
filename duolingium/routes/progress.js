@@ -9,6 +9,7 @@ const controller = progressController(progressRepository, errorRepository)
 //router.get('/', controller.getLanguages)
 router.get('/:userId/:lang', controller.getProgressModules);
 router.get('/:userId/:lang/:moduleId', controller.getProgressModule);
+router.put('/:userId', controller.updateProgressItem);
 
 router.put('/')
 module.exports = router;

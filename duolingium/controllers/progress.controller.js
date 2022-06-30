@@ -18,7 +18,6 @@ const controller = (progressRepository, errorRepository) => {
         // Get progress on one module
         // Creates if it doesnt exist
         try {
-            console.log("a")
             let results = await progressRepository.getProgressModule(req.params.userId, req.params.moduleId);
             if (results.length==0) {
                 let newId = await nanoid(8);
@@ -40,17 +39,23 @@ const controller = (progressRepository, errorRepository) => {
     const updateProgressItem = async (req, res) => {
         // 1. Check item 2. Update progressItem entity 3. Update progressModuleEntity
         try {
-            let itemAnswers = await progressRepository.checkitem(req.query.itemId);
-            if (req.native && req.english) throw errorRepository(4000);
-            if (!req.native && !req.english) throw errorRepository(4000);
+            let itemAnswers = await progressRepository.checkItem(req.body.itemId);
+            
+            if (req.body.native && req.body.english) throw errorRepository(4000);
+            if (!req.body.native && !req.body.english) throw errorRepository(4000);
             if (!itemAnswers) throw errorRepository(4000);
 
-            let correct = false;
-            if (req.native == itemAnswers.native) correct = true;
-            else if (req.english == itemAnswers.english) correct = true;
+            console.log("answered:", req.body)
+            console.log("correct:", itemAnswers)
 
-            await progressRepository.updateProgressItem(req.params.userId, req.query.itemId, correct);
-            await progressRepository.updateProgressModule(req.params.userId, req.query.moduleId);
+            let correct = false;
+            if (req.body.native == itemAnswers.native) correct = true;
+            else if (req.body.english == itemAnswers.english) correct = true;
+
+            console.log("correct is", correct)
+
+            await progressRepository.updateProgressItem(req.params.userId, req.body.itemId, correct);
+            await progressRepository.updateProgressModule(req.params.userId, req.body.moduleId);
 
             res.status(200).json({correct: correct});
         } catch (err) {

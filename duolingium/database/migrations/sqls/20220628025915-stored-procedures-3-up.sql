@@ -36,7 +36,7 @@ BEGIN
         FROM `progressItem` 
         WHERE `progressItem`.moduleId = inputModuleId
         AND `progressItem`.userId = inputUserId
-        AND `progressItem`.correctAttempts > 0;
+        AND `progressItem`.correctAttempts > 0
     )
     WHERE moduleId = inputModuleID AND userId = inputUserId;
 END;
