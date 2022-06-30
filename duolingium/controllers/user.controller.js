@@ -130,8 +130,13 @@ const controller = (userRepository, errorRepository) => {
         try {
             if (!req.params.userId) throw errorRepository(4000)
             console.log(req.params.userId)
-            let results = await userRepository.getPreferredLanguage(req.params.userId)
-            res.status(200).json(results[0][0])
+            let results = {}
+            let userInfo = await userRepository.getProfile(req.params.userId);
+            console.log("userInfo:", userInfo)
+            results.preferredLanguage = userInfo[0].preferredLanguage
+            let modules = await userRepository.getPreferredLanguage(req.params.userId)
+            results.modules = modules[0][0]
+            res.status(200).json(results)
         } catch (err) {
             res.status(400).json(errorRepository(4000))
         }

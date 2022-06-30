@@ -71,5 +71,6 @@ CREATE PROCEDURE `GetPreferredLanguage`(
 BEGIN
     SELECT `module`.moduleId, `module`.type, `module`.displayName
     FROM `user` INNER JOIN `module` on `user`.preferredLanguage = `module`.languageId
-    WHERE userId = inputUserId;
+    WHERE userId = inputUserId
+    ORDER BY `module`.order;
 END

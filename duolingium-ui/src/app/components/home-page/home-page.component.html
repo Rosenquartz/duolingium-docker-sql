@@ -1,0 +1,18 @@
+<app-header></app-header>
+
+<div class="module-card card row container mx-auto" *ngFor="let module of moduleInfo">
+    <div class="row container mx-auto">
+    <div class="col-sm-6 col-md-4 col-lg-4">
+        <span routerLink="/learn/{{module.moduleId}}">{{module.displayName}}</span>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-4">
+        <button> LEARN</button>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-4">
+        <button *ngIf="module.started && module.completed"> REVIEW (ok)</button>
+        <button *ngIf="module.started && !module.completed" disabled="true"> REVIEW (not ok)</button>
+        <button *ngIf="!module.started" disabled="true"> REVIEW (none)</button>
+    </div>
+
+    </div>
+</div>

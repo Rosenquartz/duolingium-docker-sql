@@ -1,0 +1,7 @@
+.module-card {
+    font-size:2vh;
+}
+
+.module-card:hover {
+    background-color: lightblue;
+}

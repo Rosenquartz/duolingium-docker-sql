@@ -8,23 +8,16 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  
-  modules: Array <any> = [];
+
+  user: string = '';
+  count: Object = {};
 
   constructor(
-    private cookieService: CookieService,
-    private userService: UserService
+    private cookieService: CookieService
   ) { }
 
-  ngOnInit(): void {
-    console.log('henlo:',this.cookieService.get('henlo'))
-    console.log('testo:',this.cookieService.get('Test'))
-    this.userService.getUsers().subscribe((out:any)=>{console.log("USERS:",out)})
-    this.userService.getPreferredLanguage(this.cookieService.get('userId')).subscribe(out=>{
-      this.modules = out;
-      console.log("Modules:", this.modules)
-      for (let i of this.modules) {console.log(i.displayName)}
-    })
+  ngOnInit(): void { 
+    this.user = this.cookieService.get('userId')
   }
 
 }

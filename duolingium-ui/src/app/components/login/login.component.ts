@@ -21,13 +21,11 @@ export class LoginComponent implements OnInit {
   }
 
   async login(): Promise<void> {
-    console.log("Login button clicked")
-    console.log("Logged in with credentials:")
-    console.log("Username:", this.inputUsername)
-    console.log("Password:", this.inputPassword)
     this.userService.checkLogin(this.inputUsername, this.inputPassword)
     .subscribe((out: any)=>{
+      console.log("aa")
       if (out.auth) {
+        console.log("setting user to ", out.userId)
         this.cookieService.set('userId', out.userId);
         window.location.href = '/learn';
       }
