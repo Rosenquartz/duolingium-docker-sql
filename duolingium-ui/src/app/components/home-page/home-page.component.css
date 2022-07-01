@@ -1,15 +1,77 @@
-.module-card {
-    font-size:2vh;
-}
-
-.module-card:hover {
-    background-color: lightblue;
+.module-container {
+    max-width: 960px;
+    height: 75vh;
+    align-items: center;
+    justify-content: center;
 }
 
 button {
-    min-width: 50%;
+    
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    font-size: 1rem;
+    border: 2px;
+    border-radius: 1rem;
+
+    color: #4B4B4B;
+    
+    min-width: 100%;
+    border-radius: 10px;
+    border: 2px solid #e5e5e5;
+    border-bottom: 6px solid #e5e5e5;
+    margin: 10px;
+    transition: all 0.1s;
 }
 
-.module-container {
-    max-width: 960px;
+
+button:hover {
+    box-shadow:none;
+    transition:0.2;
+    
+    background-color: #ddf4ff;
+    border-color: #1CB0F6;
+}
+button:active {
+    border-bottom: 2px solid #1480b1;
+}
+
+.container {
+    
+}
+
+/**/
+
+.container {
+    max-width: 800px;
+    font-size: 12px;
+    font-family: Verdana;
+    justify-content: center;
+    vertical-align: center;
+    margin-top: 5px;
+    margin-bottom:2rem;
+    min-height: 120px;
+
+    color: #4B4B4B;
+
+}
+p {
+    text-align: center;
+    vertical-align: center;
+    margin-top: 20%;
+    font-size: 1rem;
+}
+.displayName {
+    vertical-align: center;
+}
+
+/* CSS */
+#imageDiv {
+    width: 100px;
+    height: 100px;
+    border-radius:50%;
+    display:inline-block;
+    line-height: 100px;
+    text-align:center;
+    color:white;
+    background:url("https://placekitten.com/640/360") #ccc no-repeat 50% 38px;
 }

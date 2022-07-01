@@ -1,22 +1,41 @@
 <app-header></app-header>
+<div  *ngFor="let module of moduleInfo">
+    <div class="row container mx-auto">
+        <div class="displayName col-sm-12 col-md-12 col-lg-3">
+            <div id="imageDiv">{{module.displayName}}</div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-2 ">
+            <button> study </button>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-2 ">
+            <button> learn </button>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-2 ">
+            <button> review </button>
+        </div>
+    </div>
+</div>
 
+<div id="myCircleDiv">LABEL</div>
+<!--
 <div class="module-container">
-    <div class="module-card card row container mx-auto" *ngFor="let module of moduleInfo">
+    <div class="module-card align-items-center row container mx-auto" *ngFor="let module of moduleInfo">
             <div class="row container mx-auto ">
-                <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="col-sm-6 col-md-6 col-lg-6 align-items-center ">
                     <span>{{module.displayName}}</span>
                 </div>
-                <div class="col-sm-2 col-md-2 col-lg-2">
-                    <button routerLink="/learn/{{module.moduleId}}"> STUDY </button>
+                <div class="col-sm-2 col-md-2 col-lg-2 align-items-center ">
+                    <button class="btn btn-block" routerLink="/learn/{{module.moduleId}}"> STUDY </button>
                 </div>
-                <div class="col-sm-2 col-md-2 col-lg-2">
+                <div class="col-sm-2 col-md-2 col-lg-2 align-items-center ">
                     <button routerLink="/learn/{{module.moduleId}}"> LEARN </button>
                 </div>
-                <div class="col-sm-2 col-md-2 col-lg-2">
-                    <button *ngIf="module.started && module.completed"> REVIEW (ok)</button>
-                    <button *ngIf="module.started && !module.completed" disabled="true"> REVIEW (not ok)</button>
-                    <button *ngIf="!module.started" disabled="true"> REVIEW (none)</button>
+                <div class="col-sm-2 col-md-2 col-lg-2 align-items-center ">
+                    <button *ngIf="module.started && module.completed"> ok</button>
+                    <button *ngIf="module.started && !module.completed" disabled="true"> not ok</button>
+                    <button *ngIf="!module.started" disabled="true"> none</button>
                 </div>
             </div>
     </div>
 </div>
+-->
