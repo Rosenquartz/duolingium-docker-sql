@@ -5,3 +5,11 @@
 .module-card:hover {
     background-color: lightblue;
 }
+
+button {
+    min-width: 50%;
+}
+
+.module-container {
+    max-width: 960px;
+}

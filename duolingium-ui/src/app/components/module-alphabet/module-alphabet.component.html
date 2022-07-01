@@ -1,0 +1,34 @@
+<div class="container" *ngIf="ready">
+
+    <div class="row container mx-auto" *ngIf="questions[currentNumber].native">
+        <p class="question col-sm-12 col-md-12 col-lg-12">What is the native of {{questions[currentNumber].native}}?</p>
+        <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of questions[currentNumber].choices">
+            <button *ngIf="currentAnswer!=choice" class="choice-button" (click)="answerClicked(choice)">{{choice}}</button>
+            <button *ngIf="currentAnswer==choice" class="choice-button selected" (click)="answerClicked(choice)">{{choice}}</button>
+        </div>
+    </div>
+
+    <div class="row container mx-auto" *ngIf="questions[currentNumber].english">
+        <p class="question col-sm-12 col-md-12 col-lg-12">What is the english of {{questions[currentNumber].english}}?</p>
+        <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of questions[currentNumber].choices">
+            <button *ngIf="currentAnswer!=choice" class="choice-button" (click)="answerClicked(choice)">{{choice}}</button>
+            <button *ngIf="currentAnswer==choice" class="choice-button selected" (click)="answerClicked(choice)">{{choice}}</button>
+        </div>
+    </div>
+    
+    <div class="row container mx-auto jusitfy-content-center">
+        
+        <div class="choice check" *ngIf="!footerVisible" >
+            <button class="choice-button check" [disabled]="!this.currentAnswer" (click)="check()"> CHECK </button>
+        </div>
+        <div class="choice check" *ngIf="footerVisible">
+            <button class="choice-button check" (click)="nextItem()"> {{ correct }}, next item! </button>
+        </div>
+    </div>
+
+    
+</div>
+
+<div *ngIf="!ready">
+    FINISH
+</div>

@@ -11,5 +11,5 @@ router.get('/:userId/:lang', controller.getProgressModules);
 router.get('/:userId/:lang/:moduleId', controller.getProgressModule);
 router.put('/:userId', controller.updateProgressItem);
 
-router.put('/')
+//router.put('/')
 module.exports = router;

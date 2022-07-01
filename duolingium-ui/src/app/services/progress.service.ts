@@ -18,4 +18,22 @@ export class ProgressService {
     return this.http.get(url);
   }
 
+  checkItem(userId: string, moduleId: string, itemId: string, type: string, answer: string): Observable<any> {
+    const url = `${this.baseUrl}/${userId}/`
+    interface body {
+      moduleId: string,
+      itemId: string,
+      native?: string,
+      english?: string
+    }
+    let putBody: body = {moduleId: moduleId, itemId: itemId};
+    
+    if (type == "native") putBody.native = answer;
+    else putBody.english = answer;
+
+    console.log("putting ", putBody)
+    
+    return this.http.put(url, putBody);
+  }
+
 }
