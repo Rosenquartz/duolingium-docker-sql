@@ -9,8 +9,16 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
 
+  createNew: number = 0;
+
   inputUsername: string = '';
   inputPassword: string = '';
+
+  inputFirstName: string = '';
+  inputLastName: string = '';
+  inputEmail: string = '';
+
+  errorMessage: string = '';
 
   constructor(
     private userService: UserService,
@@ -25,12 +33,34 @@ export class LoginComponent implements OnInit {
     .subscribe((out: any)=>{
       console.log("aa")
       if (out.auth) {
-        console.log("setting user to ", out.userId)
+        console.log("setting user to", out.userId, " language to", out.languageId)
         this.cookieService.set('userId', out.userId);
+        this.cookieService.set('languageId', out.languageId);
         window.location.href = '/learn';
       }
     });
+  }
 
+  async createAccount(): Promise<void> {
+    this.errorMessage = '';
+    console.log("Creating account")
+    console.log(this.inputUsername, this.inputPassword, this.inputEmail, this.inputFirstName, this.inputLastName  )
+    this.userService.createAccount(this.inputUsername, this.inputPassword, this.inputEmail, this.inputFirstName, this.inputLastName)
+    .subscribe(
+    (out:any)=>{
+      this.cookieService.set('userId', this.inputUsername);
+      window.location.href = '/languages';
+    }, (error)=>{
+      this.errorMessage = error.error.error_message;
+    })
+  }
+
+  switchToCreateNew(): void {
+    this.createNew = 1;
+  }
+
+  switchToLogIn(): void {
+    this.createNew = 0;
   }
 
 }

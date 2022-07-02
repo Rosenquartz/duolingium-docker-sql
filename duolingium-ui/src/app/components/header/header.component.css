@@ -10,3 +10,54 @@ h1 {
     margin-bottom: 0;
     color: white;
 }
+
+svg {
+    height: 100px;
+    width: 100px;    
+    margin: 20px;
+    border: 2px solid;
+    border-radius: 10px;
+}
+
+svg:hover {
+    cursor: pointer;
+    -webkit-filter: brightness(80%);
+    filter: brightness(80%);
+}
+
+nav {
+    padding-left: 50px;
+    padding-right: 50px;
+    font-size: 5rem;
+}
+
+.headerwrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 50px;
+    align-items: center;
+    width: 100%;
+}
+
+.textwrap {
+    flex: 2;
+    font-size: 2.5rem;
+}
+
+.profilewrap {
+    height: 100px;
+    width: 100px;    
+    cursor: pointer;
+}
+
+.flagwrap {
+    height: 100px;
+    width: 100px;    
+    cursor: pointer;
+}
+
+p {
+    text-align: center;
+}

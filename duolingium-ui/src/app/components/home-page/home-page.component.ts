@@ -24,9 +24,10 @@ export class HomePageComponent implements OnInit {
       console.log("current user:", this.cookieService.get('userId'))
       this.cookieService.set('preferredLanguage', out.preferredLanguage);
       this.moduleInfo = out.modules;
-      this.progressService.getProgressModules(this.cookieService.get('userId'), this.cookieService.get('preferredLanguage')).subscribe(out=>{
+      this.progressService.getProgressModules(this.cookieService.get('userId'), this.cookieService.get('preferredLanguage'))
+      .subscribe(out=>{
+        console.log(this.cookieService.get("preferredLanguage"))
         for (let moduleProgress of out) {
-          console.log(moduleProgress)
           for (let module of this.moduleInfo) {
             if (moduleProgress.moduleId == module.moduleId) {
               module.started = 1
@@ -37,6 +38,7 @@ export class HomePageComponent implements OnInit {
             }
           }
         }
+        console.log("moduleInfo:", this.moduleInfo);
       })
     })
   }

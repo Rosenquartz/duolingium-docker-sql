@@ -4,13 +4,14 @@ const controller = (languageRepository, errorRepository) => {
     const getLanguages = async (req,res) => {
       try {
         let results = await languageRepository.getLanguages();
+        console.log(results)
         let languageList = [];
         await results.forEach(row=>{
           languageList.push(row.englishName + '/' + row.nativeName)
         })
         res.set({ 'content-type': 'application/json; charset=utf-8' });
         res.status(200);
-        res.send(JSON.stringify({languages: languageList}));
+        res.send(JSON.stringify(results));
       } catch (err) {
         res.status(400);
         req.send(errorRepository(4000));

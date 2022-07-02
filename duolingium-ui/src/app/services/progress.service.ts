@@ -14,7 +14,12 @@ export class ProgressService {
   ) { }
 
   getProgressModules(userId: string, languageId: string): Observable<any> {
-    const url = `${this.baseUrl}/${userId}/${languageId}`
+    const url = `${this.baseUrl}/${userId}/${languageId}`;
+    return this.http.get(url);
+  }
+
+  getProgressModule(userId: string, languageId: string, moduleId: string): Observable<any> {
+    const url = `${this.baseUrl}/${userId}/${languageId}/${moduleId}`;
     return this.http.get(url);
   }
 

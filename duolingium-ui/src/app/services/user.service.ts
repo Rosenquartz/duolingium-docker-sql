@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
@@ -21,6 +21,21 @@ export class UserService {
     return this.http.post(url, {userId: username, password: password});
   }
 
+  createAccount(username: string, password: string, email: string, firstname: string, lastname: string): Observable<any> {
+    const url = `${this.baseUrl}/create`
+    return this.http.post(url, {
+      username: username,
+      password: password,
+      email: email,
+      firstname: firstname,
+      lastname: lastname
+    })
+  }
+  
+  handleError(error: any) {
+    return new Error(error);
+  }
+
   getUsers(): Observable<any> {
     return this.http.get(this.baseUrl);
   }
@@ -29,4 +44,13 @@ export class UserService {
     const url = `${this.baseUrl}/${userId}/preferred`
     return this.http.get(url)
   }
+
+  setPreferredLanguage(userId: string, languageId: string): Observable<any> {
+    const url = `${this.baseUrl}/${userId}/preferred`
+    return this.http.put(url, {
+      userId: userId,
+      preferredLanguage: languageId
+  })
+  }
+
 }

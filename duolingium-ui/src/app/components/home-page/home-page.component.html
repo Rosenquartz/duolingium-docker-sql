@@ -1,22 +1,25 @@
-<app-header></app-header>
-<div  *ngFor="let module of moduleInfo">
-    <div class="row container mx-auto">
-        <div class="displayName col-sm-12 col-md-12 col-lg-3">
-            <div id="imageDiv">{{module.displayName}}</div>
+<div class="bodywrap">
+
+    <app-header class="headerwrap"></app-header>
+    <div class="modulewrap">
+        <div  *ngFor="let module of moduleInfo">
+            <div class="row container mx-auto">
+                <div class="displayName col-sm-12 col-md-12 col-lg-3">
+                    <p>{{module.displayName}}</p>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-2 ">
+                    <button routerLink="/learn/{{module.moduleId}}"> learn </button>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-2 ">
+                    <button [ngClass]="{'review-none': !module.started, 'review-ready': module.progress >= 100, 'review-not-ready': module.progress < 100}"> review </button>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-2 ">
-            <button> study </button>
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-2 ">
-            <button> learn </button>
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-2 ">
-            <button> review </button>
-        </div>
-    </div>
+    </div> 
+
 </div>
 
-<div id="myCircleDiv">LABEL</div>
+
 <!--
 <div class="module-container">
     <div class="module-card align-items-center row container mx-auto" *ngFor="let module of moduleInfo">

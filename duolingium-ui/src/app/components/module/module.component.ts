@@ -24,8 +24,8 @@ export class ModuleComponent implements OnInit {
 
   getModuleItems(): void {
     const moduleId = this.route.snapshot.paramMap.get('moduleId')!;
-    this.languageService.getModuleItems(moduleId)
-    .subscribe(out=>{console.log("out is", out); this.items = out.items});
+    //this.languageService.getModuleItems(moduleId)
+    //.subscribe(out=>{console.log("out is", out); this.items = out.items});
   }
 
 }

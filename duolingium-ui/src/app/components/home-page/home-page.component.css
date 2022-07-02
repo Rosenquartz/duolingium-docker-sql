@@ -42,6 +42,7 @@ button:active {
 /**/
 
 .container {
+    min-width: 720px;
     max-width: 800px;
     font-size: 12px;
     font-family: Verdana;
@@ -52,13 +53,19 @@ button:active {
     min-height: 120px;
 
     color: #4B4B4B;
+}
 
+@media(max-width:768px){
+    .container {
+        min-width: 300px;
+        max-width: 400px;
+    }
 }
 p {
     text-align: center;
     vertical-align: center;
-    margin-top: 20%;
-    font-size: 1rem;
+    font-size: 1.5rem;
+    color: white;
 }
 .displayName {
     vertical-align: center;
@@ -74,4 +81,46 @@ p {
     text-align:center;
     color:white;
     background:url("https://placekitten.com/640/360") #ccc no-repeat 50% 38px;
+}
+
+.review-none:hover {
+    background-color: #ddf4ff;
+    border-color: #f61c44;
+}
+
+.review-ready {
+    color: blue;
+}
+
+.review-not-ready:hover {
+    background-color: #ddf4ff;
+    border-color: #f61c44;
+}
+
+
+.bodywrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: papayawhip;
+}
+
+.headerwrap {
+    padding-top: 20px;
+    flex: 1;
+    max-width: 720px;
+}
+
+.modulewrap {
+    padding-top: 50px;
+    flex: 5;
+}
+
+.row {
+    background-color: #89e219;
+    border-radius: 25px;
+    padding: 25px;
+    align-items: center;
+    font-size: 1rem;
 }

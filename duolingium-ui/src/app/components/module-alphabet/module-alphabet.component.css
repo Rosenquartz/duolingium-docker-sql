@@ -11,8 +11,8 @@
     font-size: 2.5rem;
     color: #4B4B4B;
 
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 5px;
+    padding-bottom: 5px;
     margin: 10px;
     transition: all 0.1s;
     min-width: 100%;
@@ -47,4 +47,44 @@ p {
 
 .check {
     max-width: 400px;
+    max-height: 100px;
+    padding: 0;
+}
+
+
+footer{ min-height:50px;}
+
+.beeg{ height:100vh; margin:0; }
+/* Trick */
+.beeg{ 
+  display:flex; 
+  flex-direction:column; 
+}
+
+footer{
+  margin-top:auto; 
+}
+
+.correct {
+    background-color: #a1ff2e;
+    border: 2px solid #89E219;
+    box-shadow: 0 7px 0 #89E219;
+}
+
+.correct:hover {
+    background-color: white;
+    border-color: #58CC02;
+    box-shadow: 0 7px 0 #58CC02;
+}
+
+.incorrect {
+    background-color: #ffa3a3;
+    border: 2px solid #FF4B4B;
+    box-shadow: 0 7px 0 #FF4B4B;
+}
+
+.incorrect:hover {
+    background-color: white;
+    border-color: #ce3b3b;
+    box-shadow: 0 7px 0 #ce3b3b;
 }

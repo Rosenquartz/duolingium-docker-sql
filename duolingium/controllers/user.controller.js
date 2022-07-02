@@ -106,8 +106,10 @@ const controller = (userRepository, errorRepository) => {
             if (!req.body.password) throw errorRepository(1000);
             
             let results = await userRepository.checkLogin(req.body.userId);
-            let auth = await bcrypt.compare(req.body.password, results[0].password)
-            res.status(200).json({auth: auth, userId: req.body.userId})
+            let auth = await bcrypt.compare(req.body.password, results[0].password);
+            let returnObject = {auth: auth, userId: req.body.userId};
+            if (auth) returnObject.languageId = results[0].preferredLanguage;
+            res.status(200).json(returnObject);
         } catch (err) {
             console.log(err)
             res.status(400).json(errorRepository(1002))

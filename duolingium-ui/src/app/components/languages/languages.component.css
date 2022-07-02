@@ -1,0 +1,36 @@
+.flag-icon {
+    background-size: contain;
+background-position: 50%;
+background-repeat: no-repeat;
+}
+
+.tempbody {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: papayawhip;
+}
+.temp1 {
+    flex: 1
+}
+.temp2 {
+    flex: 5
+}
+.temp3 {
+    flex: 1
+}
+
+svg {
+    height: 150px;
+    width: 200px;
+}
+
+.card {
+    margin: 25px;
+}
+
+.card:hover{
+    cursor: pointer;
+    -webkit-filter: brightness(80%);
+    filter: brightness(80%);
+}

@@ -50,7 +50,7 @@ CREATE PROCEDURE `CheckLogin`(
     IN inputUserId VARCHAR(16)
 )
 BEGIN
-    SELECT password
+    SELECT preferredLanguage, password
     FROM `user` 
     WHERE userId = inputUserId;
 END;

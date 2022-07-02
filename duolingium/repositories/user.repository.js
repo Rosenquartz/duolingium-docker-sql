@@ -65,7 +65,6 @@ checkLogin = async (userId) => {
         let connection = await getConnection();
         let sql = 'CALL CheckLogin(?)'
         let password = await connection.query(sql, [userId])
-        console.log("return is", password)
         
         await connection.end();
         return password[0][0];

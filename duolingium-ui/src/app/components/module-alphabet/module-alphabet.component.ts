@@ -27,6 +27,8 @@ export class ModuleAlphabetComponent implements OnInit {
   footerVisible: number = 0;
   correct: string = '';
 
+  finished: number = 0;
+
   constructor(
     private route: ActivatedRoute,
     private cookieService: CookieService,
@@ -94,7 +96,7 @@ export class ModuleAlphabetComponent implements OnInit {
 
   async setChoices(item: Item, type: string): Promise <string[]> {
     let choices: string[] = [];
-    let numChoices = Math.min(3, this.items.length)
+    let numChoices = Math.min(3, this.items.length-1)
     if (type == 'native'){
       let tempArray = this.allNativeChoices.filter(x=>x!=item.native)
       choices.push(item.native)
@@ -142,6 +144,7 @@ export class ModuleAlphabetComponent implements OnInit {
   }
 
   check() :void {
+    console.log("checking")
     let userId = this.cookieService.get('userId')
     let moduleId = this.route.snapshot.paramMap.get('moduleId')!
     let itemId = this.questions[this.currentNumber].itemId
@@ -152,17 +155,21 @@ export class ModuleAlphabetComponent implements OnInit {
   }
 
   async nextItem(): Promise<void> {
+    if (!this.finished){
     this.footerVisible = 0;
     this.correct = '';
     this.currentNumber += 1;
     this.currentAnswer = '';
     if (this.currentNumber == 2*this.items.length) {
+      this.currentNumber -= 1;
       await this.endModule()
     }
   }
+  }
 
   async endModule(): Promise<void> {
-    this.ready = 0
+    this.finished = 1;
+    console.log("finished")
   }
 
   /*
