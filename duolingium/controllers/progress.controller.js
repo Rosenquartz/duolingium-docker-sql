@@ -55,7 +55,7 @@ const controller = (progressRepository, errorRepository) => {
             console.log("correct is", correct)
 
             await progressRepository.updateProgressItem(req.params.userId, req.body.itemId, correct);
-            console.log("yosh")
+            console.log("yosh", req.params.userId, req.body.moduleId)
             await progressRepository.updateProgressModule(req.params.userId, req.body.moduleId);
 
             res.status(200).json({correct: correct});

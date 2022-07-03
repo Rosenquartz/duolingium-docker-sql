@@ -73,7 +73,7 @@ updateProgressModule = async (userId, moduleId) => {
     try {
         let connection = await getConnection();
         let sql = 'Call UpdateProgressModule(?,?)';
-        await connection.query(sql, [userId, moduleId]);
+        await connection.query(sql, [moduleId, userId]);
         await connection.end();
         return;
     } catch (err) {

@@ -38,7 +38,7 @@ BEGIN
         AND `progressItem`.userId = inputUserId
         AND `progressItem`.correctAttempts > 0
     )
-    WHERE moduleId = inputModuleID AND userId = inputUserId;
+    WHERE moduleId = inputModuleID AND userId = inputUserId and `progressModule`.progressModuleId != "";
 END;
 
 CREATE PROCEDURE `UpdateProgressItem`(

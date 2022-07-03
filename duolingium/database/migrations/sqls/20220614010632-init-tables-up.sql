@@ -78,9 +78,16 @@ INSERT INTO `item` VALUES
     ('7c1ba7b1','76e4aca6','쌀','rice',4),
     ('92orp378','a6886c66','교육','education',0),
     ('329r0joe','a6886c66','사회','society',1),
+    ('9fxNLDK6','a6886c66','열정','passion',1),
     ('gjnq4aru','d46703bf','あ','a',0),
+    ('Jhjt_rSh','d46703bf','う','u',0),
+    ('BUe9ZUYc','d46703bf','え','e',0),
     ('3mjs4ds2','ba0f0f6c','ア','a',0),
-    ('sdfif32p','1a0b034f','わたし','me',0);
+    ('H1xV-zQs','ba0f0f6c','ウ','u',0),
+    ('9Ij9x-x8','ba0f0f6c','エ','e',0),
+    ('sdfif32p','1a0b034f','わたし','I',0),
+    ('Z1NXgLBJ','1a0b034f','すし','sushi',0),
+    ('qlLMhnxQ','1a0b034f','これ','this',0);
 
 
 INSERT INTO `language` VALUES 

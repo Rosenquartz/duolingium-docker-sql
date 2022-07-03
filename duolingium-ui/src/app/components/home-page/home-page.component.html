@@ -1,9 +1,24 @@
-<div class="bodywrap">
+<div class="bodywrap" *ngIf="ready">
 
     <app-header class="headerwrap"></app-header>
     <div class="modulewrap">
         <div  *ngFor="let module of moduleInfo">
             <div class="row container mx-auto">
+                <!--
+                <div class="wrapper col-sm-12 col-md-12 col-lg-2 d-flex align-items-center">  
+                    <div class="loader d-flex justify-content-center align-items-center">
+                        <p>{{module.displayName}}</p> 
+                        <svg class="flagwrap flag-icon flag-icon-kr flag-icon-squared"></svg>
+                    </div>
+                </div>
+                -->
+                <div class="col-sm-12 col-md-12 col-lg-2 d-flex align-items-center progress-circle p{{module.progress}}" [ngClass]="{'over50': module.progress>50}">
+                    <svg class="flagwrap flag-icon flag-icon-kr flag-icon-squared"></svg>
+                    <div class="left-half-clipper">
+                      <div class="first50-bar"></div>
+                      <div class="value-bar"></div>
+                    </div>
+                  </div>
                 <div class="displayName col-sm-12 col-md-12 col-lg-3">
                     <p>{{module.displayName}}</p>
                 </div>

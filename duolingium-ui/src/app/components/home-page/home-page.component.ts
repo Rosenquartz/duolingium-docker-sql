@@ -9,6 +9,9 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent implements OnInit {
+
+  what: string = '20';
+  ready: number = 0;
   
   moduleInfo: Array <any> = [];
   moduleProgress: Array <any> = [];
@@ -39,6 +42,7 @@ export class HomePageComponent implements OnInit {
           }
         }
         console.log("moduleInfo:", this.moduleInfo);
+        this.ready = 1;
       })
     })
   }
