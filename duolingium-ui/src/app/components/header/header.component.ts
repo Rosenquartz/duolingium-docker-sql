@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   getLanguage(languageId: string): void {
     this.languageService.getLanguages()
     .subscribe((out:any)=>{
-      console.log(out)
+      console.log("preferred language is",out)
       for (let lang of out) {
         console.log("lang is", lang.languageId)
         if (lang.languageId == languageId) {
