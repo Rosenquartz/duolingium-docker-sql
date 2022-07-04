@@ -12,6 +12,8 @@ export class HomePageComponent implements OnInit {
 
   what: string = '20';
   ready: number = 0;
+
+  languageId: string = ''
   
   moduleInfo: Array <any> = [];
   moduleProgress: Array <any> = [];
@@ -23,6 +25,7 @@ export class HomePageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.languageId = this.cookieService.get('languageId');
     this.userService.getPreferredLanguage(this.cookieService.get('userId')).subscribe(out=>{
       console.log("current user:", this.cookieService.get('userId'))
       this.cookieService.set('preferredLanguage', out.preferredLanguage);
@@ -34,10 +37,12 @@ export class HomePageComponent implements OnInit {
           for (let module of this.moduleInfo) {
             if (moduleProgress.moduleId == module.moduleId) {
               module.started = 1
-              module.progress = moduleProgress.completed / moduleProgress.total * 100
+              console.log(moduleProgress)
+              module.progress = Math.floor(moduleProgress.completed / moduleProgress.total * 100)
               console.log("PROGRESS:", module.progress)
               if (module.progress == 100) {module.completed = 1}
               else (module.completed = 0)
+              break;
             }
           }
         }

@@ -29,14 +29,16 @@ export class LoginComponent implements OnInit {
   }
 
   async login(): Promise<void> {
+    this.errorMessage = ''
     this.userService.checkLogin(this.inputUsername, this.inputPassword)
     .subscribe((out: any)=>{
-      console.log("aa")
       if (out.auth) {
         console.log("setting user to", out.userId, " language to", out.languageId)
         this.cookieService.set('userId', out.userId);
         this.cookieService.set('languageId', out.languageId);
         window.location.href = '/learn';
+      } else {
+        this.errorMessage = "Incorrect username/password"
       }
     });
   }
@@ -56,10 +58,12 @@ export class LoginComponent implements OnInit {
   }
 
   switchToCreateNew(): void {
+    this.errorMessage = '';
     this.createNew = 1;
   }
 
   switchToLogIn(): void {
+    this.errorMessage = '';
     this.createNew = 0;
   }
 

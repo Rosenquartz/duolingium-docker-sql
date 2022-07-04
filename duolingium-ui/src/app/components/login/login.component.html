@@ -1,46 +1,11 @@
-<!-- TEMP TEMPLATE -->
-<!-- SOURCE: https://mdbootstrap.com/docs/standard/extended/login/-->
-
-<!--
-<section *ngIf="!createNew" class="h-100 gradient-form" style="background-color: #eee;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="card-body p-md-5 mx-md-4">  
-        <form>  
-          <div class="form-outline mb-4">
-            <input type="email" id="form2Example11" class="form-control"
-              placeholder="Username" [(ngModel)]="inputUsername" name="inputUsername"/>
-          </div>
-
-          <div class="form-outline mb-4">
-            <input type="password" id="form2Example22" class="form-control" 
-              placeholder="password" [(ngModel)]="inputPassword" name="inputPassword"/>
-          </div>
-
-          <div class="text-center pt-1 mb-5 pb-1">
-            <button class="btn btn-primary btn-block fa-lg mb-3" 
-            type="button" (click)="login()">Login</button>
-          </div>
-
-          <div class="d-flex align-items-center justify-content-center pb-4">
-            <p class="mb-0 me-2">Don't have an account?</p>
-            <button type="button" class="btn btn-outline-danger" (click)="switchToCreateNew()">Create new</button>
-          </div>
-
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
--->
-
+<!-- TEMPLATE SOURCE: https://mdbootstrap.com/docs/standard/extended/login/-->
 
 <section *ngIf="!createNew" class="h-100 gradient-form" style="background-color: #eee;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-xl-5 col-lg-5 col-sm-12">
         <div class="card rounded-3 text-black">
-          <div class="row g-0">
+          <div class="row g-20">
             <div class="col-lg-12 col-sm-12">
               <div class="card-body p-md-5 mx-md-4">  
                 <form>  
@@ -54,14 +19,17 @@
                       placeholder="password" [(ngModel)]="inputPassword" name="inputPassword"/>
                   </div>
 
-                  <div class="text-center pt-1 mb-5 pb-1">
-                    <button class="btn btn-primary btn-block fa-lg mb-3" 
-                    type="button" (click)="login()">Login</button>
+                  <div *ngIf="errorMessage" class="errorMessage">
+                    <p>{{errorMessage}}</p>
                   </div>
 
-                  <div class="d-flex align-items-center justify-content-center pb-4">
+                  <div class="text-center pt-1 mb-4 pb-20">
+                    <button class="btn fa-lg mb-3" type="button" (click)="login()">Login</button>
+                  </div>
+
+                  <div class="d-flex align-items-center justify-content-center pb-4 align-items-flex-end">
                     <p class="mb-0 me-2">Don't have an account?</p>
-                    <button type="button" class="btn btn-outline-danger" (click)="switchToCreateNew()">Create new</button>
+                    <button type="button" class="btn" (click)="switchToCreateNew()">Create new</button>
                   </div>
 
                 </form>
@@ -85,7 +53,6 @@
             <div class="col-lg-12">
               <div class="card-body p-md-5 mx-md-4">
                 <form>  
-                  <p> details </p>
                   <div>
                     <input type="text"  class="form-control" 
                       placeholder="Username" [(ngModel)]="inputUsername" name="newUsername"/>
@@ -108,16 +75,16 @@
                   </div>
               
                   <div class="text-center pt-1 mb-5 pb-1">
-                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" 
+                    <button class="btn mb-3" 
                     type="button" (click)="createAccount()">Create account</button>
                   </div>
-                  <div *ngIf="errorMessage">
+                  <div *ngIf="errorMessage" class="errorMessage">
                     <p>{{errorMessage}}</p>
                   </div>
               
                   <div class="d-flex align-items-center justify-content-center pb-4">
                     <p class="mb-0 me-2">Have an account?</p>
-                    <button type="button" class="btn btn-outline-danger" (click)="switchToLogIn()">Log in instead</button>
+                    <button type="button" class="btn" (click)="switchToLogIn()">Log in instead</button>
                   </div>
                 </form>
 
