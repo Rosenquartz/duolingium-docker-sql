@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ProgressService } from 'src/app/services/progress.service';
 import { UserService } from 'src/app/services/user.service';
+import { map, filter, tap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home-page',
@@ -13,6 +14,7 @@ export class HomePageComponent implements OnInit {
   what: string = '20';
   ready: number = 0;
 
+  userId: string = ''
   languageId: string = ''
   
   moduleInfo: Array <any> = [];
@@ -25,31 +27,48 @@ export class HomePageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.languageId = this.cookieService.get('languageId');
-    this.userService.getPreferredLanguage(this.cookieService.get('userId')).subscribe(out=>{
-      console.log("current user:", this.cookieService.get('userId'))
-      console.log("Preferred language from output is ", out.preferredLanguage)
+    this.userId = this.cookieService.get('userId');
+    this.userService.getPreferredLanguage(this.userId)
+    .subscribe(out=>{
+
       this.cookieService.set('preferredLanguage', out.preferredLanguage);
-      this.moduleInfo = out.modules;
-      this.progressService.getProgressModules(this.cookieService.get('userId'), this.cookieService.get('preferredLanguage'))
+      this.languageId=out.preferredLanguage;
+
+      // Use JSON.parse(JSON.stringify()) to 'clone' object.
+      this.moduleInfo = JSON.parse(JSON.stringify(out.modules));
+
+      this.progressService.getProgressModules(this.userId, this.languageId)
       .subscribe(out=>{
-        console.log("preferred language is: ", this.cookieService.get('preferredLanguage'))
         for (let moduleProgress of out) {
           for (let module of this.moduleInfo) {
             if (moduleProgress.moduleId == module.moduleId) {
               module.started = 1
-              console.log(moduleProgress)
               module.progress = Math.floor(moduleProgress.completed / moduleProgress.total * 100)
-              console.log("PROGRESS:", module.progress)
               if (module.progress == 100) {module.completed = 1}
               else (module.completed = 0)
               break;
             }
           }
         }
-        console.log("moduleInfo:", this.moduleInfo);
+        this.ready = 1; 
+      })
+      /*
+      .subscribe(out=>{
+        
+        for (let moduleProgress of out) {
+          for (let module of this.moduleInfo) {
+            if (moduleProgress.moduleId == module.moduleId) {
+              module.started = 1
+              module.progress = Math.floor(moduleProgress.completed / moduleProgress.total * 100)
+              if (module.progress == 100) {module.completed = 1}
+              else (module.completed = 0)
+              break;
+            }
+          }
+        }
         this.ready = 1;
       })
+      */
     })
   }
 

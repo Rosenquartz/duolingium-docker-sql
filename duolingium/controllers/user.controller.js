@@ -138,6 +138,7 @@ const controller = (userRepository, errorRepository) => {
             results.preferredLanguage = userInfo[0].preferredLanguage
             let modules = await userRepository.getPreferredLanguage(req.params.userId)
             results.modules = modules[0][0]
+            console.log("resutls are ", results)
             res.status(200).json(results)
         } catch (err) {
             res.status(400).json(errorRepository(4000))

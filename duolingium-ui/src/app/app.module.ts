@@ -13,6 +13,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { ModuleLearnComponent } from './components/module-learn/module-learn.component';
 import { ModuleAlphabetComponent } from './components/module-alphabet/module-alphabet.component';
 import { LanguagesComponent } from './components/languages/languages.component';
+import { HomePageModuleComponent } from './components/home-page-module/home-page-module.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { LanguagesComponent } from './components/languages/languages.component';
     HomePageComponent,
     ModuleLearnComponent,
     ModuleAlphabetComponent,
-    LanguagesComponent
+    LanguagesComponent,
+    HomePageModuleComponent
   ],
   imports: [
     BrowserModule,

@@ -28,10 +28,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async login(): Promise<void> {
+  login(): void {
     this.errorMessage = ''
     this.userService.checkLogin(this.inputUsername, this.inputPassword)
-    .subscribe((out: any)=>{
+    .subscribe(out=>{
       if (out.auth) {
         console.log("setting user to", out.userId, " language to", out.languageId)
         this.cookieService.set('userId', out.userId);
@@ -43,18 +43,27 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  async createAccount(): Promise<void> {
+  createAccount(): void {
     this.errorMessage = '';
-    console.log("Creating account")
-    console.log(this.inputUsername, this.inputPassword, this.inputEmail, this.inputFirstName, this.inputLastName  )
     this.userService.createAccount(this.inputUsername, this.inputPassword, this.inputEmail, this.inputFirstName, this.inputLastName)
-    .subscribe(
-    (out:any)=>{
+    .subscribe({next: ()=>{
+      this.cookieService.set('userId', this.inputUsername);
+      window.location.href='/languages'
+    }, error: (error)=>{
+      this.errorMessage=error.error_message
+    }})
+    /*.subscribe(out=>{
       this.cookieService.set('userId', this.inputUsername);
       window.location.href = '/languages';
+      console.log(out);
+      return out;
     }, (error)=>{
       this.errorMessage = error.error.error_message;
-    })
+    })*/
+  }
+
+  setError(): void {
+
   }
 
   switchToCreateNew(): void {

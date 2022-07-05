@@ -8,7 +8,6 @@ background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: papayawhip;
 }
 .temp1 {
     flex: 1
@@ -23,10 +22,13 @@ background-repeat: no-repeat;
 svg {
     height: 150px;
     width: 200px;
+    border: 2px solid;
+    border-radius: 10px;
 }
 
 .card {
     margin: 25px;
+    border: 0px;
 }
 
 .card:hover{

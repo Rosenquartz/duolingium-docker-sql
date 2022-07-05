@@ -4,14 +4,6 @@
     <div class="modulewrap">
         <div  *ngFor="let module of moduleInfo">
             <div class="row container mx-auto">
-                <!--
-                <div class="wrapper col-sm-12 col-md-12 col-lg-2 d-flex align-items-center">  
-                    <div class="loader d-flex justify-content-center align-items-center">
-                        <p>{{module.displayName}}</p> 
-                        <svg class="flagwrap flag-icon flag-icon-kr flag-icon-squared"></svg>
-                    </div>
-                </div>
-                -->
                 <div class="col-sm-12 col-md-12 col-lg-2 d-flex align-items-center progress-circle p{{module.progress}}" [ngClass]="{'over50': module.progress>50}">
                     <svg class="flagwrap flag-icon flag-icon-{{languageId}} flag-icon-squared"></svg>
                     <div class="left-half-clipper">
@@ -33,27 +25,3 @@
     </div> 
 
 </div>
-
-
-<!--
-<div class="module-container">
-    <div class="module-card align-items-center row container mx-auto" *ngFor="let module of moduleInfo">
-            <div class="row container mx-auto ">
-                <div class="col-sm-6 col-md-6 col-lg-6 align-items-center ">
-                    <span>{{module.displayName}}</span>
-                </div>
-                <div class="col-sm-2 col-md-2 col-lg-2 align-items-center ">
-                    <button class="btn btn-block" routerLink="/learn/{{module.moduleId}}"> STUDY </button>
-                </div>
-                <div class="col-sm-2 col-md-2 col-lg-2 align-items-center ">
-                    <button routerLink="/learn/{{module.moduleId}}"> LEARN </button>
-                </div>
-                <div class="col-sm-2 col-md-2 col-lg-2 align-items-center ">
-                    <button *ngIf="module.started && module.completed"> ok</button>
-                    <button *ngIf="module.started && !module.completed" disabled="true"> not ok</button>
-                    <button *ngIf="!module.started" disabled="true"> none</button>
-                </div>
-            </div>
-    </div>
-</div>
--->
