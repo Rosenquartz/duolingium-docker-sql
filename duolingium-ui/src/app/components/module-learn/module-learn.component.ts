@@ -25,7 +25,6 @@ export class ModuleLearnComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("YOOOOOOOOOOOOOOOOO")
     const userId = this.cookieService.get('userId');
     const languageId = this.cookieService.get('languageId');
     const moduleId = this.route.snapshot.paramMap.get('moduleId')!;

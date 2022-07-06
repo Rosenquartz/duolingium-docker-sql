@@ -28,7 +28,8 @@ CREATE TABLE `module` (
     `type` VARCHAR(45) NOT NULL,
     `displayName` VARCHAR(45) NOT NULL,
     `order` INT NOT NULL,
-    PRIMARY KEY (`moduleId`)
+    PRIMARY KEY (`moduleId`),
+    INDEX idx_1 (`languageId`, `order`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 DROP TABLE IF EXISTS `item`;
@@ -48,9 +49,11 @@ CREATE TABLE `progressItem` (
     `moduleId` VARCHAR(8) NOT NULL,
     `itemId` VARCHAR(8) NOT NULL,
     `userId` VARCHAR(16) NOT NULL,
-    `totalAttempts` int(11) DEFAULT '0',
-    `correctAttempts` int(11) DEFAULT '0',
-    PRIMARY KEY (`progressItemId`)
+    `totalAttempts` INT DEFAULT '0',
+    `correctAttempts` INT DEFAULT '0',
+    PRIMARY KEY (`progressItemId`),
+    INDEX idx_1 (`userId`, `moduleId`),
+    INDEX idx_2 (`userId`, `itemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 DROP TABLE IF EXISTS `progressModule`;
@@ -59,11 +62,27 @@ CREATE TABLE `progressModule` (
     `languageId` VARCHAR(2) NOT NULL,
     `moduleId` VARCHAR(8) NOT NULL,
     `userId` VARCHAR(16) NOT NULL,
-    `total` int(11) DEFAULT '0',
-    `completed` int(11) DEFAULT '0',
-    PRIMARY KEY (`progressModuleId`)
+    `total` INT DEFAULT '0',
+    `completed` INT DEFAULT '0',
+    PRIMARY KEY (`progressModuleId`),
+    INDEX idx_1 (`userId`, `languageId`),
+    INDEX idx_2 (`userId`, `moduleId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test` (
+    `testId` VARCHAR(8) NOT NULL,
+    `languageId` VARCHAR(2) NOT NULL,
+    `moduleId` VARCHAR(8) NOT NULL,
+    `userId` VARCHAR(16) NOT NULL,
+    `total` INT DEFAULT '0',
+    `correct` INT DEFAULT '0',
+    `time` INT DEFAULT '0',
+    PRIMARY KEY (`testId`),
+    INDEX idx_1 (`languageId`),
+    INDEX idx_2 (`moduleId`),
+    INDEX idx_3 (`userId`, `languageId`, `moduleId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `item` VALUES 
     ('e707ed7c','947f1764','가','ka',0),

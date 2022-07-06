@@ -144,7 +144,7 @@ const controller = (userRepository, errorRepository) => {
             res.status(400).json(errorRepository(4000))
         }
     }
-
+    
     return {
         getUsers: getUsers,
         getProfile: getProfile,
