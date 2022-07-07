@@ -10,12 +10,11 @@ getConnection = async () => {
     })
 }
 
-createTestResults = async (testId, languageId, moduleId, userId, total, correct, time) => {
+createTestResults = async (testId, languageId, englishName, nativeName, moduleId, displayName, userId, total, correct, time, date) => {
     try {
         let connection = await getConnection();
-        let sql = 'CALL CreateTestResults(?, ?, ?, ?, ?, ?, ?)';
-        await connection.query(sql, [testId, languageId, moduleId, userId, total, correct, time]);
-        console.log("requests created")
+        let sql = 'CALL CreateTestResults(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        await connection.query(sql, [testId, languageId, englishName, nativeName, moduleId, displayName, userId, total, correct, time, date]);
         await connection.end();
     } catch (err) {
         console.error(err)
@@ -59,6 +58,18 @@ getUserTestResultsByModule = async (userId, moduleId) => {
     }
 }
 
+getAllTestResults = async () => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetAllTestResults()';
+        let results = await connection.query(sql);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
 getAllTestResultsByModule = async (moduleId) => {
     try {
         let connection = await getConnection();
@@ -76,5 +87,6 @@ module.exports = {
     getUserTestResults: getUserTestResults,
     getUserTestResultsByLanguage: getUserTestResultsByLanguage,
     getUserTestResultsByModule: getUserTestResultsByModule,
+    getAllTestResults: getAllTestResults,
     getAllTestResultsByModule: getAllTestResultsByModule
 }

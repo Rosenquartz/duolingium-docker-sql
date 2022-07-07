@@ -18,7 +18,11 @@
                     <button routerLink="/learn/{{module.moduleId}}"> learn </button>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-2 ">
-                    <button [ngClass]="{'review-none': !module.started, 'review-ready': module.progress >= 100, 'review-not-ready': module.progress < 100}"> review </button>
+                    <button [ngClass]="{
+                        'review-none': !module.started, 
+                        'review-ready': module.progress >= 100, 
+                        'review-not-ready': module.progress < 100}" 
+                    routerLink="/test/{{module.moduleId}}"> test </button>
                 </div>
             </div>
         </div>

@@ -13,18 +13,29 @@ export class LanguageService {
     private http: HttpClient
   ) { }
 
-  getModuleItems(languageId: string, moduleId: string): Observable<any> {
-    const url = `${this.baseUrl}/${languageId}/${moduleId}`
-    return this.http.get(url);
-  }
-
-  getLanguages(): Observable<any> {
+  getLanguageList(): Observable<any> {
     return this.http.get(this.baseUrl);
   }
 
-  getLanguage(languageId: string): Observable<any> {
-    const url = `${this.baseUrl}/${languageId}`;
+  getLanguageInfo(languageId: string): Observable<any> {
+    const url = `${this.baseUrl}/info/${languageId}`
+    return this.http.get(url);
+  }
+
+  getModuleList(languageId: string): Observable<any> {
+    const url = `${this.baseUrl}/list/${languageId}`;
     return this.http.get(url)
+  }
+
+  getModuleInfo(languageId: string, moduleId: string): Observable<any> {
+    console.log("getting module info")
+    const url = `${this.baseUrl}/info/${languageId}/${moduleId}`;
+    return this.http.get(url);
+  }
+
+  getModuleItems(languageId: string, moduleId: string): Observable<any> {
+    const url = `${this.baseUrl}/list/${languageId}/${moduleId}`
+    return this.http.get(url);
   }
   
 }

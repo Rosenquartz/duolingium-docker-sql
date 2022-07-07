@@ -3,7 +3,7 @@ import { switchMap } from 'rxjs';
 import { LanguageService } from 'src/app/services/language.service';
 import { TestService } from 'src/app/services/test.service';
 
-import { Lenguaje } from 'src/app/models/Language';
+import { Language } from 'src/app/models/Language';
 
 @Component({
   selector: 'app-history',
@@ -13,7 +13,7 @@ import { Lenguaje } from 'src/app/models/Language';
 export class HistoryComponent implements OnInit {
 
   moduleList: Array<any> = [];
-  languageList: Lenguaje[] = [];
+  languageList: Language[] = [];
   tests: Array<any> = [];
 
   constructor(
@@ -23,28 +23,26 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.displayLanguages()
+
   }
 
   displayLanguages(): void {
-    this.languageService.getLanguages()
-    .subscribe(out=>{
-      console.log(out)
-      this.languageList = out
-    })
+    this.languageService.getLanguageList()
+    .subscribe(out=>{this.languageList = out})
   }
 
   loadLanguage(languageId: string): void {
-    console.log(languageId)
-    this.languageService.getLanguage(languageId)
-    .subscribe(out => {
-      this.moduleList = out.modules
-    })
+    this.languageService.getModuleList(languageId)
+    .subscribe(out=>{this.moduleList = out.modules})
   }
 
-  loadAllTests(moduleId: string): void {
-    console.log("loading module", moduleId)
-    this.testService.getAllTestsByModule(moduleId).subscribe(
-      out=>{this.tests=out}
-    )
+  loadAllTests(): void {
+    this.testService.getAllTests()
+    .subscribe(out=>{this.tests = out})
+  }
+
+  loadTestsByModule(moduleId: string): void {
+    this.testService.getAllTestsByModule(moduleId)
+    .subscribe(out=>{this.tests = out})
   }
 }

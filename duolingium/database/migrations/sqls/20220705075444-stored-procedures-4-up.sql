@@ -3,23 +3,38 @@
 CREATE PROCEDURE `CreateTestResults` (
     IN inputTestId VARCHAR(8),
     IN inputLanguageId VARCHAR(2),
+    IN inputEnglishName VARCHAR(45),
+    IN inputNativeName VARCHAR(45), 
     IN inputModuleId VARCHAR(8),
+    IN inputDisplayName VARCHAR(45),
     IN inputUserId VARCHAR(16),
     IN inputTotal INT,
     IN inputCorrect INT,
-    IN inputTime INT
+    IN inputTime INT,
+    IN inputDate DATETIME
 )
 BEGIN 
     INSERT INTO `test`
     VALUES (
         inputTestId, 
-        inputLanguageId, 
+        inputLanguageId,
+        inputEnglishName,
+        inputNativeName, 
         inputModuleId, 
+        inputDisplayName,
         inputUserId, 
         inputTotal,
         inputCorrect,
-        inputTime
+        inputTime,
+        inputDate
     );
+END;
+
+CREATE PROCEDURE `GetAllTestResults` ()
+BEGIN
+    SELECT *
+    FROM `test`
+    ORDER BY date desc;
 END;
 
 CREATE PROCEDURE `GetAllTestResultsByModule` (
@@ -28,7 +43,8 @@ CREATE PROCEDURE `GetAllTestResultsByModule` (
 BEGIN 
     SELECT *
     FROM `test`
-    WHERE moduleId = inputModuleId;
+    WHERE moduleId = inputModuleId
+    ORDER BY date desc;
 END;
 
 CREATE PROCEDURE `GetUserTestResults` (
@@ -37,7 +53,8 @@ CREATE PROCEDURE `GetUserTestResults` (
 BEGIN 
     SELECT *
     FROM `test`
-    WHERE userId = inputUserId;
+    WHERE userId = inputUserId
+    ORDER BY date desc;
 END;
 
 CREATE PROCEDURE `GetUserTestResultsByLanguage` (
@@ -48,7 +65,8 @@ BEGIN
     SELECT *
     FROM `test`
     WHERE userId = inputUserId
-    AND languageId = inputLanguageId;
+    AND languageId = inputLanguageId
+    ORDER BY date desc;
 END;
 
 CREATE PROCEDURE `GetUserTestResultsByModule` (
@@ -59,5 +77,6 @@ BEGIN
     SELECT *
     FROM `test`
     WHERE userId = inputUserId
-    AND moduleId = inputModuleId;
+    AND moduleId = inputModuleId
+    ORDER BY date desc;
 END;

@@ -53,7 +53,7 @@ p {
 
 footer{ min-height:50px;}
 
-.beeg{ height:100vh; margin:0; }
+.beeg{ height:80vh; margin:0; }
 /* Trick */
 .beeg{ 
   display:flex; 
@@ -86,4 +86,14 @@ footer{
     background-color: white;
     border-color: #ce3b3b;
     box-shadow: 0 7px 0 #ce3b3b;
+}
+
+.checkAvailable {
+    background-color: green;
+}
+
+.checkNotAvailable {
+    background-color: red;
+    pointer-events: none;
+    cursor: pointer;
 }

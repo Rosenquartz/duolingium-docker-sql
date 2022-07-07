@@ -8,14 +8,16 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { ModuleLearnComponent } from './components/module-learn/module-learn.component';
 import { LanguagesComponent } from './components/languages/languages.component';
 import { HistoryComponent } from './components/history/history.component';
+import { TestComponent } from './components/test/test.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
-  { path: 'languages', component: LanguagesComponent},
-  { path: 'learn', component: HomePageComponent},
-  { path: 'learn/:moduleId', component: ModuleLearnComponent},
-  { path: 'history', component: HistoryComponent}
+  { path: 'languages', component: LanguagesComponent },
+  { path: 'learn', component: HomePageComponent },
+  { path: 'learn/:moduleId', component: ModuleLearnComponent },
+  { path: 'history', component: HistoryComponent },
+  { path: 'test/:moduleId', component: TestComponent }
 ];
 
 @NgModule({

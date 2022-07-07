@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs';
 
 import { Item } from 'src/app/models/Item';
 import { MultipleChoiceQuestion } from 'src/app/models/MultipleChoiceQuestion';
@@ -7,15 +8,22 @@ import { MultipleChoiceQuestion } from 'src/app/models/MultipleChoiceQuestion';
 import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from 'src/app/services/language.service';
 import { ProgressService } from 'src/app/services/progress.service';
+import { TestService } from 'src/app/services/test.service';
+
+import { TimerComponent } from '../timer/timer.component';
 
 @Component({
-  selector: 'app-module-alphabet',
-  templateUrl: './module-alphabet.component.html',
-  styleUrls: ['./module-alphabet.component.css']
+  selector: 'app-test-alphabet',
+  templateUrl: './test-alphabet.component.html',
+  styleUrls: ['./test-alphabet.component.css']
 })
-export class ModuleAlphabetComponent implements OnInit {
+export class TestAlphabetComponent implements OnInit {
 
   @Input() items: Item[] = [];
+  @Input() time: number = 0;
+  @Output() changeScore = new EventEmitter<number>;
+  @Output() runState = new EventEmitter<boolean>;
+
   questions: MultipleChoiceQuestion[] = [];
   ready: number = 0;
 
@@ -25,6 +33,7 @@ export class ModuleAlphabetComponent implements OnInit {
   currentQuestion!: MultipleChoiceQuestion;
   currentNumber: number = 0;
   currentAnswer: string = '';
+  correctAnswers: number = 0;
 
   footerVisible: number = 0;
   correct: string = '';
@@ -34,14 +43,18 @@ export class ModuleAlphabetComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cookieService: CookieService,
-    private progressService: ProgressService
+    private languageService: LanguageService,
+    private progressService: ProgressService,
+    private testService: TestService
   ) { }
 
   ngOnInit(): void {
-    console.log("itemes are", this.items)
     this.setUpQuestions()
     .then(()=>{
       this.ready = 1
+      this.runState.emit(true);
+      console.log("Questions:"),
+      console.log(this.questions)
     })
   }
 
@@ -50,33 +63,26 @@ export class ModuleAlphabetComponent implements OnInit {
   }
 
   async setUpQuestions(): Promise<void> {
-    let shuffledItems = await this.shuffleItems();
     await this.setUpAllChoices();
     let i = 0; let j = 0;
-    for (let type of shuffledItems) {
-      if (type == "native") {
-        // Type = native means the answer has to be native
-        let choices = await this.setChoices(this.items[i],type)
-        this.questions.push({
-          itemId: this.items[i].itemId,
-          type: type,
-          english: this.items[i].english,
-          choices: choices
-        })
-        i += 1;
-      } else {
-        // Type = english means the answer has to be english
-        let choices = await this.setChoices(this.items[j],type)
-        this.questions.push({
-          itemId: this.items[j].itemId,
-          type: type,
-          native: this.items[j].native,
-          choices: choices
-        })
-        j += 1;
-      }
-      
+    for (let i = 0; i < this.items.length; i++) {
+      let nativeChoices = await this.setChoices(this.items[i], "native")
+      this.questions.push({
+        itemId: this.items[i].itemId,
+        type: "native",
+        english: this.items[i].english,
+        choices: nativeChoices
+      })
+
+      let englishChoices = await this.setChoices(this.items[i], "english")
+      this.questions.push({
+        itemId: this.items[i].itemId,
+        type: "english",
+        native: this.items[i].native,
+        choices: englishChoices
+      })
     }
+    let q2 = await this.shuffleArray(this.questions)
   }
 
   async setUpAllChoices(): Promise <void> {
@@ -113,7 +119,6 @@ export class ModuleAlphabetComponent implements OnInit {
       }
     }
     choices = await this.shuffleArray(choices);
-    console.log("returning", choices, "for", type, item.native, item.english)
     return choices
   }
 
@@ -146,6 +151,7 @@ export class ModuleAlphabetComponent implements OnInit {
   }
 
   check() :void {
+    this.runState.emit(false)
     console.log("checking")
     let userId = this.cookieService.get('userId')
     let moduleId = this.route.snapshot.paramMap.get('moduleId')!
@@ -153,10 +159,16 @@ export class ModuleAlphabetComponent implements OnInit {
     let type = this.questions[this.currentNumber].type
     let answer = this.currentAnswer
     this.progressService.checkItem(userId, moduleId, itemId, type, answer)
-    .subscribe(out=>{this.correct = out.correct; this.footerVisible = 1})
+    .subscribe(out=>{
+      this.correct = out.correct; 
+      this.correctAnswers += out.correct ? 1 : 0; 
+      console.log("correctAnswers is", this.correctAnswers)
+      this.changeScore.emit(this.correctAnswers);
+      this.footerVisible = 1
+    })
   }
 
-  nextItem(): void {
+  async nextItem(): Promise<void> {
     if (!this.finished) {
       this.footerVisible = 0;
       this.correct = '';
@@ -167,6 +179,11 @@ export class ModuleAlphabetComponent implements OnInit {
       if (this.currentNumber == 2*this.items.length) {
         this.currentNumber -= 1;
         this.endModule()
+        .then(()=>{console.log("no error")})
+        .catch((err)=>{console.error(err)})
+      } else {
+        this.runState.emit(true)
+        console.log('started runState');
       }
     }
   }
@@ -174,89 +191,37 @@ export class ModuleAlphabetComponent implements OnInit {
   async endModule(): Promise<void> {
     this.finished = 1;
     console.log("finished")
+    let userId = this.cookieService.get('userId')
+    let languageId = this.cookieService.get('languageId')
+    let moduleId = this.route.snapshot.paramMap.get('moduleId')!
+    let total = 2 * this.items.length
+    let newDate = new Date()
+    let date = newDate.toISOString().slice(0, 19).replace('T', ' ');
+
+    /*
+    this.languageService.getLanguageInfo(languageId)
+    .pipe(switchMap(out=>{console.log("out1",out); return this.languageService.getModuleInfo(languageId, moduleId)}))
+    .subscribe((out)=>{console.log("out2", out)})
+    */
+
+    this.languageService.getModuleInfo(languageId, moduleId)
+    .subscribe(out=>{console.log("out2", out)})
+
+    console.log("SENDING RESULTS");
+    /*
+    this.testService.sendTestResults(
+      languageId,
+      englishName,
+      nativeName, 
+      moduleId, 
+      displayName,
+      userId, 
+      total, 
+      this.correctAnswers, 
+      this.time, 
+      date)
+    .subscribe(out=>{console.log("ogttem")})
+    */
   }
-
-  /*
-
-  items: Array<any> = [];
-  questions: Array<any> = [];
-  setUp: Number = 0;
-
-  nativeChoices: Array<string> = [];
-  englishChoices: Array<string> = [];
-
-  currentItem: MultipleChoiceItem = {};
-  currentNumber: number = 0;
-
-  constructor(
-    private languageService: LanguageService,
-    private cookieService: CookieService,
-    private route: ActivatedRoute
-  ) { }
-
-  ngOnInit(): void {
-    this.getModuleItems();
-  }
-
-  getModuleItems(): void {
-    const moduleId = this.route.snapshot.paramMap.get('moduleId')!;
-    this.languageService.getModuleItems(moduleId)
-    .subscribe(async (out) => {
-      this.items = out.items;
-      await this.setUpChoices();
-      console.log("Choices set up")
-      this.currentItem = this.questions[0];
-      this.setUp = 1;
-    });
-  }
-
-  async setUpChoices(): Promise<void> {
-    for (let item of this.items) {
-      this.nativeChoices.push(item.native);
-      this.englishChoices.push(item.english)
-    }
-    await this.setUpQuestions();
-    console.log("Finished setupchoices()")
-  }
-
-  async setUpQuestions(): Promise<void> {
-    for (let i=0; i < this.nativeChoices.length; i++) {
-      let tempNativeChoices = await this.shuffle(this.nativeChoices);
-      tempNativeChoices = tempNativeChoices.filter(x=>x != this.nativeChoices[i])
-      let tempEnglishChoices = await this.shuffle(this.englishChoices);
-      tempEnglishChoices = tempEnglishChoices.filter(x=>x != this.englishChoices[i])
-      this.questions.push({ item: this.nativeChoices[i], choices: tempNativeChoices})
-      this.questions.push({ item: this.englishChoices[i], choices: tempEnglishChoices})
-    }
-    console.log("Finished set up questions", this.questions)
-  }
-
-  async shuffle(array: Array<any>): Promise<Array<any>> {
-    let currentIndex = array.length,  randomIndex;
-  
-    // While there remain elements to shuffle.
-    while (currentIndex != 0) {
-  
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-  
-    return array;
-  }
-  
-  nextItem(): void {
-    this.currentNumber = this.currentNumber + 1;
-    if (this.currentNumber >= this.questions.length) {
-      console.log("FINIS")
-      return;
-    }
-    this.currentItem = this.questions[this.currentNumber]
-  }
-  */
 
 }

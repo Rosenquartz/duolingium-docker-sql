@@ -2,109 +2,164 @@ const { nanoid } = require('nanoid');
 const _ = require('lodash');
 
 const controller = (languageRepository, errorRepository) => {
-    const getLanguages = async (req,res) => {
-      try {
-        let cachedResults = await languageRepository.getCachedLanguages();
-        
-        if (!_.isEmpty(cachedResults)) {
-          console.log("returning cached results")
-          res.status(200).json(JSON.parse(cachedResults));
-          return;
+
+    const getLanguageList = async (req, res) => {
+        try {
+            let cachedLanguages = await languageRepository.getCachedLanguages();
+            cachedLanguages = JSON.parse(cachedLanguages)
+            if (!_.isEmpty(cachedLanguages)) {
+                console.log("Cached languages is not empty.")
+                res.status(200).json(cachedLanguages);
+                return;
+            }
+            console.log("Cached languages is empty; getting from database")
+            let languages = await languageRepository.getLanguageList();
+            await languageRepository.setCachedLanguages(JSON.stringify(languages));
+
+            let languageList = [];
+            await languages.forEach(row=>{
+                languageList.push(row.englishName + '/' + row.nativeName)
+            })
+            res.set({ 'content-type': 'application/json; charset=utf-8' });
+            res.status(200).json(languages);
+        } catch (err) {
+            console.error(err);
+            res.status(400).json(errorRepository(4000));
         }
-
-        let results = await languageRepository.getLanguages();
-        await languageRepository.setCachedLanguages(JSON.stringify(results));
-
-        let languageList = [];
-        await results.forEach(row=>{
-          languageList.push(row.englishName + '/' + row.nativeName)
-        })
-        res.set({ 'content-type': 'application/json; charset=utf-8' });
-        res.status(200);
-        res.send(JSON.stringify(results));
-      } catch (err) {
-        console.error(err);
-        res.status(400);
-        res.send(errorRepository(4000));
-      }
     }
 
-    const getModules = async (req,res) => {
-      try {
-        let cachedResults = await languageRepository.getCachedModules(req.params.languageId);
-
-        if (!_.isEmpty(cachedResults)) {
-          console.log("returning cached results");
-          res.status(200).json(JSON.parse(cachedResults));
-          return;
+    const getLanguageInfo = async (req, res) => {
+        try {
+            let cachedLanguages = await languageRepository.getCachedLanguages();
+            cachedLanguages = JSON.parse(cachedLanguages)
+            if (!_.isEmpty(cachedLanguages)) {
+                console.log(cachedLanguages)
+                for (let language of cachedLanguages) {
+                    if (language.languageId == req.params.languageId) {
+                        console.log("gottem2")
+                        res.status(200).json(language);
+                        return;
+                    }
+                }
+                throw {errno: 4000}
+            } else {
+                let languages = await languageRepository.getLanguageList();
+                await languageRepository.setCachedLanguages(JSON.stringify(languages));
+                for (let language of languages) {
+                    if (language.languageId == req.params.languageId) {
+                        console.log("gottem")
+                        res.status(200).json(language);
+                        return;
+                    }
+                }
+                throw {errno: 4000}
+            }
+        } catch (err) {
+            res.status(400).json(errorRepository(4000));
         }
-
-        console.log("no cached results")
-        let results = await languageRepository.getModules(req.params.languageId);
-        await languageRepository.setCachedModules(req.params.languageId, JSON.stringify(results));
-
-        res.set({ 'content-type': 'application/json; charset=utf-8' });
-        if (results.length == 0) throw {errno: 1035};
-        res.status(200);
-        res.send(JSON.stringify({modules: results}));
-      } catch (err) {
-        res.status(404);
-        if (err.errno) {
-          res.send(errorRepository(err.errno));
-          return;
-        }
-        res.send(errorRepository(4000));
-      }
     }
 
-    const getItems = async (req,res) => {
-      try {
-        let cachedResults = await languageRepository.getCachedModule(req.params.moduleId);
-        console.log(cachedResults)
-
-        if (!_.isEmpty(cachedResults)) {
-          console.log("'-------------------------");
-          if (cachedResults == '[]') throw {errno: 1036};
-          res.status(200).json({items: JSON.parse(cachedResults)});
-          return;
+    const getModuleList = async (req, res) => {
+        try {
+            let cachedModules = await languageRepository.getCachedModules(req.params.languageId);
+            cachedModules = JSON.parse(cachedModules);
+            if (!_.isEmpty(cachedModules)) {
+                res.status(200).json({modules: cachedModules});
+                return;
+            }
+            let modules = await languageRepository.getModuleList(req.params.languageId);
+            console.log(modules)
+            await languageRepository.setCachedModules(req.params.languageId, JSON.stringify(modules));
+            res.set({ 'content-type': 'application/json; charset=utf-8' });
+            if (modules.length == 0) throw {errno: 1035};
+            console.log("shending")
+            res.status(200).json({modules: modules});
+        } catch (err) {
+            res.status(404);
+            if (err.errno) {
+                res.send(errorRepository(err.errno));
+                return;
+            }
+            res.send(errorRepository(4000));
         }
+    }
 
-        console.log("'-------------------------");
-        let results = await languageRepository.getItems(req.params.moduleId);
-        await languageRepository.setCachedModule(req.params.moduleId, JSON.stringify(results));
-
-        res.set({ 'content-type': 'application/json; charset=utf-8' });
-        if (results.length == 0) throw {errno: 1036};
-        res.status(200).json({items: results});
-      } catch (err) {
-        res.status(404);
-        if (err.errno) {
-          res.send(errorRepository(err.errno));
-          return;
+    const getModuleInfo = async (req, res) => {
+        console.log("getting module info")
+        try {
+            let cachedModules = await languageRepository.getCachedModules(req.params.moduleId);
+            cachedModules = JSON.parse(cachedModules)
+            if (!_.isEmpty(cachedModules)) {
+                for (let module of cachedModules) {
+                    if (module.moduleId == req.params.moduleId) {
+                        res.status(200).json(module);
+                        return;
+                    }
+                }
+                throw {errno: 4000}
+            } else {
+                let modules = await languageRepository.getModuleList(req.params.languageId);
+                await languageRepository.setCachedModules(req.params.languageId, JSON.stringify(modules));
+                for (let module of modules) {
+                    if (module.moduleId == req.params.moduleId) {
+                        res.status(200).json(module);
+                        return;
+                    }
+                }
+                throw {errno: 4000}
+            }
+        } catch (err) {
+            throw err;
         }
-        res.send(errorRepository(4000));
-      }
+    }
+
+    const getItemList = async (req,res) => {
+        try {
+            let cachedItems = await languageRepository.getCachedModule(req.params.moduleId);
+            cachedItems = JSON.parse(cachedItems)
+            if (!_.isEmpty(cachedItems)) {
+                res.status(200).json({items: cachedItems});
+                return;
+            }
+            let items = await languageRepository.getItemList(req.params.moduleId);
+            await languageRepository.setCachedModule(req.params.moduleId, JSON.stringify(items));
+
+            res.set({ 'content-type': 'application/json; charset=utf-8' });
+            if (items.length == 0) throw {errno: 1036};
+            res.status(200).json({items: items});
+        } catch (err) {
+            res.status(404);
+            if (err.errno) {
+                res.send(errorRepository(err.errno));
+                return;
+            }
+            res.send(errorRepository(4000));
+        }
+    }
+
+    const getItemInfo = async (req, res) => {
+
     }
 
     const createItem = async (req, res) => {
-      try {
-        console.log("A")
-        await languageRepository.createItem([nanoid(8), req.params.moduleId, req.body.native, req.body.english]);
-        console.log("B")
-        let userList = await languageRepository.getUsers;
-        console.log(userList);
-      } catch (err) {
-        console.error(err)
-        res.status(400);
-        res.send(errorRepository(4000));
-      }
+        try {
+            await languageRepository.createItem([nanoid(8), req.params.moduleId, req.body.native, req.body.english]);
+            let userList = await languageRepository.getUsers;
+            console.log(userList);
+        } catch (err) {
+            console.error(err)
+            res.status(400).json(errorRepository(4000));
+        }
     }
 
     return {
-      getLanguages: getLanguages,
-      getModules: getModules,
-      getItems: getItems,
-      createItem: createItem
+        getLanguageList: getLanguageList,
+        getLanguageInfo: getLanguageInfo,
+        getModuleList: getModuleList,
+        getModuleInfo: getModuleInfo,
+        getItemList: getItemList,
+        getItemInfo: getItemInfo,
+        createItem: createItem
     }
 }
 

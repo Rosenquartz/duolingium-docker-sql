@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { Lenguaje } from 'src/app/models/Language';
+import { Language } from 'src/app/models/Language';
 import { LanguageService } from 'src/app/services/language.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LanguagesComponent implements OnInit {
 
-  languages: Lenguaje[] = [];
+  languages: Language[] = [];
 
   constructor(
     private userService: UserService,
@@ -24,7 +24,7 @@ export class LanguagesComponent implements OnInit {
   }
 
   loadLanguages(): void {
-    this.languageService.getLanguages()
+    this.languageService.getLanguageList()
     .subscribe(out=>{
       console.log("languages are:", out)
       for (let language of out) {

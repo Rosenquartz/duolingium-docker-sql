@@ -5,7 +5,7 @@
 </div>
 
 <div *ngFor="let module of moduleList">
-    <button (click)="loadAllTests(module.moduleId)">{{module.displayName}}</button>
+    <button (click)="loadTestsByModule(module.moduleId)">{{module.displayName}}</button>
 </div>
 
 <div *ngFor="let test of tests">

@@ -73,16 +73,21 @@ DROP TABLE IF EXISTS `test`;
 CREATE TABLE `test` (
     `testId` VARCHAR(8) NOT NULL,
     `languageId` VARCHAR(2) NOT NULL,
+    `englishName` VARCHAR(45) NOT NULL,
+    `nativeName` VARCHAR(45) NOT NULL,
     `moduleId` VARCHAR(8) NOT NULL,
+    `displayName` VARCHAR(45) NOT NULL,
     `userId` VARCHAR(16) NOT NULL,
     `total` INT DEFAULT '0',
     `correct` INT DEFAULT '0',
     `time` INT DEFAULT '0',
+    `date` DATETIME NOT NULL,
     PRIMARY KEY (`testId`),
-    INDEX idx_1 (`languageId`),
-    INDEX idx_2 (`moduleId`),
-    INDEX idx_3 (`userId`, `languageId`),
-    INDEX idx_4 (`userId`, `moduleId`)
+    INDEX idx_1 (`languageId`, `date`),
+    INDEX idx_2 (`moduleId`, `date`),
+    INDEX idx_3 (`userId`, `languageId`, `date`),
+    INDEX idx_4 (`userId`, `moduleId`, `date`),
+    INDEX idx_5 (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `item` VALUES 

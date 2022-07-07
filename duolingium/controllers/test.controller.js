@@ -4,16 +4,33 @@ const controller = (testRepository, errorRepository) => {
 
     const createTestResults = async (req, res) => {
         try {
-            console.log("yea")
+            console.log("Creating test results:")
             const testId = nanoid(8);
-            let results = await testRepository.createTestResults(
+            console.log([
                 testId,
                 req.body.languageId,
+                req.body.englishName,
+                req.body.nativeName,
                 req.body.moduleId,
+                req.body.displayName,
                 req.body.userId,
                 req.body.total,
                 req.body.correct,
-                req.body.time
+                req.body.time,
+                req.body.date
+            ])
+            let results = await testRepository.createTestResults(
+                testId,
+                req.body.languageId,
+                req.body.englishName,
+                req.body.nativeName,
+                req.body.moduleId,
+                req.body.displayName,
+                req.body.userId,
+                req.body.total,
+                req.body.correct,
+                req.body.time,
+                req.body.date
             );
             res.status(200).json(results)
         } catch (err) {
@@ -23,7 +40,8 @@ const controller = (testRepository, errorRepository) => {
 
     const getAllTestResults = async (req, res) => {
         try {
-            res.status(200).json({getting: "all"})
+            let results = await testRepository.getAllTestResults();
+            res.status(200).json(results)
         } catch (err) {
             res.status(400).json(errorRepository(4000))
         }
@@ -31,7 +49,6 @@ const controller = (testRepository, errorRepository) => {
 
     const getAllTestResultsByModule = async (req, res) => {
         try {
-            console.log("mom", req.params.moduleId);
             let results = await testRepository.getAllTestResultsByModule(req.params.moduleId);
             res.status(200).json(results)
         } catch (err) {

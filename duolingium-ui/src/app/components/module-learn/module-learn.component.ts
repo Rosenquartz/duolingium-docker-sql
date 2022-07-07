@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
+
 import { Item } from 'src/app/models/Item';
 import { MultipleChoiceItem } from 'src/app/models/MultipleChoiceItem';
+
+import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from 'src/app/services/language.service';
 import { ProgressService } from 'src/app/services/progress.service';
 

@@ -18,6 +18,9 @@ import { TestComponent } from './components/test/test.component';
 import { HistoryComponent } from './components/history/history.component';
 import { ItemComponent } from './components/item/item.component';
 import { ButtonComponent } from './components/button/button.component';
+import { TestAlphabetComponent } from './components/test-alphabet/test-alphabet.component';
+import { TimerComponent } from './components/timer/timer.component';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,9 @@ import { ButtonComponent } from './components/button/button.component';
     HistoryComponent,
     ItemComponent,
     ButtonComponent,
+    TestAlphabetComponent,
+    TimerComponent,
+    ProgressBarComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,37 +10,73 @@ getConnection = async () => {
     })
 }
 
-getLanguages = async () => {
+getLanguageList = async () => {
     try {
         let connection = await getConnection();
         let sql = 'CALL GetLanguageList()';
         let results = await connection.query(sql);
-        await connection.end()
-        return results[0][0]
+        await connection.end();
+        return results[0][0];
     } catch (err) {
         throw err;
     }
 }
 
-getItems = async (moduleId) => {
+getLanguageInfo = async (languageId) => {
     try {
         let connection = await getConnection();
-        let sql = 'CALL GetItemList(?)';
-        let results = await connection.query(sql, [moduleId]);
-        await connection.end()
-        return results[0][0]
+        let sql = 'CALL GetLanguageInfo(?)';
+        let results = await connection.query(sql, [languageId]);
+        await connection.end();
+        return results[0][0];
     } catch (err) {
         throw err;
     }
 }
 
-getModules = async (languageId) => {
+getModuleList = async (languageId) => {
     try {
         let connection = await getConnection();
         let sql = 'CALL GetModuleList(?)';
         let results = await connection.query(sql, [languageId]);
-        await connection.end()
+        await connection.end();
         return results[0][0]
+    } catch (err) {
+        throw err;
+    }
+}
+
+getModuleInfo = async (moduleId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetModuleInfo(?)';
+        let results = await connection.query(sql, [moduleId]);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+getItemList = async (moduleId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetItemList(?)';
+        let results = await connection.query(sql, [moduleId]);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+getItemInfo = async (itemId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetItemInfo(?)';
+        let results = await connection.query(sql, [itemId]);
+        await connection.end();
+        return results[0][0];
     } catch (err) {
         throw err;
     }
@@ -139,9 +175,12 @@ setCachedModule = async(moduleId, items) => {
 
 
 module.exports = {
-    getLanguages: getLanguages,
-    getModules: getModules,
-    getItems: getItems,
+    getLanguageList: getLanguageList,
+    getLanguageInfo: getLanguageInfo,
+    getModuleList: getModuleList,
+    getModuleInfo: getModuleInfo,
+    getItemList: getItemList,
+    getItemInfo: getItemInfo,
     createItem: createItem,
     getUsers: getUsers,
     getCachedLanguages: getCachedLanguages,
