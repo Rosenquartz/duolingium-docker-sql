@@ -1,6 +1,6 @@
 <div class="beeg" *ngIf="ready">
     
-    <app-item [question]="questions[currentNumber]" (buttonClicked)="childClicked($event)"></app-item>
+    <app-item [question]="questions[currentNumber]" (buttonClicked)="choiceClicked($event)"></app-item>
 
     <!--
     <div class="row container mx-auto" *ngIf="questions[currentNumber].native">

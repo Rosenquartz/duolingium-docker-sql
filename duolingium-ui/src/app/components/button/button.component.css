@@ -1,0 +1,32 @@
+button {
+    font-size: 2.5rem;
+    color: #4B4B4B;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 10px;
+    transition: all 0.1s;
+    min-width: 100%;
+
+    border-radius: 25px;
+    border: 2px solid #e5e5e5;
+    box-shadow: 0 7px 0 #e5e5e5;
+}
+
+button:hover {
+    transition: 0.2s;
+    background-color: #ddf4ff;
+    border-color: #1CB0F6;
+    box-shadow: 0 7px 0 #1CB0F6;
+}
+
+button:active {
+    box-shadow: none;
+    transform: translateY(7px);
+}
+
+.selected {
+    background-color: rgba(28, 176, 246, 0.2);
+    border: 2px solid #1480b1;
+    box-shadow: 0 7px 0 #1CB0F6;
+}

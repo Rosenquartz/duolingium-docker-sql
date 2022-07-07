@@ -1,8 +1,11 @@
 <div class="row container mx-auto" *ngIf="question.native">
     <p class="question col-sm-12 col-md-12 col-lg-12">What is the native of {{question.native}}?</p>
     <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of question.choices">
+        <app-button [buttonText]="choice" [selected]="currentAnswer==choice" (clicked)="answerClicked($event)"></app-button>
+        <!--
         <button *ngIf="currentAnswer!=choice" class="choice-button" (click)="answerClicked(choice)" #answer>{{choice}}</button>
         <button *ngIf="currentAnswer==choice" class="choice-button selected" (click)="answerClicked(choice)" #answer>{{choice}}</button>
+        -->
     </div>
 </div>
 

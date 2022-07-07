@@ -17,6 +17,7 @@ import { HomePageModuleComponent } from './components/home-page-module/home-page
 import { TestComponent } from './components/test/test.component';
 import { HistoryComponent } from './components/history/history.component';
 import { ItemComponent } from './components/item/item.component';
+import { ButtonComponent } from './components/button/button.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ItemComponent } from './components/item/item.component';
     TestComponent,
     HistoryComponent,
     ItemComponent,
+    ButtonComponent,
   ],
   imports: [
     BrowserModule,

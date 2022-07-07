@@ -47,8 +47,8 @@ export class ModuleAlphabetComponent implements OnInit {
     })
   }
 
-  childClicked(mama: string): void {
-    this.currentAnswer = mama;
+  choiceClicked(newAnswer: string): void {
+    this.currentAnswer = newAnswer;
     console.log("currentAnswer is", this.currentAnswer)
   }
 
