@@ -40,7 +40,7 @@ export class ModuleLearnComponent implements OnInit {
     const languageId = this.cookieService.get('languageId');
     this.languageService.getModuleItems(languageId, moduleId)
     .subscribe(out=>{
-      console.log(out)
+      console.log("out of get items is", out)
       //this.moduleType = out.type;
       this.moduleItems = out.items
       if (true) { // if (out.type == 'alphabet')

@@ -83,10 +83,71 @@ getUsers = async () => {
     }
 }
 
+const Redis = require('ioredis');
+const redis = new Redis({
+    port: 6379,
+    host: 'redis'
+});
+
+getCachedLanguages = async() => {
+    try {
+        return redis.get('languages');
+    } catch (err) {
+        throw err;
+    }
+}
+
+setCachedLanguages = async(languages) => {
+    try {
+        return redis.set('languages', languages);
+    } catch (err) {
+        throw err;
+    }
+}
+
+getCachedModules = async(languageId) => {
+    try {
+        return redis.hget('modules', languageId);
+    } catch (err) {
+        throw err;
+    }
+}
+
+setCachedModules = async(languageId, modules) => {
+    try {
+        return redis.hset('modules', languageId, modules);
+    } catch (err) {
+        throw err;
+    }
+}
+
+getCachedModule = async(moduleId) => {
+    try {
+        return redis.hget('moduleItems', moduleId);
+    } catch (err) {
+        throw err;
+    }
+}
+
+setCachedModule = async(moduleId, items) => {
+    try {
+        return redis.hset('moduleItems', moduleId, items);
+    } catch (err) {
+        throw err;
+    }
+}
+
+
 module.exports = {
     getLanguages: getLanguages,
     getModules: getModules,
     getItems: getItems,
     createItem: createItem,
-    getUsers: getUsers
+    getUsers: getUsers,
+    getCachedLanguages: getCachedLanguages,
+    setCachedLanguages: setCachedLanguages,
+    getCachedModules: getCachedModules,
+    setCachedModules: setCachedModules,
+    getCachedModule: getCachedModule,
+    setCachedModule: setCachedModule
 }

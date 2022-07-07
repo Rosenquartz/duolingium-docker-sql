@@ -88,3 +88,13 @@ footer{
     border-color: #ce3b3b;
     box-shadow: 0 7px 0 #ce3b3b;
 }
+
+.checkAvailable {
+    background-color: green;
+}
+
+.checkNotAvailable {
+    background-color: red;
+    pointer-events: none;
+    cursor: pointer;
+}

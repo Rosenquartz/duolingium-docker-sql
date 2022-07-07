@@ -81,7 +81,8 @@ CREATE TABLE `test` (
     PRIMARY KEY (`testId`),
     INDEX idx_1 (`languageId`),
     INDEX idx_2 (`moduleId`),
-    INDEX idx_3 (`userId`, `languageId`, `moduleId`)
+    INDEX idx_3 (`userId`, `languageId`),
+    INDEX idx_4 (`userId`, `moduleId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `item` VALUES 

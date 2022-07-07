@@ -47,6 +47,11 @@ export class ModuleAlphabetComponent implements OnInit {
     })
   }
 
+  childClicked(mama: string): void {
+    this.currentAnswer = mama;
+    console.log("currentAnswer is", this.currentAnswer)
+  }
+
   async setUpQuestions(): Promise<void> {
     let shuffledItems = await this.shuffleItems();
     await this.setUpAllChoices();

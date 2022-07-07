@@ -22,11 +22,42 @@ BEGIN
     );
 END;
 
-CREATE PROCEDURE `GetTestResults` (
+CREATE PROCEDURE `GetAllTestResultsByModule` (
     IN inputModuleId VARCHAR(8)
 )
 BEGIN 
     SELECT *
     FROM `test`
     WHERE moduleId = inputModuleId;
+END;
+
+CREATE PROCEDURE `GetUserTestResults` (
+    IN inputUserId VARCHAR(16)
+)
+BEGIN 
+    SELECT *
+    FROM `test`
+    WHERE userId = inputUserId;
+END;
+
+CREATE PROCEDURE `GetUserTestResultsByLanguage` (
+    IN inputUserId VARCHAR(16),
+    IN inputLanguageId VARCHAR(2)
+)
+BEGIN 
+    SELECT *
+    FROM `test`
+    WHERE userId = inputUserId
+    AND languageId = inputLanguageId;
+END;
+
+CREATE PROCEDURE `GetUserTestResultsByModule` (
+    IN inputUserId VARCHAR(16),
+    IN inputModuleId Varchar(8)
+)
+BEGIN 
+    SELECT *
+    FROM `test`
+    WHERE userId = inputUserId
+    AND moduleId = inputModuleId;
 END;

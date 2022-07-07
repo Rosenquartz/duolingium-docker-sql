@@ -15,6 +15,8 @@ import { ModuleAlphabetComponent } from './components/module-alphabet/module-alp
 import { LanguagesComponent } from './components/languages/languages.component';
 import { HomePageModuleComponent } from './components/home-page-module/home-page-module.component';
 import { TestComponent } from './components/test/test.component';
+import { HistoryComponent } from './components/history/history.component';
+import { ItemComponent } from './components/item/item.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { TestComponent } from './components/test/test.component';
     LanguagesComponent,
     HomePageModuleComponent,
     TestComponent,
+    HistoryComponent,
+    ItemComponent,
   ],
   imports: [
     BrowserModule,

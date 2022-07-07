@@ -21,19 +21,46 @@ const controller = (testRepository, errorRepository) => {
         }
     }
 
-    const getTestResults = async (req, res) => {
+    const getAllTestResults = async (req, res) => {
+        try {
+            res.status(200).json({getting: "all"})
+        } catch (err) {
+            res.status(400).json(errorRepository(4000))
+        }
+    }
+
+    const getAllTestResultsByModule = async (req, res) => {
         try {
             console.log("mom", req.params.moduleId);
-            let results = await testRepository.getTestResults(req.params.moduleId);
+            let results = await testRepository.getAllTestResultsByModule(req.params.moduleId);
             res.status(200).json(results)
         } catch (err) {
             res.status(400).json(errorRepository(4000));
         }
     }
 
+    const getUserTestResults = async (req, res) => {
+        try {
+            if (req.query.languageId) {
+                let results = await testRepository.getUsertResultsByLanguage(req.params.userId, req.query.languageId);
+                res.status(200).json(results)
+            } else if (req.query.moduleId) {
+                let results = await testRepository.getUserTestResultsByModule(req.params.userId, req.query.moduleId);
+                res.status(200).json(results)
+            } else {
+                let results = await testRepository.getUserTestResults(req.params.userId);
+                res.status(200).json(results)
+            }
+        } catch (err) {
+            res.status(400).json(errorRepository(4000))
+        }
+    }
+
     return {
         createTestResults: createTestResults,
-        getTestResults: getTestResults
+        getAllTestResults: getAllTestResults,
+        getAllTestResultsByModule: getAllTestResultsByModule,
+        getUserTestResults: getUserTestResults
       }
 
 }

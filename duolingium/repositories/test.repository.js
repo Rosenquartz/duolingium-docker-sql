@@ -23,10 +23,46 @@ createTestResults = async (testId, languageId, moduleId, userId, total, correct,
     }
 }
 
-getTestResults = async (moduleId) => {
+getUserTestResults = async (userId) => {
     try {
         let connection = await getConnection();
-        let sql = 'CALL GetTestResults(?)';
+        let sql = 'CALL GetUserTestResults(?)';
+        let results = await connection.query(sql, [userId]);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+getUserTestResultsByLanguage = async (userId, languageId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetUserTestResultsByLanguage(?, ?)';
+        let results = await connection.query(sql, [userId, languageId]);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+getUserTestResultsByModule = async (userId, moduleId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetUserTestResultsByModule(?)';
+        let results = await connection.query(sql, [userId, moduleId]);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+getAllTestResultsByModule = async (moduleId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetAllTestResultsByModule(?)';
         let results = await connection.query(sql, [moduleId]);
         await connection.end();
         return results[0][0];
@@ -37,5 +73,8 @@ getTestResults = async (moduleId) => {
 
 module.exports = {    
     createTestResults: createTestResults,
-    getTestResults: getTestResults
+    getUserTestResults: getUserTestResults,
+    getUserTestResultsByLanguage: getUserTestResultsByLanguage,
+    getUserTestResultsByModule: getUserTestResultsByModule,
+    getAllTestResultsByModule: getAllTestResultsByModule
 }

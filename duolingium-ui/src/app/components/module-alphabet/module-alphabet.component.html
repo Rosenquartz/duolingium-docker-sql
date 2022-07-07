@@ -1,5 +1,8 @@
 <div class="beeg" *ngIf="ready">
+    
+    <app-item [question]="questions[currentNumber]" (buttonClicked)="childClicked($event)"></app-item>
 
+    <!--
     <div class="row container mx-auto" *ngIf="questions[currentNumber].native">
         <p class="question col-sm-12 col-md-12 col-lg-12">What is the native of {{questions[currentNumber].native}}?</p>
         <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of questions[currentNumber].choices">
@@ -15,13 +18,15 @@
             <button *ngIf="currentAnswer==choice" class="choice-button selected" (click)="answerClicked(choice)">{{choice}}</button>
         </div>
     </div>
+    -->
     
 
     <footer class="page-footer blue">
 
         <div *ngIf="!finished" class="row mx-auto justify-content-center py-3">
             <div class="choice check" *ngIf="!footerVisible" >
-                <button class="choice-button check" [disabled]="!this.currentAnswer" (click)="check()"> CHECK </button>
+                <button class="choice-button check check{{currentAnswer ? '' : 'Not'}}Available" [disabled]="!this.currentAnswer" 
+                (click)="check()"> CHECK </button>
             </div>
             <div class="choice check" *ngIf="footerVisible">
                 <button *ngIf="correct" class="choice-button check correct" (click)="nextItem()"> Correct! </button>
@@ -36,4 +41,5 @@
         </div>
     
     </footer>
+
 </div>

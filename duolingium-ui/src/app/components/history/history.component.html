@@ -1,0 +1,17 @@
+<p>history works!</p>
+<p>what</p>
+<div *ngFor="let language of languageList">
+    <button (click)="loadLanguage(language.languageId)">{{language.languageId}}</button>
+</div>
+
+<div *ngFor="let module of moduleList">
+    <button (click)="loadAllTests(module.moduleId)">{{module.displayName}}</button>
+</div>
+
+<div *ngFor="let test of tests">
+    <span>user: {{test.userId}}</span> 
+    <span> , </span>
+    <span>score: {{test.correct}}/{{test.total}}</span>     
+    <span> , </span>
+    <span>time: {{test.time}}</span>
+</div>
