@@ -18,12 +18,10 @@ export class ButtonComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.selected = changes['selected'].currentValue;
-    console.log("Changing selected to", this.selected);
   }
 
   onClick(buttonText: string): void {
-    console.log(`Clicking ${buttonText} from button component.`)
-    this.clicked.emit(buttonText)
+    this.clicked.emit(buttonText);
   }
 
 }

@@ -1,0 +1,14 @@
+.languageWrap {
+    display: flex;
+    flex-direction: row;
+}
+
+.moduleWrap {
+    display: flex;
+    flex-direction: row;
+}
+
+.tableItem {
+    display: flex;
+    flex-direction: row;
+}

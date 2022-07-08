@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: feather;
+    src: url(assets/feather_bold_by_typicalbro44_dee263c.ttf) format("opentype");
+}
+
+@font-face {
+    font-family: museo100;
+    src: url(assets/MuseoSansRounded100.otf) format("opentype");
+}
+
+@font-face {
+    font-family: museo300;
+    src: url(assets/MuseoSansRounded300.otf) format("opentype");
+}
+
+@font-face {
+    font-family: museo500;
+    src: url(assets/MuseoSansRounded500.otf) format("opentype");
+}
+
+@font-face {
+    font-family: museo700;
+    src: url(assets/MuseoSansRounded700.otf) format("opentype");
+}
+
+@font-face {
+    font-family: museo900;
+    src: url(assets/MuseoSansRounded900.otf) format("opentype");
+}
+
+@font-face {
+    font-family: museo1000;
+    src: url(assets/MuseoSansRounded1000.otf) format("opentype");
+}

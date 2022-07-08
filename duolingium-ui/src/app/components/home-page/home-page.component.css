@@ -98,13 +98,11 @@ p {
     flex-direction: column;
     align-items: center;
     height: 100vh;
-    background-color: papayawhip;
 }
 
 .headerwrap {
-    padding-top: 20px;
     flex: 1;
-    max-width: 720px;
+    width: 100%
 }
 
 .modulewrap {
@@ -131,45 +129,6 @@ p {
     background-size: 50%;
   }
   
-  .loader {
-    border: 16px solid #21ac62;
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    animation: fill linear 3s;
-  }
-  
-  @keyframes fill {
-    0% {
-  clip-path: polygon(50% -20.71%, 50% 50%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
-    }
-    12.5% {
-  clip-path: polygon(50% -20.71%, 50% 50%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
-    }
-    25% {
-  clip-path: polygon(50% -20.71%, 50% 50%, 120.71% 50%, 120.71% 50%, 120.71% 50%, 120.71% 50%, 100% 0%);
-    }
-    37.5% {
-  clip-path: polygon(50% -20.71%, 50% 50%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 0%);
-    }
-    50% {
-  clip-path: polygon(50% -20.71%, 50% 50%, 50% 120.71%, 50% 120.71%, 50% 120.71%, 100% 100%, 100% 0%);
-    }
-    62.5% {
-  clip-path: polygon(50% -20.71%, 50% 50%, 0% 100%, 0% 100%, 0% 100%, 100% 100%, 100% 0%);
-    }
-    75% {
-  clip-path: polygon(50% -20.71%, 50% 50%, -20.71% 50%, -20.71% 50%, 0% 100%, 100% 100%, 100% 0%);
-    }
-    87.5% {
-  clip-path: polygon(50% -20.71%, 50% 50%, 0% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 0%);
-    }
-    100% {
-  clip-path: polygon(50% -20.71%, 50% 50%, 50% -20.71%, 0% 0%, 0% 100%, 100% 100%, 100% 0%);
-    }
-  }
-
-
 /* PRACTICE */
 .progress-circle {
     font-size: 20px;

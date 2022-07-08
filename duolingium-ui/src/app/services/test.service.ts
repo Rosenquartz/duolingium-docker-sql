@@ -14,7 +14,8 @@ export class TestService {
   ) { }
 
   getAllTests(): Observable<any> {
-    return this.http.get(this.baseUrl);
+    const url = `${this.baseUrl}/all`
+    return this.http.get(url);
   }
 
   getAllTestsByModule(moduleId: string): Observable<any> {

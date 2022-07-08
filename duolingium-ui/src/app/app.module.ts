@@ -22,6 +22,8 @@ import { TestAlphabetComponent } from './components/test-alphabet/test-alphabet.
 import { TimerComponent } from './components/timer/timer.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 
+import { DatePipe } from './pipes/date.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,

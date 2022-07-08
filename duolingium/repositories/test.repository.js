@@ -10,11 +10,11 @@ getConnection = async () => {
     })
 }
 
-createTestResults = async (testId, languageId, englishName, nativeName, moduleId, displayName, userId, total, correct, time, date) => {
+createTestResults = async (testId, languageId, englishName, moduleId, displayName, userId, total, correct, time, date) => {
     try {
         let connection = await getConnection();
-        let sql = 'CALL CreateTestResults(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        await connection.query(sql, [testId, languageId, englishName, nativeName, moduleId, displayName, userId, total, correct, time, date]);
+        let sql = 'CALL CreateTestResults(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        await connection.query(sql, [testId, languageId, englishName, moduleId, displayName, userId, total, correct, time, date]);
         await connection.end();
     } catch (err) {
         console.error(err)

@@ -1,17 +1,38 @@
-<p>history works!</p>
-<p>what</p>
-<div *ngFor="let language of languageList">
-    <button (click)="loadLanguage(language.languageId)">{{language.languageId}}</button>
+<app-header [centerText]="'Leaderboards'"></app-header>
+
+<div class="languageWrap">
+    <div *ngFor="let language of languageList">
+        <button (click)="loadLanguage(language.languageId)">{{language.englishName}}</button>
+    </div>
+    <div>
+        <button (click)="loadAllTests()">All</button>
+    </div>
+</div>
+<div class="moduleWrap">
+    <div *ngFor="let module of moduleList">
+        <button (click)="loadTestsByModule(module.moduleId)">{{module.displayName}}</button>
+    </div>
 </div>
 
-<div *ngFor="let module of moduleList">
-    <button (click)="loadTestsByModule(module.moduleId)">{{module.displayName}}</button>
-</div>
-
-<div *ngFor="let test of tests">
-    <span>user: {{test.userId}}</span> 
-    <span> , </span>
-    <span>score: {{test.correct}}/{{test.total}}</span>     
-    <span> , </span>
-    <span>time: {{test.time}}</span>
-</div>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Date Taken</th>
+        <th scope="col">User</th>
+        <th scope="col">Language</th>
+        <th scope="col">Module</th>
+        <th scope="col">Score</th>
+        <th scope="col">Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let test of tests">
+        <td>{{test.date | date}}</td>
+        <td>{{test.userId}}</td>
+        <td>{{test.englishName}}</td>
+        <td>{{test.displayName}}</td>
+        <td>{{test.correct}}/{{test.total}}</td>
+        <td>{{test.time}}</td>
+      </tr>
+    </tbody>
+  </table>

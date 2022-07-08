@@ -22,8 +22,8 @@ export class HistoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.displayLanguages()
-
+    this.displayLanguages();
+    this.loadAllTests();
   }
 
   displayLanguages(): void {
@@ -38,7 +38,7 @@ export class HistoryComponent implements OnInit {
 
   loadAllTests(): void {
     this.testService.getAllTests()
-    .subscribe(out=>{this.tests = out})
+    .subscribe(out=>{this.tests = out; console.log(out)})
   }
 
   loadTestsByModule(moduleId: string): void {

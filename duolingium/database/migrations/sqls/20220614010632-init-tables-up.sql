@@ -74,7 +74,6 @@ CREATE TABLE `test` (
     `testId` VARCHAR(8) NOT NULL,
     `languageId` VARCHAR(2) NOT NULL,
     `englishName` VARCHAR(45) NOT NULL,
-    `nativeName` VARCHAR(45) NOT NULL,
     `moduleId` VARCHAR(8) NOT NULL,
     `displayName` VARCHAR(45) NOT NULL,
     `userId` VARCHAR(16) NOT NULL,

@@ -25,12 +25,10 @@ export class ItemComponent implements OnInit {
 
   answerClicked(choice: string): void {
     if (choice == this.currentAnswer) {
-      console.log(`Unclicked ${choice} from child.`)
       this.currentAnswer = choice;
       this.buttonClicked.emit(this.currentAnswer);
       return;
     }
-    console.log(`Clicked ${choice} from child.`)
     this.currentAnswer = choice;
     this.buttonClicked.emit(this.currentAnswer);
   }

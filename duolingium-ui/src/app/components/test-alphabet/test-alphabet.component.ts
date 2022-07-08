@@ -193,21 +193,42 @@ export class TestAlphabetComponent implements OnInit {
     console.log("finished")
     let userId = this.cookieService.get('userId')
     let languageId = this.cookieService.get('languageId')
-    let moduleId = this.route.snapshot.paramMap.get('moduleId')!
+    let englishName = '';
+    let nativeName = '';
+    let moduleId = this.route.snapshot.paramMap.get('moduleId')!;
+    let displayName = '';
     let total = 2 * this.items.length
     let newDate = new Date()
     let date = newDate.toISOString().slice(0, 19).replace('T', ' ');
 
-    /*
     this.languageService.getLanguageInfo(languageId)
-    .pipe(switchMap(out=>{console.log("out1",out); return this.languageService.getModuleInfo(languageId, moduleId)}))
-    .subscribe((out)=>{console.log("out2", out)})
-    */
+    .pipe(switchMap(out=>{
+      englishName = out.englishName; 
+      nativeName = out.nativeName;
+      return this.languageService.getModuleInfo(languageId, moduleId)
+    })).pipe(switchMap(out=>{      
+      displayName = out.displayName;
+      console.log("Sending test results")
+      return this.testService.sendTestResults(
+        languageId,
+        englishName,
+        nativeName, 
+        moduleId, 
+        displayName,
+        userId, 
+        total, 
+        this.correctAnswers, 
+        this.time, 
+        date
+    )})).subscribe((out)=>{
+      console.log("Sent test results")
+    })
 
+    /*
     this.languageService.getModuleInfo(languageId, moduleId)
     .subscribe(out=>{console.log("out2", out)})
+    */
 
-    console.log("SENDING RESULTS");
     /*
     this.testService.sendTestResults(
       languageId,
