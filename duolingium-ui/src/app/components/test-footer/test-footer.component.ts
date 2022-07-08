@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
-  selector: 'app-module-footer',
-  templateUrl: './module-footer.component.html',
-  styleUrls: ['./module-footer.component.css']
+  selector: 'app-test-footer',
+  templateUrl: './test-footer.component.html',
+  styleUrls: ['./test-footer.component.css']
 })
-export class ModuleFooterComponent implements OnInit {
+export class TestFooterComponent implements OnInit {
 
   @Input() buttonText!: string;
   @Input() messageText!: string;

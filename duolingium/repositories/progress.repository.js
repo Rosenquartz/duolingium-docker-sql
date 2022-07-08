@@ -33,6 +33,18 @@ createProgressModule = async (progressModuleId, languageId, moduleId, userId) =>
     }
 }
 
+finishProgressModule = async (moduleId, userId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL FinishProgressModule(?, ?)';
+        await connection.query(sql, [moduleId, userId]);
+        await connection.end();
+        return;
+    } catch (err) {
+        throw err;
+    }
+}
+
 getModuleItems = async (moduleId) => {
     try {
         let connection = await getConnection();

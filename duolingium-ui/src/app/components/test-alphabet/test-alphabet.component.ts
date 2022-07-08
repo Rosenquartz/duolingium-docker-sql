@@ -10,8 +10,6 @@ import { LanguageService } from 'src/app/services/language.service';
 import { ProgressService } from 'src/app/services/progress.service';
 import { TestService } from 'src/app/services/test.service';
 
-import { TimerComponent } from '../timer/timer.component';
-
 @Component({
   selector: 'app-test-alphabet',
   templateUrl: './test-alphabet.component.html',
@@ -20,25 +18,27 @@ import { TimerComponent } from '../timer/timer.component';
 export class TestAlphabetComponent implements OnInit {
 
   @Input() items: Item[] = [];
-  @Input() time: number = 0;
-  @Output() changeScore = new EventEmitter<number>;
-  @Output() runState = new EventEmitter<boolean>;
 
   questions: MultipleChoiceQuestion[] = [];
-  ready: number = 0;
-
   allNativeChoices: string[] = [];
   allEnglishChoices: string[] = [];
-
+  
+  ready: number = 0;
   currentQuestion!: MultipleChoiceQuestion;
   currentNumber: number = 0;
   currentAnswer: string = '';
   correctAnswers: number = 0;
-
-  footerVisible: number = 0;
   correct: string = '';
-
   finished: number = 0;
+
+  running: boolean = false;
+  time: number = 0;
+  currentScore: number = 0;
+  totalItems: number = 0;
+
+  footerButton: string = 'Check';
+  footerMessage: string = '';
+  footerStatus: string = 'check';
 
   constructor(
     private route: ActivatedRoute,
@@ -52,15 +52,119 @@ export class TestAlphabetComponent implements OnInit {
     this.setUpQuestions()
     .then(()=>{
       this.ready = 1
-      this.runState.emit(true);
-      console.log("Questions:"),
-      console.log(this.questions)
+      this.running = true;
     })
   }
 
+  /* EVENTS */
+
   choiceClicked(newAnswer: string): void {
+    if (newAnswer == this.currentAnswer) {
+      this.currentAnswer = '';
+      return;
+    }
     this.currentAnswer = newAnswer;
   }
+
+  async footerClicked(status: string): Promise<void> {
+    if (status == 'check') {
+      await this.check()
+      this.footerStatus = 'nextItem';
+      this.footerButton = 'next'
+    } else if (status.includes('nextItem')) {
+      await this.nextItem()
+      if (!this.finished) {
+        this.footerMessage = ''
+        this.footerStatus = 'check'
+        this.footerButton = 'Check'
+      }
+    } else if (status == 'finish') {
+      window.location.href = '/learn';
+    }
+  }
+
+  changeRunState(running:boolean): void {
+    this.running = running
+  }
+
+  getTime(time: number): void {
+    this.time = time;
+  }
+
+  check() :void {
+    this.running = false;
+    let userId = this.cookieService.get('userId')
+    let moduleId = this.route.snapshot.paramMap.get('moduleId')!
+    let itemId = this.questions[this.currentNumber].itemId
+    let type = this.questions[this.currentNumber].type
+    let answer = this.currentAnswer
+    this.progressService.checkItem(userId, moduleId, itemId, type, answer)
+    .subscribe(out=>{
+      this.correct = out.correct; 
+      this.correctAnswers += out.correct ? 1 : 0; 
+      if (this.correct) {this.footerMessage = 'Correct!'; this.footerStatus = 'nextItem correct'}
+      else {this.footerMessage = 'Incorrect!'; this.footerStatus = 'nextItem wrong'}
+    })
+  }
+
+  nextItem(): void {
+    if (!this.finished) {
+      this.correct = '';
+      this.currentNumber += 1;
+      this.currentAnswer = '';
+      if (this.currentNumber == 2*this.items.length) {
+        this.currentNumber -= 1;
+        this.endModule()
+      } else {
+        this.running = true;
+      }
+    }
+  }
+
+  async endModule(): Promise<void> {
+    this.finished = 1;
+    console.log("Module Finished!")
+
+    this.footerButton = "Finish!"
+    this.footerStatus = "finish"
+    this.footerMessage = `Test finished!`
+
+    let userId = this.cookieService.get('userId')
+    let languageId = this.cookieService.get('languageId')
+    let englishName = '';
+    let nativeName = '';
+    let moduleId = this.route.snapshot.paramMap.get('moduleId')!;
+    let displayName = '';
+    let total = 2 * this.items.length
+    let newDate = new Date()
+    let date = newDate.toISOString().slice(0, 19).replace('T', ' ');
+
+    this.languageService.getLanguageInfo(languageId)
+    .pipe(switchMap(out=>{
+      englishName = out.englishName; 
+      nativeName = out.nativeName;
+      return this.languageService.getModuleInfo(languageId, moduleId)
+    })).pipe(switchMap(out=>{      
+      displayName = out.displayName;
+      console.log("Sending test results")
+      return this.testService.sendTestResults(
+        languageId,
+        englishName,
+        nativeName, 
+        moduleId, 
+        displayName,
+        userId, 
+        total, 
+        this.correctAnswers, 
+        this.time, 
+        date
+    )})).subscribe((out)=>{
+      console.log("Sent test results")
+    })
+  }
+  
+
+  /* Item Setup */
 
   async setUpQuestions(): Promise<void> {
     await this.setUpAllChoices();
@@ -139,110 +243,6 @@ export class TestAlphabetComponent implements OnInit {
     }
   
     return array;
-  }
-
-  answerClicked (choice: string): void {
-    if (choice == this.currentAnswer) {
-      this.currentAnswer = '';
-      return;
-    }
-    this.currentAnswer = choice;
-    console.log(this.currentAnswer)
-  }
-
-  check() :void {
-    this.runState.emit(false)
-    console.log("checking")
-    let userId = this.cookieService.get('userId')
-    let moduleId = this.route.snapshot.paramMap.get('moduleId')!
-    let itemId = this.questions[this.currentNumber].itemId
-    let type = this.questions[this.currentNumber].type
-    let answer = this.currentAnswer
-    this.progressService.checkItem(userId, moduleId, itemId, type, answer)
-    .subscribe(out=>{
-      this.correct = out.correct; 
-      this.correctAnswers += out.correct ? 1 : 0; 
-      console.log("correctAnswers is", this.correctAnswers)
-      this.changeScore.emit(this.correctAnswers);
-      this.footerVisible = 1
-    })
-  }
-
-  async nextItem(): Promise<void> {
-    if (!this.finished) {
-      this.footerVisible = 0;
-      this.correct = '';
-      this.currentNumber += 1;
-      console.log("Resetting current answer")
-      this.currentAnswer = '';
-      console.log("Reset current answer to", this.currentAnswer)
-      if (this.currentNumber == 2*this.items.length) {
-        this.currentNumber -= 1;
-        this.endModule()
-        .then(()=>{console.log("no error")})
-        .catch((err)=>{console.error(err)})
-      } else {
-        this.runState.emit(true)
-        console.log('started runState');
-      }
-    }
-  }
-
-  async endModule(): Promise<void> {
-    this.finished = 1;
-    console.log("finished")
-    let userId = this.cookieService.get('userId')
-    let languageId = this.cookieService.get('languageId')
-    let englishName = '';
-    let nativeName = '';
-    let moduleId = this.route.snapshot.paramMap.get('moduleId')!;
-    let displayName = '';
-    let total = 2 * this.items.length
-    let newDate = new Date()
-    let date = newDate.toISOString().slice(0, 19).replace('T', ' ');
-
-    this.languageService.getLanguageInfo(languageId)
-    .pipe(switchMap(out=>{
-      englishName = out.englishName; 
-      nativeName = out.nativeName;
-      return this.languageService.getModuleInfo(languageId, moduleId)
-    })).pipe(switchMap(out=>{      
-      displayName = out.displayName;
-      console.log("Sending test results")
-      return this.testService.sendTestResults(
-        languageId,
-        englishName,
-        nativeName, 
-        moduleId, 
-        displayName,
-        userId, 
-        total, 
-        this.correctAnswers, 
-        this.time, 
-        date
-    )})).subscribe((out)=>{
-      console.log("Sent test results")
-    })
-
-    /*
-    this.languageService.getModuleInfo(languageId, moduleId)
-    .subscribe(out=>{console.log("out2", out)})
-    */
-
-    /*
-    this.testService.sendTestResults(
-      languageId,
-      englishName,
-      nativeName, 
-      moduleId, 
-      displayName,
-      userId, 
-      total, 
-      this.correctAnswers, 
-      this.time, 
-      date)
-    .subscribe(out=>{console.log("ogttem")})
-    */
   }
 
 }

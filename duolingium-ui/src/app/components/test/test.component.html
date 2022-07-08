@@ -1,3 +1,11 @@
+<div class="modulePage">
+    <div *ngIf="ready">
+        <div *ngIf="moduleType=='alphabet'">
+            <app-test-alphabet [items]="moduleItems"></app-test-alphabet>
+        </div>
+    </div>
+</div>
+<!--
 <div class="headerwrap" *ngIf="ready">
     <span class="exit">X</span>
     <app-progress-bar></app-progress-bar>
@@ -15,3 +23,4 @@
         </app-test-alphabet>
     </div>
 </div>
+-->

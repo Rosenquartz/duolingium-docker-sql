@@ -3,9 +3,9 @@
     <app-header class="headerWrapper"></app-header>
 
     <div class="bodyWrapper">
+        
         <div class="padding"></div>
         <div class="moduleWrapper">
-
             <div  *ngFor="let module of moduleInfo">
                 <div class="row container mx-auto">
                     <div class="displayName col-sm-12 col-md-12 col-lg-4">
@@ -15,11 +15,10 @@
                         <app-button [buttonText]="'learn'" [classes]="'font-size-2'" routerLink="/learn/{{module.moduleId}}"></app-button>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-3 ">
-                        <app-button [buttonText]="'test'" [classes]="'font-size-2'"></app-button>
+                        <app-button [buttonText]="'test'" [classes]="'font-size-2'" routerLink="/test/{{module.moduleId}}"></app-button>
                     </div>
                 </div>
             </div>
-
         </div> 
     
         <div class="sidebarWrapper">

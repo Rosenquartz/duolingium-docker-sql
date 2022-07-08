@@ -8,8 +8,9 @@ import { Component, EventEmitter, Input, Output, OnInit, SimpleChange, SimpleCha
 export class ButtonComponent implements OnInit {
 
   @Input() buttonText: string = '';
-  @Input() selected: boolean = true;
+  @Input() selected: boolean = false;
   @Input() classes!: string;
+  @Input() disabled: string = 'false';
   @Output() clicked = new EventEmitter<string>;
 
   constructor() { }
@@ -20,6 +21,9 @@ export class ButtonComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selected']){
       this.selected = changes['selected'].currentValue;
+    }
+    if (changes['disabled']) {
+      this.disabled = changes['disabled'].currentValue;
     }
   }
 

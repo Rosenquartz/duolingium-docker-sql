@@ -26,6 +26,8 @@ import { DatePipe } from './pipes/date.pipe';
 import { CircleProgressBarComponent } from './components/circle-progress-bar/circle-progress-bar.component';
 import { ModuleHeaderComponent } from './components/module-header/module-header.component';
 import { ModuleFooterComponent } from './components/module-footer/module-footer.component';
+import { TestHeaderComponent } from './components/test-header/test-header.component';
+import { TestFooterComponent } from './components/test-footer/test-footer.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { ModuleFooterComponent } from './components/module-footer/module-footer.
     CircleProgressBarComponent,
     ModuleHeaderComponent,
     ModuleFooterComponent,
+    TestHeaderComponent,
+    TestFooterComponent,
   ],
   imports: [
     BrowserModule,

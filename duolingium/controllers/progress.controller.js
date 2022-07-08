@@ -55,12 +55,20 @@ const controller = (progressRepository, errorRepository) => {
             console.log("correct is", correct)
 
             await progressRepository.updateProgressItem(req.params.userId, req.body.itemId, correct);
-            console.log("yosh", req.params.userId, req.body.moduleId)
             await progressRepository.updateProgressModule(req.params.userId, req.body.moduleId);
 
             res.status(200).json({correct: correct});
         } catch (err) {
             res.status(400).json(errorRepository(4000));
+        }
+    }
+
+    const finishProgressModule = async (req, res) => {
+        try {
+            await progressRepository.finishProgressModule(req.body.userId, req.body.moduleId);
+            res.status(200).json(req.body);
+        } catch (err) {
+            res.status(400).json(errorRepository(4000))
         }
     }
 

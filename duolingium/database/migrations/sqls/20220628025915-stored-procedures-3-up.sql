@@ -21,7 +21,7 @@ CREATE PROCEDURE `CreateProgressModule`(
 BEGIN 
     INSERT INTO `progressModule`
     VALUES (inputProgressItemId, inputLanguageId, inputModuleId, inputUserId, 
-        (SELECT COUNT(*) FROM `item` WHERE `item`.moduleId= inputModuleId)
+        (SELECT 2*COUNT(*) FROM `item` WHERE `item`.moduleId= inputModuleId)
     , 0);
 END;
 
@@ -31,13 +31,7 @@ CREATE PROCEDURE `UpdateProgressModule`(
 )
 BEGIN
     UPDATE `progressModule`
-    SET completed = (
-        SELECT COUNT(*) 
-        FROM `progressItem` 
-        WHERE `progressItem`.moduleId = inputModuleId
-        AND `progressItem`.userId = inputUserId
-        AND `progressItem`.correctAttempts > 0
-    )
+    SET completed = completed + 1
     WHERE moduleId = inputModuleID AND userId = inputUserId and `progressModule`.progressModuleId != "";
 END;
 

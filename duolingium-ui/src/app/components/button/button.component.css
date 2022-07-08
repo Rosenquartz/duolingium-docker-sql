@@ -4,7 +4,7 @@ button {
 
     padding-top: 5px;
     padding-bottom: 5px;
-    margin: 10px;
+    margin-bottom: 10px;
     transition: all 0.1s;
     min-width: 100%;
 
@@ -27,6 +27,10 @@ button:active {
     transform: translateY(7px);
 }
 
+button:disabled {
+    pointer-events: none;
+}
+
 .selected {
     background-color: rgba(28, 176, 246, 0.2);
     border: 2px solid #1480b1;
@@ -39,4 +43,9 @@ button:active {
 
 .font-size-2 {
     font-size: 2rem;
+}
+
+.border-2 {
+    border: 1px #e5e5e5 solid;
+    box-shadow: 0 7px 0 #e5e5e5;
 }

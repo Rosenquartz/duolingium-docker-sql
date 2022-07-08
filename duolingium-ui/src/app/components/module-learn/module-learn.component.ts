@@ -18,8 +18,6 @@ export class ModuleLearnComponent implements OnInit {
   moduleType: string = 'alphabet';
   moduleItems: Item[] = [];
   ready: number = 0;
-  buttonText: string = 'check';
-  footerText: string = '';
 
   constructor(
     private languageService: LanguageService,
@@ -32,24 +30,20 @@ export class ModuleLearnComponent implements OnInit {
     const userId = this.cookieService.get('userId');
     const languageId = this.cookieService.get('languageId');
     const moduleId = this.route.snapshot.paramMap.get('moduleId')!;
-    console.log("starting on ", userId, languageId, moduleId);
+    console.log("Starting Module: ", userId, languageId, moduleId);
     this.progressService.getProgressModule(userId, languageId, moduleId)
-    .subscribe(out=>{
-      console.log("get progress module out is", out)
-      this.getItems(moduleId);
-    })
+    .subscribe(out=>{this.getItems(moduleId);})
   }
 
   getItems(moduleId: string): void {
     const languageId = this.cookieService.get('languageId');
     this.languageService.getModuleItems(languageId, moduleId)
     .subscribe(out=>{
-      console.log("out of get items is", out)
       //this.moduleType = out.type;
       this.moduleItems = out.items
-      if (true) { // if (out.type == 'alphabet')
-        console.log("module items are", this.moduleItems)
-      }
+      // if (true) { // if (out.type == 'alphabet')
+      //   console.log("module items are", this.moduleItems)
+      // }
       this.ready = 1
     })
   }

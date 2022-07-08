@@ -15,12 +15,10 @@ export class ItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log("New Item")
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.currentAnswer = changes['currentAnswer'].currentValue;
-    console.log("Changing item component's current answer to", this.currentAnswer);
   }
 
   answerClicked(choice: string): void {
