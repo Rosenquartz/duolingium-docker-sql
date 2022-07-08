@@ -1,0 +1,13 @@
+<div class="moduleFooter" [ngStyle]="{'background-color': '#' + bgColor}">
+    <div class="padding"></div>
+    <div class="padding"></div>
+    <div class="message">
+        <p>{{messageText}}</p>
+    </div>
+    <div class="padding"></div>
+    <div class="button">
+       <app-button [buttonText]="buttonText" (clicked)="buttonClick()"></app-button>
+    </div>
+    <div class="padding"></div>
+    <div class="padding"></div>
+</div>

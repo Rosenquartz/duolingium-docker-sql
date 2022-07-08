@@ -1,9 +1,7 @@
-<div class="headerwrap" *ngIf="ready">
-    
-</div>
-
-<div class="bodywrap" *ngIf="ready">
-    <div *ngIf="moduleType=='alphabet'">
-        <app-module-alphabet [items]="moduleItems"></app-module-alphabet>
+<div class="modulePage">
+    <div *ngIf="ready">
+        <div *ngIf="moduleType=='alphabet'">
+            <app-module-alphabet [items]="moduleItems"></app-module-alphabet>
+        </div>
     </div>
 </div>

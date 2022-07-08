@@ -9,6 +9,7 @@ export class ButtonComponent implements OnInit {
 
   @Input() buttonText: string = '';
   @Input() selected: boolean = true;
+  @Input() classes!: string;
   @Output() clicked = new EventEmitter<string>;
 
   constructor() { }
@@ -17,7 +18,9 @@ export class ButtonComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.selected = changes['selected'].currentValue;
+    if (changes['selected']){
+      this.selected = changes['selected'].currentValue;
+    }
   }
 
   onClick(buttonText: string): void {

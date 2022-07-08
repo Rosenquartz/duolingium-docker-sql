@@ -18,6 +18,8 @@ export class ModuleLearnComponent implements OnInit {
   moduleType: string = 'alphabet';
   moduleItems: Item[] = [];
   ready: number = 0;
+  buttonText: string = 'check';
+  footerText: string = '';
 
   constructor(
     private languageService: LanguageService,

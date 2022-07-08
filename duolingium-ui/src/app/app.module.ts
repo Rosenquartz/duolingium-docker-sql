@@ -23,6 +23,9 @@ import { TimerComponent } from './components/timer/timer.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 
 import { DatePipe } from './pipes/date.pipe';
+import { CircleProgressBarComponent } from './components/circle-progress-bar/circle-progress-bar.component';
+import { ModuleHeaderComponent } from './components/module-header/module-header.component';
+import { ModuleFooterComponent } from './components/module-footer/module-footer.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,9 @@ import { DatePipe } from './pipes/date.pipe';
     TestAlphabetComponent,
     TimerComponent,
     ProgressBarComponent,
+    CircleProgressBarComponent,
+    ModuleHeaderComponent,
+    ModuleFooterComponent,
   ],
   imports: [
     BrowserModule,

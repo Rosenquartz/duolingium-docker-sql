@@ -1,1 +1,1 @@
-<button (click)="onClick(buttonText)" class="{{selected ? 'selected' : ''}}">{{buttonText}}</button>
+<button (click)="onClick(buttonText)" class="{{selected ? 'selected' : ''}}" [ngClass]="classes">{{buttonText}}</button>

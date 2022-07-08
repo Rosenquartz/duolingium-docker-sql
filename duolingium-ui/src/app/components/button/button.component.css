@@ -11,6 +11,8 @@ button {
     border-radius: 25px;
     border: 2px solid #e5e5e5;
     box-shadow: 0 7px 0 #e5e5e5;
+
+    width: 100%;
 }
 
 button:hover {
@@ -29,4 +31,12 @@ button:active {
     background-color: rgba(28, 176, 246, 0.2);
     border: 2px solid #1480b1;
     box-shadow: 0 7px 0 #1CB0F6;
+}
+
+.font-size-1 {
+    font-size: 1rem;
+}
+
+.font-size-2 {
+    font-size: 2rem;
 }

@@ -1,3 +1,16 @@
+<div class="modulePage" *ngIf="ready">
+    <div class="headerWrapper">
+        <app-module-header></app-module-header>
+    </div>
+    <div class="moduleWrapper">
+        <app-item [question]="questions[currentNumber]" [currentAnswer]="currentAnswer" (buttonClicked)="choiceClicked($event)"></app-item>    
+    </div>
+    <div class="footerWrapper">
+        <app-module-footer [buttonText]="footerButton" [messageText]="footerMessage" [status]="footerStatus" (buttonClicked)="footerClicked($event)"></app-module-footer>
+    </div>
+</div>
+
+<!--
 <div class="beeg" *ngIf="ready">
     
     <app-item [question]="questions[currentNumber]" [currentAnswer]="currentAnswer" (buttonClicked)="choiceClicked($event)"></app-item>    
@@ -24,3 +37,4 @@
     </footer>
 
 </div>
+-->

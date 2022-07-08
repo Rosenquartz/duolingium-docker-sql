@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Item } from 'src/app/models/Item';
@@ -16,6 +16,9 @@ import { ProgressService } from 'src/app/services/progress.service';
 export class ModuleAlphabetComponent implements OnInit {
 
   @Input() items: Item[] = [];
+  @Output() changeButtonText = new EventEmitter<string>;
+  @Output() changeFooterMessage = new EventEmitter<string>;
+
   questions: MultipleChoiceQuestion[] = [];
   ready: number = 0;
 
@@ -31,6 +34,10 @@ export class ModuleAlphabetComponent implements OnInit {
 
   finished: number = 0;
 
+  footerButton: string = 'Check';
+  footerMessage: string = '';
+  footerStatus: string = 'check';
+
   constructor(
     private route: ActivatedRoute,
     private cookieService: CookieService,
@@ -45,9 +52,74 @@ export class ModuleAlphabetComponent implements OnInit {
     })
   }
 
+  /* EVENTS */
+
   choiceClicked(newAnswer: string): void {
+    if (newAnswer == this.currentAnswer) {
+      this.currentAnswer = '';
+      return;
+    }
     this.currentAnswer = newAnswer;
   }
+
+  answerClicked (choice: string): void {
+    console.log("answer clicked")
+    if (choice == this.currentAnswer) {
+      this.currentAnswer = '';
+      return;
+    }
+    this.currentAnswer = choice;
+    console.log(this.currentAnswer)
+  }
+
+  async footerClicked(status: string): Promise<void> {
+    if (status == 'check') {
+      await this.check()
+      this.footerStatus = 'nextItem';
+      this.footerButton = 'next'
+    } else if (status.includes('nextItem')) {
+      await this.nextItem()
+      this.footerMessage = ''
+      this.footerStatus = 'check'
+      this.footerButton = 'Check'
+    }
+  }
+
+  check() :void {
+    console.log("checking")
+    let userId = this.cookieService.get('userId')
+    let moduleId = this.route.snapshot.paramMap.get('moduleId')!
+    let itemId = this.questions[this.currentNumber].itemId
+    let type = this.questions[this.currentNumber].type
+    let answer = this.currentAnswer
+    this.progressService.checkItem(userId, moduleId, itemId, type, answer)
+    .subscribe(out=>{
+      this.correct = out.correct; 
+      this.footerVisible = 1
+      if (this.correct) {this.footerMessage = 'Correct!'; this.footerStatus = 'nextItem correct'}
+      else {this.footerMessage = 'Incorrect!'; this.footerStatus = 'nextItem wrong'}
+    })
+  }
+
+  nextItem(): void {
+    if (!this.finished) {
+      this.footerVisible = 0;
+      this.correct = '';
+      this.currentNumber += 1;
+      this.currentAnswer = '';
+      if (this.currentNumber == 2*this.items.length) {
+        this.currentNumber -= 1;
+        this.endModule()
+      }
+    }
+  }
+
+  async endModule(): Promise<void> {
+    this.finished = 1;
+    console.log("finished")
+  }
+
+  /* Item Setup */
 
   async setUpQuestions(): Promise<void> {
     let shuffledItems = await this.shuffleItems();
@@ -134,46 +206,6 @@ export class ModuleAlphabetComponent implements OnInit {
     }
   
     return array;
-  }
-
-  answerClicked (choice: string): void {
-    if (choice == this.currentAnswer) {
-      this.currentAnswer = '';
-      return;
-    }
-    this.currentAnswer = choice;
-    console.log(this.currentAnswer)
-  }
-
-  check() :void {
-    console.log("checking")
-    let userId = this.cookieService.get('userId')
-    let moduleId = this.route.snapshot.paramMap.get('moduleId')!
-    let itemId = this.questions[this.currentNumber].itemId
-    let type = this.questions[this.currentNumber].type
-    let answer = this.currentAnswer
-    this.progressService.checkItem(userId, moduleId, itemId, type, answer)
-    .subscribe(out=>{this.correct = out.correct; this.footerVisible = 1})
-  }
-
-  nextItem(): void {
-    if (!this.finished) {
-      this.footerVisible = 0;
-      this.correct = '';
-      this.currentNumber += 1;
-      console.log("Resetting current answer")
-      this.currentAnswer = '';
-      console.log("Reset current answer to", this.currentAnswer)
-      if (this.currentNumber == 2*this.items.length) {
-        this.currentNumber -= 1;
-        this.endModule()
-      }
-    }
-  }
-
-  async endModule(): Promise<void> {
-    this.finished = 1;
-    console.log("finished")
   }
 
   /*
