@@ -4,6 +4,7 @@ nav {
     margin-bottom: 20px;
     font-family: museo700;
     font-size : 1rem;
+    vertical-align: middle;
 }
 
 svg {
@@ -11,11 +12,25 @@ svg {
     height: 40px;
     margin: auto;
     cursor: pointer;
+    border: 2px solid;
+}
+
+img {
+    width: 40px;
+    height: 40px;
+    margin: auto;
+    
 }
 
 .centerText {
     font-family: museo900;
     font-size: 1.5rem;
+}
+
+#logo {
+    font-family: museo900;
+    color: #58CC02;
+    font-size: 1.1rem;
 }
 
 /*

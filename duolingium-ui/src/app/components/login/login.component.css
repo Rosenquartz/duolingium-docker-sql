@@ -1,36 +1,39 @@
-.gradient-custom-2 {
-    /* fallback for old browsers */
-    background: #fccb90;
+.gradient-form {
+    font-family: museo500;
+}
 
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
-
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
-    }
-
-    @media (min-width: 768px) {
+@media (min-width: 768px) {
     .gradient-form {
     height: 100vh !important;
     }
-    }
-    @media (min-width: 769px) {
-    .gradient-custom-2 {
-    border-top-right-radius: .3rem;
-    border-bottom-right-radius: .3rem;
-    }
 }
 
-.body {
-    height: 100vh
+h4 {
+    font-size: 2rem;
+    font-family: museo900;
+}
+
+.content {
+    font-size: 1.25rem;
 }
 
 .card {
     background-color: #89E219;
-    min-height: 400px;
-    border-radius: 80px;
 }
 
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.errorMessage {
+    display: flex;
+    font-size: 1rem;
+    justify-content: center;
+}
+
+/* Buttons ! Not yet using button component */
 
 .btn {
     border: 2px;
@@ -43,21 +46,13 @@
     border-bottom: 6px solid #e5e5e5;
     transition: all 0.1s;
 }
+
 .btn:hover {
     transition:0.2;    
     background-color: #ddf4ff;
     border-color: #1CB0F6;
 }
+
 .btn:active {
     border-bottom: 2px solid #1480b1;
-}
-
-form div {
-    margin-bottom: 10px;
-}
-
-.errorMessage {
-    display: flex;
-    font-size: 1.5rem;
-    justify-content: center;
 }

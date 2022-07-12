@@ -1,13 +1,17 @@
 <div class="modulePage" *ngIf="ready">
+    
     <div class="headerWrapper">
-        <app-test-header [running]="running" (time)="getTime($event)"></app-test-header>
+        <app-test-header [running]="running" [currentProgress]="currentProgress" [currentScore]="correctAnswers" (time)="getTime($event)"></app-test-header>
     </div>
+
     <div class="moduleWrapper">
         <app-item [question]="questions[currentNumber]" [currentAnswer]="currentAnswer" (buttonClicked)="choiceClicked($event)"></app-item>    
         <div class="padding"></div>
     </div>
+
     <div class="footerWrapper">
         <app-module-footer
+        style="display: block"
         [buttonText]="footerButton" 
         [messageText]="footerMessage" 
         [status]="footerStatus" 

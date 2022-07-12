@@ -26,6 +26,7 @@ export class TestAlphabetComponent implements OnInit {
   ready: number = 0;
   currentQuestion!: MultipleChoiceQuestion;
   currentNumber: number = 0;
+  currentProgress: number = 0;
   currentAnswer: string = '';
   correctAnswers: number = 0;
   correct: string = '';
@@ -34,9 +35,8 @@ export class TestAlphabetComponent implements OnInit {
   running: boolean = false;
   time: number = 0;
   currentScore: number = 0;
-  totalItems: number = 0;
 
-  footerButton: string = 'Check';
+  footerButton: string = 'check';
   footerMessage: string = '';
   footerStatus: string = 'check';
 
@@ -76,7 +76,7 @@ export class TestAlphabetComponent implements OnInit {
       if (!this.finished) {
         this.footerMessage = ''
         this.footerStatus = 'check'
-        this.footerButton = 'Check'
+        this.footerButton = 'check'
       }
     } else if (status == 'finish') {
       window.location.href = '/learn';
@@ -103,7 +103,9 @@ export class TestAlphabetComponent implements OnInit {
       this.correct = out.correct; 
       this.correctAnswers += out.correct ? 1 : 0; 
       if (this.correct) {this.footerMessage = 'Correct!'; this.footerStatus = 'nextItem correct'}
-      else {this.footerMessage = 'Incorrect!'; this.footerStatus = 'nextItem wrong'}
+      else {this.footerMessage = 'Incorrect!'; this.footerStatus = 'nextItem wrong'}      
+      this.currentProgress = Number((this.currentNumber+1) / (2*this.items.length) * 100);
+      console.log("New current progress is", this.currentProgress)
     })
   }
 
@@ -161,6 +163,10 @@ export class TestAlphabetComponent implements OnInit {
     )})).subscribe((out)=>{
       console.log("Sent test results")
     })
+  }
+
+  exit(): void {
+    window.location.href = '/learn';
   }
   
 

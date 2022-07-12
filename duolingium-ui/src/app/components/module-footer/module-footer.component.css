@@ -14,14 +14,30 @@ p {
     font-size: 2.5rem;
 }
 
-.padding {
-    flex: 1;
-}
-
 .button {
     flex: 2;
 }
 
 .message {
     flex: 2;
+}
+
+img {
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+}
+
+.img-container {
+    flex: 1;
+}
+
+.padding {
+    flex: 1;
+}
+
+@media(max-width: 992px) {
+    .inside {
+        display: none;
+    }
 }

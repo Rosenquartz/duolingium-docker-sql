@@ -10,6 +10,7 @@ router.get('/all', controller.getAllTestResults)
 router.get('/all/:moduleId', controller.getAllTestResultsByModule);
 router.get('/:userId', controller.getUserTestResults);
 router.post('/', controller.createTestResults);
+router.get('/', controller.getTestResults)
 
 //router.put('/')
 module.exports = router;

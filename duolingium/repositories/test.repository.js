@@ -82,11 +82,29 @@ getAllTestResultsByModule = async (moduleId) => {
     }
 }
 
+getTestResults = async(languageId, moduleId, userId, pageItems, offset) => {
+    try {
+        console.log("a");
+        let connection = await getConnection();
+        let sql = 'CALL GetTestResults(?, ?, ?, ?, ?)';
+        let results = await connection.query(sql, [languageId, moduleId, userId, pageItems, offset]);
+        await connection.end();
+        console.log(results[0]);
+        console.log("b");
+        return results[0];
+    } catch (err) {
+        console.error(err);
+        console.log("c");
+        throw err;
+    }
+}
+
 module.exports = {    
     createTestResults: createTestResults,
     getUserTestResults: getUserTestResults,
     getUserTestResultsByLanguage: getUserTestResultsByLanguage,
     getUserTestResultsByModule: getUserTestResultsByModule,
     getAllTestResults: getAllTestResults,
-    getAllTestResultsByModule: getAllTestResultsByModule
+    getAllTestResultsByModule: getAllTestResultsByModule,
+    getTestResults: getTestResults
 }

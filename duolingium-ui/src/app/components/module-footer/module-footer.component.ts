@@ -1,9 +1,44 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { trigger, transition, animate, style, state } from '@angular/animations'
 
 @Component({
   selector: 'app-module-footer',
   templateUrl: './module-footer.component.html',
-  styleUrls: ['./module-footer.component.css']
+  styleUrls: ['./module-footer.component.css'],
+  animations: [
+    trigger('correctAnimation', [
+      transition(":enter", [
+          style({ opacity: 0, transform: "translateY(-100%)" }), //apply default styles before animation starts
+          animate(
+              "100ms ease-in-out",
+              style({ opacity: 1, transform: "translateY(0)" })
+          )
+      ]),
+      transition(":leave", [
+          style({ opacity: 1, transform: "translateY(0)" }), //apply default styles before animation starts
+          animate(
+              "200ms ease-in-out",
+              style({ opacity: 0, transform: "translateY(-100%)" })
+          )
+      ])
+    ]),
+    trigger('wrongAnimation', [
+      transition(":enter", [
+          style({ opacity: 0}), //apply default styles before animation starts
+          animate(
+              "300ms ease-in-out",
+              style({ opacity: 1})
+          )
+      ]),
+      transition(":leave", [
+          style({ opacity: 1}), //apply default styles before animation starts
+          animate(
+              "400ms ease-in-out",
+              style({ opacity: 0})
+          )
+      ])
+    ])
+  ]
 })
 export class ModuleFooterComponent implements OnInit {
 

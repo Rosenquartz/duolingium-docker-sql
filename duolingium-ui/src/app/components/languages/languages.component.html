@@ -1,20 +1,22 @@
 
-<div class="tempbody">
-<div class="temp1"></div>
-<div class="temp2">
-    <div class="row mx-auto my-auto justify-content-center mt-n4">
-        <div class="card col-sm-6 col-md-4 col-lg-2 pt-4 card-block d-flex" *ngFor="let language of languages" (click)="selectLanguage(language.languageId)">
-            <div class="card-img align-items-center d-flex justify-content-center">
-                <svg class="flag-icon flag-icon-{{language.languageId}}"></svg>
-            </div>
-            <div class="card-body align-items-center d-flex justify-content-center">
-                <p class="card-text">{{language.englishName}}/{{language.nativeName}}</p>
+<div class="languageWrapper">
+    <app-header [centerText]="'Select a Language'"></app-header>
+    <div class="padding"></div>
+    <div class="temp2">
+        <div class="row mx-auto my-auto justify-content-center mt-n4">
+            <div class="card col-sm-6 col-md-4 col-lg-2 pt-4 card-block d-flex" *ngFor="let language of languages" (click)="selectLanguage(language.languageId)">
+                <div class="card-img align-items-center d-flex justify-content-center">
+                    <svg class="flag-icon flag-icon-{{language.languageId}}"></svg>
+                </div>
+                <div class="card-body align-items-center d-flex justify-content-center">
+                    <p class="card-text">{{language.englishName}}/{{language.nativeName}}</p>
+                </div>
             </div>
         </div>
     </div>
+    <div class="padding"></div>
 </div>
-<div class="temp1"></div>
-</div>
+
 <!---
 <div *ngIf="breed" class="card" routerLink = "/breeds/{{breed.id}}">
     <img class="card-img-top img-cover" *ngIf="referenceImage" src="{{referenceImage.url}}">

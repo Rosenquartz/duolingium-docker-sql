@@ -78,3 +78,27 @@ BEGIN
     AND moduleId = inputModuleId
     ORDER BY date desc;
 END;
+
+CREATE PROCEDURE `GetTestResults`(
+	IN inputLanguageId VARCHAR(2),
+    IN inputModuleId VARCHAR(8),
+    IN inputUserId VARCHAR(16),
+    IN inputPageLimit INT,
+    IN inputPageOffset INT
+)
+BEGIN
+	SELECT * 
+	FROM `test`
+	WHERE languageId = COALESCE (inputLanguageId, languageId)
+	AND moduleId = COALESCE (inputModuleId, moduleId)
+	AND userId = COALESCE(inputUserId, userId)
+	ORDER BY date DESC
+	LIMIT inputPageLimit
+    OFFSET inputPageOffset;
+    
+	SELECT COUNT(*)
+	FROM `test`
+	WHERE languageId = COALESCE (inputLanguageId, languageId)
+	AND moduleId = COALESCE (inputModuleId, moduleId)
+	AND userId = COALESCE(inputUserId, userId);
+END

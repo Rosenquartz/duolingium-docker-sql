@@ -1,6 +1,10 @@
 <div class="moduleFooter" [ngStyle]="{'background-color': '#' + bgColor}">
     <div class="padding"></div>
-    <div class="padding"></div>
+    <div class="padding inside"></div>
+    <div class="img-container">
+        <img src="https://design.duolingo.com/266788168c5f135b35e3.svg" *ngIf="status.includes('correct')" [@correctAnimation] > <!--correct-->
+        <img src="https://design.duolingo.com/2c82efcd38d61a9bd45e.svg" *ngIf="status.includes('wrong')" [@wrongAnimation] > <!--correct-->
+    </div>
     <div class="message">
         <p>{{messageText}}</p>
     </div>
@@ -8,6 +12,6 @@
     <div class="button">
        <app-button [buttonText]="buttonText" [classes]="'border-2'" [disabled]="buttonDisabled" (clicked)="buttonClick()" ></app-button>
     </div>
-    <div class="padding"></div>
+    <div class="padding inside"></div>
     <div class="padding"></div>
 </div>

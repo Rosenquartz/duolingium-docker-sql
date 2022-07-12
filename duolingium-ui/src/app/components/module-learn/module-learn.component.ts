@@ -7,6 +7,7 @@ import { MultipleChoiceItem } from 'src/app/models/MultipleChoiceItem';
 import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from 'src/app/services/language.service';
 import { ProgressService } from 'src/app/services/progress.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-module-learn',
@@ -18,6 +19,7 @@ export class ModuleLearnComponent implements OnInit {
   moduleType: string = 'alphabet';
   moduleItems: Item[] = [];
   ready: number = 0;
+  englishName: string = '';
 
   constructor(
     private languageService: LanguageService,
@@ -31,14 +33,20 @@ export class ModuleLearnComponent implements OnInit {
     const languageId = this.cookieService.get('languageId');
     const moduleId = this.route.snapshot.paramMap.get('moduleId')!;
     console.log("Starting Module: ", userId, languageId, moduleId);
-    this.progressService.getProgressModule(userId, languageId, moduleId)
-    .subscribe(out=>{this.getItems(moduleId);})
+    this.languageService.getLanguageInfo(languageId)
+    .pipe(switchMap(out=>{
+      this.englishName = out.englishName
+      return this.progressService.getProgressModule(userId, languageId, moduleId)
+    })).subscribe(out=>{
+      this.getItems(moduleId);
+    })
   }
 
   getItems(moduleId: string): void {
     const languageId = this.cookieService.get('languageId');
     this.languageService.getModuleItems(languageId, moduleId)
     .subscribe(out=>{
+      console.log(out)
       //this.moduleType = out.type;
       this.moduleItems = out.items
       // if (true) { // if (out.type == 'alphabet')

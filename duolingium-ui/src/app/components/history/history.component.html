@@ -1,38 +1,84 @@
-<app-header [centerText]="'Leaderboards'"></app-header>
+<app-header [centerText]="'Test history'"></app-header>
 
-<div class="languageWrap">
-    <div *ngFor="let language of languageList">
-        <button (click)="loadLanguage(language.languageId)">{{language.englishName}}</button>
-    </div>
-    <div>
-        <button (click)="loadAllTests()">All</button>
-    </div>
-</div>
-<div class="moduleWrap">
-    <div *ngFor="let module of moduleList">
-        <button (click)="loadTestsByModule(module.moduleId)">{{module.displayName}}</button>
-    </div>
-</div>
 
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Date Taken</th>
-        <th scope="col">User</th>
-        <th scope="col">Language</th>
-        <th scope="col">Module</th>
-        <th scope="col">Score</th>
-        <th scope="col">Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let test of tests">
-        <td>{{test.date | date}}</td>
-        <td>{{test.userId}}</td>
-        <td>{{test.englishName}}</td>
-        <td>{{test.displayName}}</td>
-        <td>{{test.correct}}/{{test.total}}</td>
-        <td>{{test.time}}</td>
-      </tr>
-    </tbody>
-  </table>
+<nav class="navbar navbar-light navbar-expand-md bg-faded justify-content-center">
+  <div class="container">
+      <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
+          <ul class="navbar-nav w-100 justify-content-center">
+
+            <li class="nav-item dropdown px-3">              
+              <div class="dropdown">
+                <div class="dropdown-button">
+                  <app-button [buttonText]="languageDisplayButton" [classes]="'font-size-1-25'" (click)="toggleLanguageDropDown()"></app-button>
+                </div>
+                <!-- <button class="dropbtn" (click)="toggleLanguageDropDown()">Dropdown</button> -->                
+                <div class="dropdown-content" [ngStyle]="{'display':languageDisplay}">
+                  <a (click)="loadLanguage(language.languageId)" 
+                      class="languageDropDownItem"
+                      *ngFor="let language of languageList">{{language.englishName}}</a>
+                </div>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown px-3">              
+              <div class="dropdown">
+                <div class="dropdown-button">
+                  <app-button [buttonText]="moduleDisplayButton" [classes]="'font-size-1-25'" (click)="toggleModuleDropDown()"></app-button>
+                </div>
+                <div class="dropdown-content" [ngStyle]="{'display':moduleDisplay}">
+                  <div *ngIf="moduleList">
+                    <a (click)="loadModule(module)" *ngFor="let module of moduleList">{{module.displayName}}</a>
+                  </div>
+                  <div *ngIf="moduleList.length==0">
+                    <a>-----</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown px-3">              
+              <div class="dropdown">
+                <div class="dropdown-button">
+                  <app-button [buttonText]="'Self'" [classes]="'font-size-1-25'" [selected]="filterStatus" (click)="filterTestsByUser()"></app-button>
+                </div>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown px-3">              
+              <div class="dropdown">
+                <div class="dropdown-button">
+                  <app-button [buttonText]="'Clear Filters'" [classes]="'font-size-1-25'" (click)="clearFilters()"></app-button>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+      </div>
+  </div>
+</nav>
+
+<!-- Working table -->
+<div class="tableWrapper">
+  <table class="table">
+      <thead>
+        <tr>
+          <th style="width: 17%" scope="col">Date Taken</th>
+          <th style="width: 17%" scope="col">User</th>
+          <th style="width: 17%" scope="col">Language</th>
+          <th style="width: 17%" scope="col">Module</th>
+          <th style="width: 17%" scope="col">Score</th>
+          <th style="width: 17%" scope="col">Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let test of shownTests">
+          <td>{{test.date | date}}</td>
+          <td>{{test.userId}}</td>
+          <td>{{test.englishName}}</td>
+          <td>{{test.displayName}}</td>
+          <td>{{test.correct}}/{{test.total}}</td>
+          <td>{{test.time | dateTime}}</td>
+        </tr>
+      </tbody>
+    </table>
+</div>

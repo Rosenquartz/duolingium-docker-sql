@@ -23,6 +23,15 @@ export class TestService {
     return this.http.get(url);
   }
 
+  getTestResults(query: {languageId?: string, moduleId?: string, userId?: string, pageIndex: number}): Observable<any> {
+    let url = `${this.baseUrl}?pageItems:25&pageIndex:${query.pageIndex}`;
+    if (query.languageId) url = url + `&languageId=${query.languageId}`
+    if (query.moduleId) url = url + `&moduleId=${query.moduleId}`
+    if (query.userId) url = url + `&userId=${query.userId}`
+    console.log("Query:", url)
+    return this.http.get(url);
+  }
+
   sendTestResults(languageId: string, 
                   englishName: string, 
                   nativeName: string, 

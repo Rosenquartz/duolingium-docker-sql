@@ -16,6 +16,7 @@ import { ProgressService } from 'src/app/services/progress.service';
 export class ModuleAlphabetComponent implements OnInit {
 
   @Input() items: Item[] = [];
+  @Input() englishName!: string;
   @Output() changeButtonText = new EventEmitter<string>;
   @Output() changeFooterMessage = new EventEmitter<string>;
   ready: number = 0;
@@ -26,6 +27,7 @@ export class ModuleAlphabetComponent implements OnInit {
 
   currentQuestion!: MultipleChoiceQuestion;
   currentNumber: number = 0;
+  currentProgress: number = 0;
   currentAnswer: string = '';
 
   footerVisible: number = 0;
@@ -33,7 +35,7 @@ export class ModuleAlphabetComponent implements OnInit {
 
   finished: number = 0;
 
-  footerButton: string = 'Check';
+  footerButton: string = 'check';
   footerMessage: string = '';
   footerStatus: string = 'check';
 
@@ -70,7 +72,7 @@ export class ModuleAlphabetComponent implements OnInit {
       if (!this.finished) {
         this.footerMessage = ''
         this.footerStatus = 'check'
-        this.footerButton = 'Check'
+        this.footerButton = 'check'
       }
     } else if (status == 'finish') {
       window.location.href = '/learn';
@@ -87,13 +89,13 @@ export class ModuleAlphabetComponent implements OnInit {
     .subscribe(out=>{
       this.correct = out.correct; 
       if (this.correct) {this.footerMessage = 'Correct!'; this.footerStatus = 'nextItem correct'}
-      else {this.footerMessage = 'Incorrect!'; this.footerStatus = 'nextItem wrong'}
+      else {this.footerMessage = 'Incorrect!'; this.footerStatus = 'nextItem wrong'};
+      this.currentProgress = Number((this.currentNumber+1) / (2*this.items.length) * 100);
     })
   }
 
   nextItem(): void {
     if (!this.finished) {
-      this.footerVisible = 0;
       this.correct = '';
       this.currentNumber += 1;
       this.currentAnswer = '';
@@ -106,7 +108,7 @@ export class ModuleAlphabetComponent implements OnInit {
 
   async endModule(): Promise<void> {
     this.finished = 1;
-    console.log("Module Finished")
+    console.log("Module Finished!")
     this.footerButton = "Finish!"
     this.footerStatus = "finish"
     this.footerMessage = `Module Finished!`

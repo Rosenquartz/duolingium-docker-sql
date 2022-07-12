@@ -10,6 +10,7 @@ export class ItemComponent implements OnInit {
 
   @Input() question!: MultipleChoiceQuestion;
   @Input() currentAnswer!: string;
+  @Input() englishName!: string;
   @Output() buttonClicked = new EventEmitter<string>();
 
   constructor() { }

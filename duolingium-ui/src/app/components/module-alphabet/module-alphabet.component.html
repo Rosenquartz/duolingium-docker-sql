@@ -1,9 +1,12 @@
 <div class="modulePage" *ngIf="ready">
     <div class="headerWrapper">
-        <app-module-header></app-module-header>
+        <app-module-header [currentProgress]="currentProgress"></app-module-header>
     </div>
     <div class="moduleWrapper">
-        <app-item [question]="questions[currentNumber]" [currentAnswer]="currentAnswer" (buttonClicked)="choiceClicked($event)"></app-item>    
+        <app-item [question]="questions[currentNumber]" 
+                [currentAnswer]="currentAnswer" 
+                [englishName]="englishName"
+                (buttonClicked)="choiceClicked($event)"></app-item>    
         <div class="padding"></div>
     </div>
     <div class="footerWrapper">

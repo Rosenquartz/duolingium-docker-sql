@@ -1,4 +1,5 @@
 const { nanoid } = require('nanoid');
+const { getTestResults } = require('../repositories/test.repository');
 
 const controller = (testRepository, errorRepository) => {
 
@@ -38,6 +39,7 @@ const controller = (testRepository, errorRepository) => {
 
     const getAllTestResults = async (req, res) => {
         try {
+            console.log("getting")
             let results = await testRepository.getAllTestResults();
             res.status(200).json(results)
         } catch (err) {
@@ -70,12 +72,26 @@ const controller = (testRepository, errorRepository) => {
             res.status(400).json(errorRepository(4000))
         }
     }
+    
+    const getTestResults = async (req, res) => {
+        try {
+            console.log("d")
+            let offset = (req.query.pageItems) * (req.query.pageIndex - 1)
+            let results = await testRepository.getTestResults(req.query.languageId, req.query.moduleId, req.query.userId, req.query.pageItems, offset);
+            console.log("e")
+            console.log(results)
+            res.status(200).json({tests: results[0], total: results[1][0]['COUNT(*)']});
+        } catch (err) {
+            res.status(400).json(err)
+        }
+    }
 
     return {
         createTestResults: createTestResults,
         getAllTestResults: getAllTestResults,
         getAllTestResultsByModule: getAllTestResultsByModule,
-        getUserTestResults: getUserTestResults
+        getUserTestResults: getUserTestResults,
+        getTestResults: getTestResults
       }
 
 }

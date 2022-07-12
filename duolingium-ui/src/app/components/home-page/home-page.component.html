@@ -6,7 +6,7 @@
         
         <div class="padding"></div>
         <div class="moduleWrapper">
-            <div  *ngFor="let module of moduleInfo">
+            <div class="moduleContainer" *ngFor="let module of moduleInfo">
                 <div class="row container mx-auto">
                     <div class="displayName col-sm-12 col-md-12 col-lg-4">
                         <p>{{module.displayName}}</p>
@@ -23,10 +23,14 @@
     
         <div class="sidebarWrapper">
             <div class="workInProgress">
-                <p> Work In Progress </p>
+                <img src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/placeholder.svg">
+                <h4>Check out our leaderboards!</h4>
+                <p>Take a test to compete.</p>
             </div>
             <div class="workInProgress">
-                <p> Work In Progress </p>    
+                <img src="https://design.duolingo.com/2c82efcd38d61a9bd45e.svg">
+                <h4>Using an ad blocker?</h4>
+                <p>Support free education with Duolingium Plus and we’ll remove ads for you.</p>                    
             </div>
         </div>
         <div class="padding"></div>

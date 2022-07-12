@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,12 +23,12 @@ import { TestAlphabetComponent } from './components/test-alphabet/test-alphabet.
 import { TimerComponent } from './components/timer/timer.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 
-import { DatePipe } from './pipes/date.pipe';
 import { CircleProgressBarComponent } from './components/circle-progress-bar/circle-progress-bar.component';
 import { ModuleHeaderComponent } from './components/module-header/module-header.component';
 import { ModuleFooterComponent } from './components/module-footer/module-footer.component';
 import { TestHeaderComponent } from './components/test-header/test-header.component';
 import { TestFooterComponent } from './components/test-footer/test-footer.component';
+import { DateTimePipe } from './pipes/date-time.pipe';
 
 @NgModule({
   declarations: [
@@ -52,12 +53,14 @@ import { TestFooterComponent } from './components/test-footer/test-footer.compon
     ModuleFooterComponent,
     TestHeaderComponent,
     TestFooterComponent,
+    DateTimePipe,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule 
   ],
   providers: [
     CookieService
