@@ -73,6 +73,12 @@
 .progressBarContainer {
     flex: 5;
 }
+
+.progress {
+    border-radius: 10px;
+}
+
 .progress-bar {    
-    background-color: #58CC02;
+    background-color: #1CB0F6;
+    border-radius: 10px;
 }

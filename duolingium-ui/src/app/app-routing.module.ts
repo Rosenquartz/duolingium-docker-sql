@@ -9,6 +9,7 @@ import { ModuleLearnComponent } from './components/module-learn/module-learn.com
 import { LanguagesComponent } from './components/languages/languages.component';
 import { HistoryComponent } from './components/history/history.component';
 import { TestComponent } from './components/test/test.component';
+import { HistoryOptimizedComponent } from './components/history-optimized/history-optimized.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'learn', component: HomePageComponent },
   { path: 'learn/:moduleId', component: ModuleLearnComponent },
   { path: 'history', component: HistoryComponent },
+  { path: 'history-optimized', component: HistoryOptimizedComponent },
   { path: 'test/:moduleId', component: TestComponent }
 ];
 

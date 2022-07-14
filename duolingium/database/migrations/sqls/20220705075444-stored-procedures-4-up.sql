@@ -28,12 +28,128 @@ BEGIN
     );
 END;
 
-CREATE PROCEDURE `GetAllTestResults` ()
+CREATE PROCEDURE `GetAllTestResults` (
+    IN inputPageLimit INT,
+    IN inputPageOffset INT
+)
 BEGIN
     SELECT *
     FROM `test`
-    ORDER BY date desc;
+	ORDER BY date DESC
+	LIMIT inputPageLimit
+    OFFSET inputPageOffset;
+    
+	SELECT COUNT(*)
+	FROM `test`;
 END;
+
+/* One Stored Procedure for each possible filter */
+
+CREATE PROCEDURE `FilterTestByLanguage` (
+	IN inputLanguageId VARCHAR(2),
+    IN inputPageLimit INT,
+    IN inputPageOffset INT
+)
+BEGIN
+    SELECT *
+    FROM `test`
+    WHERE languageId = inputLanguageId
+    ORDER BY date desc
+	LIMIT inputPageLimit
+    OFFSET inputPageOffset;
+    
+	SELECT COUNT(*)
+	FROM `test`
+	WHERE languageId = inputLanguageId;
+END;
+
+CREATE PROCEDURE `FilterTestByModule` (
+	IN inputLanguageId VARCHAR(2),
+    IN inputModuleId VARCHAR(8),
+    IN inputPageLimit INT,
+    IN inputPageOffset INT
+)
+BEGIN
+    SELECT *
+    FROM `test`
+    WHERE languageId = inputLanguageId
+    AND moduleId = inputModuleId
+    ORDER BY date desc
+	LIMIT inputPageLimit
+    OFFSET inputPageOffset;
+    
+	SELECT COUNT(*)
+	FROM `test`
+	WHERE languageId = inputLanguageId
+    AND moduleId = inputModuleId;
+END;
+
+CREATE PROCEDURE `FilterTestByUser` (
+    IN inputUserId VARCHAR(16),
+    IN inputPageLimit INT,
+    IN inputPageOffset INT
+)
+BEGIN
+    SELECT *
+    FROM `test`
+    WHERE userId = inputUserId
+    ORDER BY date desc
+	LIMIT inputPageLimit
+    OFFSET inputPageOffset;
+    
+	SELECT COUNT(*)
+	FROM `test`
+	WHERE userId = inputUserId;
+END;
+
+CREATE PROCEDURE `FilterTestByLanguageAndUser` (    
+	IN inputLanguageId VARCHAR(2),
+    IN inputUserId VARCHAR(16),
+    IN inputPageLimit INT,
+    IN inputPageOffset INT
+)
+BEGIN
+    SELECT *
+    FROM `test`
+    WHERE languageId = inputLanguageId
+    AND userId = inputUserId
+    ORDER BY date desc
+	LIMIT inputPageLimit
+    OFFSET inputPageOffset;
+    
+	SELECT COUNT(*)
+	FROM `test`
+	WHERE languageId = inputLanguageId
+	AND userId = inputUserId;
+END;
+
+CREATE PROCEDURE `FilterTestByModuleAndUser` (
+	IN inputLanguageId VARCHAR(2),
+    IN inputModuleId VARCHAR(8),
+    IN inputUserId VARCHAR(16),
+    IN inputPageLimit INT,
+    IN inputPageOffset INT
+)
+BEGIN
+    SELECT *
+    FROM `test`
+    WHERE languageId = inputLanguageId
+    AND moduleId = inputModuleId
+    AND userId = inputUserId
+    ORDER BY date desc
+	LIMIT inputPageLimit
+    OFFSET inputPageOffset;
+    
+	SELECT COUNT(*)
+	FROM `test`
+	WHERE languageId = inputLanguageId
+	AND moduleId = inputModuleId
+	AND userId = inputUserId;
+END;
+
+
+
+/* OLD FILTERS */
 
 CREATE PROCEDURE `GetAllTestResultsByModule` (
     IN inputModuleId VARCHAR(8)

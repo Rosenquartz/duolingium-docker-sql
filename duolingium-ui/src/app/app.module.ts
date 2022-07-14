@@ -29,6 +29,8 @@ import { ModuleFooterComponent } from './components/module-footer/module-footer.
 import { TestHeaderComponent } from './components/test-header/test-header.component';
 import { TestFooterComponent } from './components/test-footer/test-footer.component';
 import { DateTimePipe } from './pipes/date-time.pipe';
+import { ScoreScreenComponent } from './components/score-screen/score-screen.component';
+import { HistoryOptimizedComponent } from './components/history-optimized/history-optimized.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,8 @@ import { DateTimePipe } from './pipes/date-time.pipe';
     TestHeaderComponent,
     TestFooterComponent,
     DateTimePipe,
+    ScoreScreenComponent,
+    HistoryOptimizedComponent,
   ],
   imports: [
     BrowserModule,

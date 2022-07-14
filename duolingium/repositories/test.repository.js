@@ -22,6 +22,80 @@ createTestResults = async (testId, languageId, englishName, moduleId, displayNam
     }
 }
 
+getAllTestResults = async (pageItems, offset) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetAllTestResults(?, ?)';
+        let results = await connection.query(sql, [pageItems, offset]);
+        await connection.end();
+        return results[0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+filterByLanguage = async (languageId, pageItems, offset) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL FilterTestByLanguage(?, ?, ?)';
+        let results = await connection.query(sql, [languageId, pageItems, offset]);
+        await connection.end();
+        return results[0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+filterByModule = async (languageId, moduleId, pageItems, offset) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL FilterTestByModule(?, ?, ?, ?)';
+        let results = await connection.query(sql, [languageId, moduleId, pageItems, offset]);
+        await connection.end();
+        return results[0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+filterByUser = async (userId, pageItems, offset) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL FilterTestByUser(?, ?, ?)';
+        let results = await connection.query(sql, [userId, pageItems, offset]);
+        await connection.end();
+        return results[0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+filterByLanguageAndUser = async (languageId, userId, pageItems, offset) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL FilterTestByLanguageAndUser(?, ?, ?, ?)';
+        let results = await connection.query(sql, [languageId, userId, pageItems, offset]);        
+        await connection.end();
+        return results[0];
+    } catch (err) {
+        throw err;
+    }
+}
+
+filterByModuleAndUser = async (languageId, moduleId, userId, pageItems, offset) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL FilterTestByModuleAndUser(?, ?, ?, ?, ?)';
+        let results = await connection.query(sql, [languageId, moduleId, userId, pageItems, offset]);        
+        await connection.end();
+        return results[0];        
+    } catch (err) {
+        throw err;
+    }
+}
+
+/* DEPRECATED */
+
 getUserTestResults = async (userId) => {
     try {
         let connection = await getConnection();
@@ -51,18 +125,6 @@ getUserTestResultsByModule = async (userId, moduleId) => {
         let connection = await getConnection();
         let sql = 'CALL GetUserTestResultsByModule(?)';
         let results = await connection.query(sql, [userId, moduleId]);
-        await connection.end();
-        return results[0][0];
-    } catch (err) {
-        throw err;
-    }
-}
-
-getAllTestResults = async () => {
-    try {
-        let connection = await getConnection();
-        let sql = 'CALL GetAllTestResults()';
-        let results = await connection.query(sql);
         await connection.end();
         return results[0][0];
     } catch (err) {
@@ -101,10 +163,16 @@ getTestResults = async(languageId, moduleId, userId, pageItems, offset) => {
 
 module.exports = {    
     createTestResults: createTestResults,
-    getUserTestResults: getUserTestResults,
-    getUserTestResultsByLanguage: getUserTestResultsByLanguage,
-    getUserTestResultsByModule: getUserTestResultsByModule,
     getAllTestResults: getAllTestResults,
-    getAllTestResultsByModule: getAllTestResultsByModule,
-    getTestResults: getTestResults
+    filterByLanguage: filterByLanguage,
+    filterByModule: filterByModule,
+    filterByUser: filterByUser,
+    filterByLanguageAndUser: filterByLanguageAndUser,
+    filterByModuleAndUser: filterByModuleAndUser
+    // DEPRECATED
+    // getUserTestResults: getUserTestResults,
+    // getUserTestResultsByLanguage: getUserTestResultsByLanguage,
+    // getUserTestResultsByModule: getUserTestResultsByModule,
+    // getAllTestResultsByModule: getAllTestResultsByModule,
+    // getTestResults: getTestResults
 }

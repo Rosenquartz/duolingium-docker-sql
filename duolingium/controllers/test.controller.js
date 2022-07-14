@@ -39,11 +39,51 @@ const controller = (testRepository, errorRepository) => {
 
     const getAllTestResults = async (req, res) => {
         try {
-            console.log("getting")
-            let results = await testRepository.getAllTestResults();
-            res.status(200).json(results)
+            let offset = (req.query.pageItems) * (req.query.pageIndex - 1);
+            let results = await testRepository.getAllTestResults(req.query.pageItems, offset);
+            res.status(200).json({tests: results[0], total: results[1][0]['COUNT(*)']});
         } catch (err) {
             res.status(400).json(errorRepository(4000))
+        }
+    }
+
+    const filterTestResults = async (req, res) => {
+        try {
+            let results;
+            let offset = (req.query.pageItems) * (req.query.pageIndex - 1);
+            if (req.query.languageId && req.query.moduleId && req.query.userId) {
+                console.log("Filtering by module and user")
+                results = await testRepository.filterByModuleAndUser(req.query.languageId, req.query.moduleId, req.query.userId, req.query.pageItems, offset);
+            } else if (req.query.languageId && req.query.userId) {
+                console.log("Filtering by language and user")
+                results = await testRepository.filterByLanguageAndUser(req.query.languageId, req.query.userId, req.query.pageItems, offset);
+            } else if (req.query.userId) {
+                console.log("Filtering by user")
+                results = await testRepository.filterByUser(req.query.userId, req.query.pageItems, offset);
+            } else if (req.query.languageId && req.query.moduleId) {
+                console.log("Filtering by module")
+                results = await testRepository.filterByModule(req.query.languageId, req.query.moduleId, req.query.pageItems, offset);
+            } else if (req.query.languageId) {
+                console.log("Filtering by language")
+                results = await testRepository.filterByLanguage(req.query.languageId, req.query.pageItems, offset);
+            } else {
+                // Request query is empty or contains incorrect parameters
+                throw errorRepository(4000);
+            }
+            res.status(200).json({tests: results[0], total: results[1][0]['COUNT(*)']});
+        } catch (err) {
+            res.status(400).json(err);
+        }
+    }
+
+    /* DEPRECATED */
+
+    const filterByLanguage = async (req, res) => {
+        try {
+            let results = await testRepository.filterByLanguage(req.query.languageId);
+            llet 
+        } catch (err) {
+            res.status(400).json(err);
         }
     }
 
@@ -89,10 +129,12 @@ const controller = (testRepository, errorRepository) => {
     return {
         createTestResults: createTestResults,
         getAllTestResults: getAllTestResults,
-        getAllTestResultsByModule: getAllTestResultsByModule,
-        getUserTestResults: getUserTestResults,
-        getTestResults: getTestResults
-      }
+        filterTestResults: filterTestResults
+        // DEPRECATED
+        // getAllTestResultsByModule: getAllTestResultsByModule,
+        // getUserTestResults: getUserTestResults,
+        // getTestResults: getTestResults
+    }
 
 }
 

@@ -83,9 +83,9 @@ CREATE TABLE `test` (
     `date` DATETIME NOT NULL,
     PRIMARY KEY (`testId`),
     INDEX idx_1 (`languageId`, `date`),
-    INDEX idx_2 (`moduleId`, `date`),
+    INDEX idx_2 (`languageId`, `moduleId`, `date`),
     INDEX idx_3 (`userId`, `languageId`, `date`),
-    INDEX idx_4 (`userId`, `moduleId`, `date`),
+    INDEX idx_4 (`userId`, `languageId`, `moduleId`, `date`),
     INDEX idx_5 (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

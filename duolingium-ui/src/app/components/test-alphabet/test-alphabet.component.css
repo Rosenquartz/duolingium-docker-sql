@@ -30,6 +30,10 @@ app-item {
     flex: 1;
 }
 
+.contentContainer {
+    flex: 2;
+}
+
 .container {
     max-width: 960px;
     font-size: 32px;

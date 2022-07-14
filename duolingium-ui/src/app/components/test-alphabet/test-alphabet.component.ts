@@ -31,6 +31,7 @@ export class TestAlphabetComponent implements OnInit {
   correctAnswers: number = 0;
   correct: string = '';
   finished: number = 0;
+  englishName: string = '';
 
   running: boolean = false;
   time: number = 0;
@@ -124,8 +125,6 @@ export class TestAlphabetComponent implements OnInit {
   }
 
   async endModule(): Promise<void> {
-    this.finished = 1;
-    console.log("Module Finished!")
 
     this.footerButton = "Finish!"
     this.footerStatus = "finish"
@@ -133,17 +132,20 @@ export class TestAlphabetComponent implements OnInit {
 
     let userId = this.cookieService.get('userId')
     let languageId = this.cookieService.get('languageId')
-    let englishName = '';
+    this.englishName = '';
     let nativeName = '';
     let moduleId = this.route.snapshot.paramMap.get('moduleId')!;
     let displayName = '';
     let total = 2 * this.items.length
     let newDate = new Date()
     let date = newDate.toISOString().slice(0, 19).replace('T', ' ');
+    
+    this.finished = 1;
+    console.log("Module Finished!")
 
     this.languageService.getLanguageInfo(languageId)
     .pipe(switchMap(out=>{
-      englishName = out.englishName; 
+      this.englishName = out.englishName; 
       nativeName = out.nativeName;
       return this.languageService.getModuleInfo(languageId, moduleId)
     })).pipe(switchMap(out=>{      
@@ -151,7 +153,7 @@ export class TestAlphabetComponent implements OnInit {
       console.log("Sending test results")
       return this.testService.sendTestResults(
         languageId,
-        englishName,
+        this.englishName,
         nativeName, 
         moduleId, 
         displayName,

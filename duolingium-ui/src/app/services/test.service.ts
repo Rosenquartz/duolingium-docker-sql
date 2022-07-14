@@ -24,10 +24,15 @@ export class TestService {
   }
 
   getTestResults(query: {languageId?: string, moduleId?: string, userId?: string, pageIndex: number}): Observable<any> {
-    let url = `${this.baseUrl}?pageItems:25&pageIndex:${query.pageIndex}`;
-    if (query.languageId) url = url + `&languageId=${query.languageId}`
-    if (query.moduleId) url = url + `&moduleId=${query.moduleId}`
-    if (query.userId) url = url + `&userId=${query.userId}`
+    let url;
+    if (!query.languageId && !query.moduleId && !query.userId) {
+      url = `${this.baseUrl}/all?pageItems=25&pageIndex=${query.pageIndex}`;
+    } else {
+      url = `${this.baseUrl}/filter?pageItems=25&pageIndex=${query.pageIndex}`;
+      if (query.languageId) url = url + `&languageId=${query.languageId}`
+      if (query.moduleId) url = url + `&moduleId=${query.moduleId}`
+      if (query.userId) url = url + `&userId=${query.userId}`
+    }
     console.log("Query:", url)
     return this.http.get(url);
   }

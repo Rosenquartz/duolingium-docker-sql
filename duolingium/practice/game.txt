@@ -1,0 +1,6 @@
+game {
+    lobbyId,
+    languageId,
+    moduleId,
+    scores: dictionary{playerId: score}
+}

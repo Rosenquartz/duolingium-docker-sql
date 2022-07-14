@@ -10,14 +10,12 @@ import { Module } from 'src/app/models/Module';
 import { TestResult } from 'src/app/models/TestResult'
 import { ViewportScroller } from '@angular/common';
 
-
-
 @Component({
-  selector: 'app-history',
-  templateUrl: './history.component.html',
-  styleUrls: ['./history.component.css']
+  selector: 'app-history-optimized',
+  templateUrl: './history-optimized.component.html',
+  styleUrls: ['./history-optimized.component.css']
 })
-export class HistoryComponent implements OnInit {
+export class HistoryOptimizedComponent implements OnInit {
 
   moduleList: Module[] = [];
   languageList: Language[] = [];
