@@ -9,6 +9,8 @@ const controller = testController(testRepository, errorRepository);
 router.get('/all', controller.getAllTestResults);
 router.get('/filter', controller.filterTestResults);2
 router.post('/', controller.createTestResults);
+
+router.get('/history', controller.loadFilters);
 /* DEPRECATED */
 // router.get('/all/:moduleId', controller.getAllTestResultsByModule);
 // router.get('/:userId', controller.getUserTestResults);

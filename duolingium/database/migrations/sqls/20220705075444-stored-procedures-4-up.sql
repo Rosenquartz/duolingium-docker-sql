@@ -147,74 +147,59 @@ BEGIN
 	AND userId = inputUserId;
 END;
 
+/* NEW FILTERS FOR KEYSET PAGINATION */
 
-
-/* OLD FILTERS */
-
-CREATE PROCEDURE `GetAllTestResultsByModule` (
-    IN inputModuleId VARCHAR(8)
-)
-BEGIN 
-    SELECT *
-    FROM `test`
-    WHERE moduleId = inputModuleId
-    ORDER BY date desc;
-END;
-
-CREATE PROCEDURE `GetUserTestResults` (
-    IN inputUserId VARCHAR(16)
-)
-BEGIN 
-    SELECT *
-    FROM `test`
-    WHERE userId = inputUserId
-    ORDER BY date desc;
-END;
-
-CREATE PROCEDURE `GetUserTestResultsByLanguage` (
-    IN inputUserId VARCHAR(16),
-    IN inputLanguageId VARCHAR(2)
-)
-BEGIN 
-    SELECT *
-    FROM `test`
-    WHERE userId = inputUserId
-    AND languageId = inputLanguageId
-    ORDER BY date desc;
-END;
-
-CREATE PROCEDURE `GetUserTestResultsByModule` (
-    IN inputUserId VARCHAR(16),
-    IN inputModuleId Varchar(8)
-)
-BEGIN 
-    SELECT *
-    FROM `test`
-    WHERE userId = inputUserId
-    AND moduleId = inputModuleId
-    ORDER BY date desc;
-END;
-
-CREATE PROCEDURE `GetTestResults`(
-	IN inputLanguageId VARCHAR(2),
-    IN inputModuleId VARCHAR(8),
-    IN inputUserId VARCHAR(16),
-    IN inputPageLimit INT,
-    IN inputPageOffset INT
+CREATE PROCEDURE `LoadTest` (
+    IN inputPageLimit INT
 )
 BEGIN
-	SELECT * 
-	FROM `test`
-	WHERE languageId = COALESCE (inputLanguageId, languageId)
-	AND moduleId = COALESCE (inputModuleId, moduleId)
-	AND userId = COALESCE(inputUserId, userId)
-	ORDER BY date DESC
-	LIMIT inputPageLimit
+    SELECT *
+    FROM `test`
+    ORDER BY date DESC, testId DESC
+    LIMIT inputPageLimit;
+    
+	SELECT COUNT(*)
+	FROM `test`;
+END
+
+CREATE PROCEDURE `LoadTestNext`(
+    IN inputPageLimit INT,
+    IN inputPageOffset INT,
+    IN inputDate DATETIME,
+    IN inputTestId VARCHAR(8)
+)
+BEGIN
+    SELECT *
+    FROM `test`
+    WHERE (date < inputDate)
+    OR (date = inputDate AND testId < inputTestId)
+    ORDER BY date DESC, testId DESC
+    LIMIT inputPageLimit
     OFFSET inputPageOffset;
     
 	SELECT COUNT(*)
-	FROM `test`
-	WHERE languageId = COALESCE (inputLanguageId, languageId)
-	AND moduleId = COALESCE (inputModuleId, moduleId)
-	AND userId = COALESCE(inputUserId, userId);
+	FROM `test`;
+END
+
+CREATE PROCEDURE `LoadTestPrev`(
+    IN inputPageLimit INT,
+    IN inputPageOffset INT,
+    IN inputDate DATETIME,
+    IN inputTestId VARCHAR(8)
+)
+BEGIN
+    SELECT *
+    FROM (
+        SELECT *
+        FROM `test`
+        WHERE (date > inputDate)
+        OR (date = inputDate AND testId > inputTestId)
+        ORDER BY date ASC, testId ASC
+        LIMIT inputPageLimit
+        OFFSET inputPageOffset
+    )
+    ORDER BY date DESC, testId DESC;
+    
+	SELECT COUNT(*)
+	FROM `test`;
 END

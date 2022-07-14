@@ -14,9 +14,46 @@ export class TestService {
   ) { }
 
   getAllTests(): Observable<any> {
-    const url = `${this.baseUrl}/all`
+    const url = `${this.baseUrl}/history?pageItems=25`
     return this.http.get(url);
   }
+
+  loadTest(pageDelta: number, previousKey: string, nextKey: string): Observable<any> {
+    console.log(previousKey, nextKey)
+    if (pageDelta < 0) {
+      const url = `${this.baseUrl}/history?pageItems=25&pageDelta=${-pageDelta-1}&previousKey=${previousKey}`;
+      return this.http.get(url)
+    } else {
+      const url = `${this.baseUrl}/history?pageItems=25&pageDelta=${pageDelta-1}&nextKey=${nextKey}`;
+      return this.http.get(url)
+    }
+  }
+
+  initialFilter(query: {languageId?: string, moduleId?: string, userId?: string}): Observable<any> {
+    let url = `${this.baseUrl}/history?pageItems=25`;
+    if (query.languageId) url += `&languageId=${query.languageId}`;
+    if (query.moduleId) url += `&moduleId=${query.moduleId}`;
+    if (query.userId) url += `&userId=${query.userId}`;
+    console.log("Initial filter for", url)
+    return this.http.get(url);
+  }
+
+  reloadFilter(query: {languageId?: string, moduleId?: string, userId?: string}, pageDelta: number, previousKey: string, nextKey: string): Observable<any>{
+    let url = `${this.baseUrl}/history?pageItems=25`;
+    if (query.languageId) url += `&languageId=${query.languageId}`;
+    if (query.moduleId) url += `&moduleId=${query.moduleId}`;
+    if (query.userId) url += `&userId=${query.userId}`;
+
+    if (pageDelta < 0) {
+      url += `&pageDelta=${-pageDelta-1}&previousKey=${previousKey}`;
+    } else {
+      url += `&pageDelta=${pageDelta-1}&nextKey=${nextKey}`;
+    }
+    console.log("Reloading filter", query, url)
+    return this.http.get(url)
+  }
+
+  /* OLD FUNCTIONS */
 
   getAllTestsByModule(moduleId: string): Observable<any> {
     const url = `${this.baseUrl}/all/${moduleId}`;
@@ -62,4 +99,5 @@ export class TestService {
     }
     return this.http.post(url, postBody)
   }
+
 }

@@ -25,6 +25,8 @@ export class HistoryOptimizedComponent implements OnInit {
   totalPages: number = 0;
   currentPage: number = 1;
   visiblePages: number[] = [];
+  previousKey: string = '';
+  nextKey: string = '';
 
   filterLanguageId!: string;
   filterModuleId!: string;
@@ -58,27 +60,37 @@ export class HistoryOptimizedComponent implements OnInit {
   }
 
   loadAllTests(): void {
-    this.testService.getTestResults({pageIndex: 1})
+    this.testService.getAllTests()
     .subscribe(out=>{
-      this.tests = out.tests; 
+      this.tests = out.tests;
       this.totalItems = out.total;
+      this.previousKey = out.previousKey;
+      this.nextKey = out.nextKey;
+      this.currentPage = 1;
       this.updatePagination(this.totalItems);
       this.scrollToTop();
     })
   }
 
   loadPage(page: number): void {
-    console.log("Loading page", page)
+    if (page == this.currentPage) return;
+    let pageDelta = page - this.currentPage;
     this.currentPage = page;
+
     let filterLanguageId, filterModuleId, userId;
     if (this.filterUserStatus) userId = this.cookieService.get('userId');
     if (this.filterLanguageId) filterLanguageId = this.filterLanguageId;
     if (this.filterModuleId) filterModuleId = this.filterModuleId;
-    this.testService.getTestResults({languageId: filterLanguageId, moduleId: filterModuleId, userId: userId, pageIndex: page})
+    
+    this.testService.reloadFilter({languageId: filterLanguageId,
+                                  moduleId: filterModuleId, 
+                                  userId: userId}, pageDelta, this.previousKey, this.nextKey)
     .subscribe(out=>{
       console.log("Output of loadPage() is", out  )
       this.tests = out.tests;
       this.totalItems = out.total;
+      this.previousKey = out.previousKey;
+      this.nextKey = out.nextKey;
       this.updatePagination(this.totalItems);
       this.scrollToTop();
     })
@@ -86,18 +98,15 @@ export class HistoryOptimizedComponent implements OnInit {
 
   previousPage(): void {
     if (this.currentPage == 1) return;
-    this.currentPage = this.currentPage - 1;
-    this.loadPage(this.currentPage);
+    this.loadPage(this.currentPage - 1);
   }
 
   nextPage(): void {
     if (this.currentPage == this.totalPages) return;
-    this.currentPage = this.currentPage + 1;
-    this.loadPage(this.currentPage);
+    this.loadPage(this.currentPage + 1);
   }
 
   updatePagination(totalItems: number): void {
-    console.log(totalItems, totalItems/25, Math.ceil(totalItems/25), typeof(totalItems), typeof(Math.ceil(totalItems/25)))
     this.totalPages = Math.ceil(totalItems / 25);
     this.visiblePages = [];
     if (this.totalPages <= 5) {
@@ -119,7 +128,6 @@ export class HistoryOptimizedComponent implements OnInit {
         }
       }
     }
-    console.log(this.visiblePages)
   }
 
   /* Filters */
@@ -136,12 +144,13 @@ export class HistoryOptimizedComponent implements OnInit {
       this.filterLanguageId = languageId;
       let userId;
       if (this.filterUserStatus) userId = this.cookieService.get('userId')
-      console.log("user id is", userId)
-      return this.testService.getTestResults({languageId: this.filterLanguageId, userId: userId, pageIndex: 1});
+      return this.testService.initialFilter({languageId: this.filterLanguageId, userId: userId});
     })).subscribe((out)=>{
-      console.log("Output of load lnaguage:", out);
+      console.log("Output of load language is", out)
       this.tests = out.tests;
       this.totalItems = out.total;
+      this.previousKey = out.previousKey;
+      this.nextKey = out.nextKey;
       this.currentPage = 1;
       this.updatePagination(this.totalItems);
       this.scrollToTop();
@@ -167,6 +176,7 @@ export class HistoryOptimizedComponent implements OnInit {
   }
 
   filterByUser(): void {
+    this.languageDisplay='none'; this.moduleDisplay='none';
     if (!this.filterUserStatus) {
       let filterLanguageId; let filterModuleId;
       if (this.filterLanguageId) filterLanguageId = this.filterLanguageId;

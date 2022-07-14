@@ -32,7 +32,6 @@ export class HeaderComponent implements OnInit {
   getLanguage(languageId: string): void {
     this.languageService.getLanguageInfo(languageId)
     .subscribe((out:any)=>{
-      console.log("From header: out is", out)
       this.language = out; 
       if (!this.centerText) {
         this.centerText = `${this.language.englishName}/${this.language.nativeName}`;
