@@ -86,7 +86,6 @@ export class HistoryOptimizedComponent implements OnInit {
                                   moduleId: filterModuleId, 
                                   userId: userId}, pageDelta, this.previousKey, this.nextKey)
     .subscribe(out=>{
-      console.log("Output of loadPage() is", out  )
       this.tests = out.tests;
       this.totalItems = out.total;
       this.previousKey = out.previousKey;
@@ -130,6 +129,10 @@ export class HistoryOptimizedComponent implements OnInit {
     }
   }
 
+  get math() {
+    return Math;
+  }
+
   /* Filters */
 
   loadLanguage(languageId: string): void {
@@ -146,7 +149,6 @@ export class HistoryOptimizedComponent implements OnInit {
       if (this.filterUserStatus) userId = this.cookieService.get('userId')
       return this.testService.initialFilter({languageId: this.filterLanguageId, userId: userId});
     })).subscribe((out)=>{
-      console.log("Output of load language is", out)
       this.tests = out.tests;
       this.totalItems = out.total;
       this.previousKey = out.previousKey;
@@ -163,10 +165,8 @@ export class HistoryOptimizedComponent implements OnInit {
     this.filterModuleId = module.moduleId
     let userId;
     if (this.filterUserStatus) userId = this.cookieService.get('userId')
-    console.log("user id is", userId)
     this.testService.getTestResults({languageId: this.filterLanguageId, moduleId: this.filterModuleId, userId: userId, pageIndex: 1})
     .subscribe((out)=>{
-      console.log("Output of load module:", out);
       this.tests = out.tests;
       this.totalItems = out.total;
       this.currentPage = 1;
@@ -185,7 +185,6 @@ export class HistoryOptimizedComponent implements OnInit {
       let userId = this.cookieService.get('userId');
       this.testService.getTestResults({languageId: filterLanguageId, moduleId: filterModuleId, userId: userId, pageIndex: 1})
       .subscribe((out)=>{
-        console.log("Output of user filter", out)
         this.tests = out.tests;
         this.totalItems = out.total;
         this.currentPage = 1;
@@ -199,7 +198,6 @@ export class HistoryOptimizedComponent implements OnInit {
       this.filterUserStatus = false;
       this.testService.getTestResults({languageId: filterLanguageId, moduleId: filterModuleId, pageIndex: 1})
       .subscribe((out)=>{
-        console.log("Output of user unfilter", out)
         this.tests = out.tests;
         this.totalItems = out.total;
         this.currentPage = 1;
@@ -247,47 +245,6 @@ export class HistoryOptimizedComponent implements OnInit {
     else if (this.moduleDisplay == 'block') {
       this.moduleDisplay = 'none';
     }
-  }
-
-  /* TEST: CREATE 100 RESULTS */
-  insertTestResults(): void {
-
-    let possibleResults = [{languageId: 'kr', englishName: 'Korean', nativeName: '한글', moduleId: '947f1764', displayName: 'Hangul', maxScore: 10},
-                          {languageId: 'kr', englishName: 'Korean', nativeName: '한글', moduleId: '76e4aca6', displayName: 'Vocabulary (Easy)', maxScore: 10},
-                          {languageId: 'kr', englishName: 'Korean', nativeName: '한글', moduleId: 'a6886c66', displayName: 'Vocabulary (Hard)', maxScore: 6},
-                          {languageId: 'jp', englishName: 'Japanese', nativeName: '日本語', moduleId: 'd46703bf', displayName: 'Hiragana', maxScore: 6},
-                          {languageId: 'jp', englishName: 'Japanese', nativeName: '日本語', moduleId: 'ba0f0f6c', displayName: 'Katakana', maxScore: 6},
-                          {languageId: 'jp', englishName: 'Japanese', nativeName: '日本語', moduleId: '1a0b034f', displayName: 'Vocabulary', maxScore: 6}];
-    let possibleUserIds = ['tabby', 'mittens', 'socks'];
-
-    for (let i = 0; i < 5; i ++) {
-      let userId = possibleUserIds[Math.floor(Math.random() * possibleUserIds.length)];
-      let results = possibleResults[Math.floor(Math.random() * possibleResults.length)];
-      let score = Math.floor(Math.random() * (results.maxScore+1));
-      let time = Math.floor(Math.random() * (1000)) + 100;
-      let newDate = new Date();
-      let date = newDate.toISOString().slice(0, 19).replace('T', ' ');
-
-      this.testService.sendTestResults(
-        results.languageId,
-        results.englishName,
-        results.nativeName,
-        results.moduleId,
-        results.displayName,
-        userId,
-        results.maxScore,
-        score,
-        time,
-        date
-      ).subscribe((out)=>{
-        console.log("Sent test results")
-      })
-    }
-
-  }
-
-  get math() {
-    return Math;
   }
 
 }

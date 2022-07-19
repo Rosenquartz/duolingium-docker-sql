@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var languagesRouter = require('./routes/languages');
 var progressRouter = require('./routes/progress');
 var testRouter = require('./routes/test');
+var contestRouter = require('./routes/contest');
 
 var app = express();
 
@@ -22,7 +23,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 // CORS Fix
 const cors = require('cors');
 app.use(cors());
@@ -32,6 +32,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/languages', languagesRouter);
 app.use('/api/progress', progressRouter);
 app.use('/api/tests', testRouter);
+app.use('/api/contests', contestRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -48,7 +49,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
 
 module.exports = app;

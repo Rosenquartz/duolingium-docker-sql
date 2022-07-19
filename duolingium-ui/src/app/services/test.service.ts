@@ -19,7 +19,6 @@ export class TestService {
   }
 
   loadTest(pageDelta: number, previousKey: string, nextKey: string): Observable<any> {
-    console.log(previousKey, nextKey)
     if (pageDelta < 0) {
       const url = `${this.baseUrl}/history?pageItems=25&pageDelta=${-pageDelta-1}&previousKey=${previousKey}`;
       return this.http.get(url)
@@ -49,7 +48,7 @@ export class TestService {
     } else {
       url += `&pageDelta=${pageDelta-1}&nextKey=${nextKey}`;
     }
-    console.log("Reloading filter", query, url)
+    console.log("Query:", url)
     return this.http.get(url)
   }
 

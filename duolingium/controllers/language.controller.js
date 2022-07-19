@@ -23,7 +23,6 @@ const controller = (languageRepository, errorRepository) => {
             res.set({ 'content-type': 'application/json; charset=utf-8' });
             res.status(200).json(languages);
         } catch (err) {
-            console.error(err);
             res.status(400).json(errorRepository(4000));
         }
     }
@@ -33,10 +32,8 @@ const controller = (languageRepository, errorRepository) => {
             let cachedLanguages = await languageRepository.getCachedLanguages();
             cachedLanguages = JSON.parse(cachedLanguages)
             if (!_.isEmpty(cachedLanguages)) {
-                console.log(cachedLanguages)
                 for (let language of cachedLanguages) {
                     if (language.languageId == req.params.languageId) {
-                        console.log("gottem2")
                         res.status(200).json(language);
                         return;
                     }
@@ -47,7 +44,6 @@ const controller = (languageRepository, errorRepository) => {
                 await languageRepository.setCachedLanguages(JSON.stringify(languages));
                 for (let language of languages) {
                     if (language.languageId == req.params.languageId) {
-                        console.log("gottem")
                         res.status(200).json(language);
                         return;
                     }
@@ -68,11 +64,9 @@ const controller = (languageRepository, errorRepository) => {
                 return;
             }
             let modules = await languageRepository.getModuleList(req.params.languageId);
-            console.log(modules)
             await languageRepository.setCachedModules(req.params.languageId, JSON.stringify(modules));
             res.set({ 'content-type': 'application/json; charset=utf-8' });
             if (modules.length == 0) throw {errno: 1035};
-            console.log("shending")
             res.status(200).json({modules: modules});
         } catch (err) {
             res.status(404);
@@ -85,7 +79,6 @@ const controller = (languageRepository, errorRepository) => {
     }
 
     const getModuleInfo = async (req, res) => {
-        console.log("getting module info")
         try {
             let cachedModules = await languageRepository.getCachedModules(req.params.moduleId);
             cachedModules = JSON.parse(cachedModules)
@@ -145,9 +138,7 @@ const controller = (languageRepository, errorRepository) => {
         try {
             await languageRepository.createItem([nanoid(8), req.params.moduleId, req.body.native, req.body.english]);
             let userList = await languageRepository.getUsers;
-            console.log(userList);
         } catch (err) {
-            console.error(err)
             res.status(400).json(errorRepository(4000));
         }
     }

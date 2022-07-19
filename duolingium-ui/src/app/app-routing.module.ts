@@ -17,8 +17,8 @@ const routes: Routes = [
   { path: 'languages', component: LanguagesComponent },
   { path: 'learn', component: HomePageComponent },
   { path: 'learn/:moduleId', component: ModuleLearnComponent },
-  { path: 'history', component: HistoryComponent },
-  { path: 'history-optimized', component: HistoryOptimizedComponent },
+  { path: 'history-offset', component: HistoryComponent },
+  { path: 'history', component: HistoryOptimizedComponent },
   { path: 'test/:moduleId', component: TestComponent }
 ];
 

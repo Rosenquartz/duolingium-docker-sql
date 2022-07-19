@@ -6,7 +6,6 @@ const controller = (progressRepository, errorRepository) => {
         // Get all progress module entities for one user, one language
         // Used to display current progress in 'learn' screen
         try {
-            console.log(req.params.userId, req.params.lang)
             let results = await progressRepository.getProgressModules(req.params.userId, req.params.lang);
             res.status(200).json(results)
         } catch (err) {
@@ -45,14 +44,9 @@ const controller = (progressRepository, errorRepository) => {
             if (!req.body.native && !req.body.english) throw errorRepository(4000);
             if (!itemAnswers) throw errorRepository(4000);
 
-            console.log("answered:", req.body)
-            console.log("correct:", itemAnswers)
-
             let correct = false;
             if (req.body.native == itemAnswers.native) correct = true;
             else if (req.body.english == itemAnswers.english) correct = true;
-
-            console.log("correct is", correct)
 
             await progressRepository.updateProgressItem(req.params.userId, req.body.itemId, correct);
             await progressRepository.updateProgressModule(req.params.userId, req.body.moduleId);

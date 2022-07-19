@@ -70,7 +70,6 @@ export class HistoryComponent implements OnInit {
   }
 
   loadPage(page: number): void {
-    console.log("Loading page", page)
     this.currentPage = page;
     let filterLanguageId, filterModuleId, userId;
     if (this.filterUserStatus) userId = this.cookieService.get('userId');
@@ -78,7 +77,6 @@ export class HistoryComponent implements OnInit {
     if (this.filterModuleId) filterModuleId = this.filterModuleId;
     this.testService.getTestResults({languageId: filterLanguageId, moduleId: filterModuleId, userId: userId, pageIndex: page})
     .subscribe(out=>{
-      console.log("Output of loadPage() is", out  )
       this.tests = out.tests;
       this.totalItems = out.total;
       this.updatePagination(this.totalItems);
@@ -99,7 +97,6 @@ export class HistoryComponent implements OnInit {
   }
 
   updatePagination(totalItems: number): void {
-    console.log(totalItems, totalItems/25, Math.ceil(totalItems/25), typeof(totalItems), typeof(Math.ceil(totalItems/25)))
     this.totalPages = Math.ceil(totalItems / 25);
     this.visiblePages = [];
     if (this.totalPages <= 5) {
@@ -121,7 +118,6 @@ export class HistoryComponent implements OnInit {
         }
       }
     }
-    console.log(this.visiblePages)
   }
 
   /* Filters */
@@ -137,11 +133,9 @@ export class HistoryComponent implements OnInit {
       this.languageDisplay = 'none';
       this.filterLanguageId = languageId;
       let userId;
-      if (this.filterUserStatus) userId = this.cookieService.get('userId')
-      console.log("user id is", userId)
+      if (this.filterUserStatus) userId = this.cookieService.get('userId');
       return this.testService.getTestResults({languageId: this.filterLanguageId, userId: userId, pageIndex: 1});
     })).subscribe((out)=>{
-      console.log("Output of load lnaguage:", out);
       this.tests = out.tests;
       this.totalItems = out.total;
       this.currentPage = 1;
@@ -155,11 +149,9 @@ export class HistoryComponent implements OnInit {
     this.moduleDisplayButton = module.displayName;    
     this.filterModuleId = module.moduleId
     let userId;
-    if (this.filterUserStatus) userId = this.cookieService.get('userId')
-    console.log("user id is", userId)
+    if (this.filterUserStatus) userId = this.cookieService.get('userId');
     this.testService.getTestResults({languageId: this.filterLanguageId, moduleId: this.filterModuleId, userId: userId, pageIndex: 1})
     .subscribe((out)=>{
-      console.log("Output of load module:", out);
       this.tests = out.tests;
       this.totalItems = out.total;
       this.currentPage = 1;
@@ -177,7 +169,6 @@ export class HistoryComponent implements OnInit {
       let userId = this.cookieService.get('userId');
       this.testService.getTestResults({languageId: filterLanguageId, moduleId: filterModuleId, userId: userId, pageIndex: 1})
       .subscribe((out)=>{
-        console.log("Output of user filter", out)
         this.tests = out.tests;
         this.totalItems = out.total;
         this.currentPage = 1;
@@ -191,7 +182,6 @@ export class HistoryComponent implements OnInit {
       this.filterUserStatus = false;
       this.testService.getTestResults({languageId: filterLanguageId, moduleId: filterModuleId, pageIndex: 1})
       .subscribe((out)=>{
-        console.log("Output of user unfilter", out)
         this.tests = out.tests;
         this.totalItems = out.total;
         this.currentPage = 1;
@@ -272,7 +262,6 @@ export class HistoryComponent implements OnInit {
         time,
         date
       ).subscribe((out)=>{
-        console.log("Sent test results")
       })
     }
 

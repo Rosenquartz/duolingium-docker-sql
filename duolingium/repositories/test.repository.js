@@ -17,7 +17,6 @@ createTestResults = async (testId, languageId, englishName, moduleId, displayNam
         await connection.query(sql, [testId, languageId, englishName, moduleId, displayName, userId, total, correct, time, date]);
         await connection.end();
     } catch (err) {
-        console.error(err)
         throw err;
     }
 }
@@ -65,7 +64,7 @@ loadInitialResultsPage = async (filters, pageItems) => {
         let connection = await getConnection();
         let sql, results;
         if (filters.languageId && filters.moduleId && filters.userId) {
-            sql = 'CALL LoadFilterLanguageModuleUser(?, ?, ?, ?)';
+            sql = 'CALL LoadFilterModuleUser(?, ?, ?, ?)';
             results = await connection.query(sql, [filters.languageId, filters.moduleId, filters.userId, pageItems])
         } else if (filters.languageId && filters.userId) {
             sql = 'CALL LoadFilterLanguageUser(?, ?, ?)';
@@ -74,10 +73,9 @@ loadInitialResultsPage = async (filters, pageItems) => {
             sql = 'CALL LoadFilterUser(?, ?)';
             results = await connection.query(sql, [filters.userId, pageItems])
         } else if (filters.languageId && filters.moduleId) {
-            sql = 'CALL LoadFilterLanguageModule(?, ?, ?)';
+            sql = 'CALL LoadFilterModule(?, ?, ?)';
             results = await connection.query(sql, [filters.languageId, filters.moduleId, pageItems])
         } else if (filters.languageId) {
-            console.log("Filtering by language (repo)", filters.languageId, pageItems)
             sql = 'CALL LoadFilterLanguage(?, ?)';
             results = await connection.query(sql, [filters.languageId, pageItems])
         } else {
@@ -92,12 +90,11 @@ loadInitialResultsPage = async (filters, pageItems) => {
 }
 
 loadNextResultsPage = async (filters, pageItems, pageDelta, date, testId) => {
-    console.log("Loading next (repo)")
     try {
         let connection = await getConnection();
         let sql, results;
         if (filters.languageId && filters.moduleId && filters.userId) {
-            sql = 'CALL NextFilterLanguageModuleUser(?, ?, ?, ?, ?, ?, ?)';
+            sql = 'CALL NextFilterModuleUser(?, ?, ?, ?, ?, ?, ?)';
             results = await connection.query(sql, [filters.languageId, filters.moduleId, filters.userId, pageItems, pageDelta, date, testId])
         } else if (filters.languageId && filters.userId) {
             sql = 'CALL NextFilterLanguageUser(?, ?, ?, ?, ?, ?)';
@@ -106,10 +103,9 @@ loadNextResultsPage = async (filters, pageItems, pageDelta, date, testId) => {
             sql = 'CALL NextFilterUser(?, ?, ?, ?, ?)';
             results = await connection.query(sql, [filters.userId, pageItems, pageDelta, date, testId])
         } else if (filters.languageId && filters.moduleId) {
-            sql = 'CALL NextFilterLanguageModule(?, ?, ?, ?, ?, ?)';
+            sql = 'CALL NextFilterModule(?, ?, ?, ?, ?, ?)';
             results = await connection.query(sql, [filters.languageId, filters.moduleId, pageItems, pageDelta, date, testId])
         } else if (filters.languageId) {
-            console.log("Filtering language")
             sql = 'CALL NextFilterLanguage(?, ?, ?, ?, ?)';
             results = await connection.query(sql, [filters.languageId, pageItems, pageDelta, date, testId])
         } else {
@@ -124,12 +120,11 @@ loadNextResultsPage = async (filters, pageItems, pageDelta, date, testId) => {
 }
 
 loadPrevResultsPage = async (filters, pageItems, pageDelta, date, testId) => {
-    console.log("Loading prev (repo)")
     try {
         let connection = await getConnection();
         let sql, results;
         if (filters.languageId && filters.moduleId && filters.userId) {
-            sql = 'CALL PrevFilterLanguageModuleUser(?, ?, ?, ?, ?, ?, ?)';
+            sql = 'CALL PrevFilterModuleUser(?, ?, ?, ?, ?, ?, ?)';
             results = await connection.query(sql, [filters.languageId, filters.moduleId, filters.userId, pageItems, pageDelta, date, testId])
         } else if (filters.languageId && filters.userId) {
             sql = 'CALL PrevFilterLanguageUser(?, ?, ?, ?, ?, ?)';
@@ -138,7 +133,7 @@ loadPrevResultsPage = async (filters, pageItems, pageDelta, date, testId) => {
             sql = 'CALL PrevFilterUser(?, ?, ?, ?, ?)';
             results = await connection.query(sql, [filters.userId, pageItems, pageDelta, date, testId])
         } else if (filters.languageId && filters.moduleId) {
-            sql = 'CALL PrevFilterLanguageModule(?, ?, ?, ?, ?, ?)';
+            sql = 'CALL PrevFilterModule(?, ?, ?, ?, ?, ?)';
             results = await connection.query(sql, [filters.languageId, filters.moduleId, pageItems, pageDelta, date, testId])
         } else if (filters.languageId) {
             sql = 'CALL PrevFilterLanguage(?, ?, ?, ?, ?)';
@@ -228,73 +223,6 @@ filterByModuleAndUser = async (languageId, moduleId, userId, pageItems, offset) 
     }
 }
 
-/* DEPRECATED */
-
-getUserTestResults = async (userId) => {
-    try {
-        let connection = await getConnection();
-        let sql = 'CALL GetUserTestResults(?)';
-        let results = await connection.query(sql, [userId]);
-        await connection.end();
-        return results[0][0];
-    } catch (err) {
-        throw err;
-    }
-}
-
-getUserTestResultsByLanguage = async (userId, languageId) => {
-    try {
-        let connection = await getConnection();
-        let sql = 'CALL GetUserTestResultsByLanguage(?, ?)';
-        let results = await connection.query(sql, [userId, languageId]);
-        await connection.end();
-        return results[0][0];
-    } catch (err) {
-        throw err;
-    }
-}
-
-getUserTestResultsByModule = async (userId, moduleId) => {
-    try {
-        let connection = await getConnection();
-        let sql = 'CALL GetUserTestResultsByModule(?)';
-        let results = await connection.query(sql, [userId, moduleId]);
-        await connection.end();
-        return results[0][0];
-    } catch (err) {
-        throw err;
-    }
-}
-
-getAllTestResultsByModule = async (moduleId) => {
-    try {
-        let connection = await getConnection();
-        let sql = 'CALL GetAllTestResultsByModule(?)';
-        let results = await connection.query(sql, [moduleId]);
-        await connection.end();
-        return results[0][0];
-    } catch (err) {
-        throw err;
-    }
-}
-
-getTestResults = async(languageId, moduleId, userId, pageItems, offset) => {
-    try {
-        console.log("a");
-        let connection = await getConnection();
-        let sql = 'CALL GetTestResults(?, ?, ?, ?, ?)';
-        let results = await connection.query(sql, [languageId, moduleId, userId, pageItems, offset]);
-        await connection.end();
-        console.log(results[0]);
-        console.log("b");
-        return results[0];
-    } catch (err) {
-        console.error(err);
-        console.log("c");
-        throw err;
-    }
-}
-
 module.exports = {    
     createTestResults: createTestResults,
     getAllTestResults: getAllTestResults,
@@ -312,11 +240,4 @@ module.exports = {
     loadInitialResultsPage: loadInitialResultsPage,
     loadNextResultsPage: loadNextResultsPage,
     loadPrevResultsPage: loadPrevResultsPage
-
-    /* DEPRECATED */
-    // getUserTestResults: getUserTestResults,
-    // getUserTestResultsByLanguage: getUserTestResultsByLanguage,
-    // getUserTestResultsByModule: getUserTestResultsByModule,
-    // getAllTestResultsByModule: getAllTestResultsByModule,
-    // getTestResults: getTestResults
 }

@@ -19,6 +19,7 @@ nav {
 
 /* Table stuff */
 table {
+    font-family: museo500;
     width: 70%;
     border-left: 2px #d3d3d3 solid;
     border-right: 2px #d3d3d3 solid;

@@ -1,4 +1,4 @@
-<app-header [centerText]="'Test history (Optimized)'"></app-header>
+<app-header [centerText]="'Test history'"></app-header>
 
 <nav class="navbar navbar-light navbar-expand-md bg-faded justify-content-center">
     <div class="container">
@@ -51,14 +51,6 @@
                 </div>
               </div>
             </li>
-            
-            <li class="nav-item dropdown px-3">              
-              <div class="dropdown">
-                <div class="dropdown-button">
-                  <app-button [buttonText]="'DONT CLICK'" [classes]="'font-size-1-25'" (click)="insertTestResults()"></app-button>
-                </div>
-              </div>
-            </li>
 
           </ul>
       </div>
@@ -67,12 +59,6 @@
 
 <!-- Working table -->
 <div class="tableWrapper">
-
-    <div class="navWrapper">    
-      <nav style="margin-bottom: 10px;" aria-label="Page navigation example">
-          <p>*(Optimized with keyset pagination)</p>
-      </nav>
-    </div>
 
   <div class="navWrapper">    
     <nav style="margin-bottom: 10px;" aria-label="Page navigation example">
