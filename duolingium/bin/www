@@ -29,6 +29,8 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+console.log("server is running");
+
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -88,3 +90,27 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/* Socket implementation */
+const { Server } = require('socket.io')
+const sockets = require ('../sockets')
+const io = new Server(server, {
+  cors: { origin: "*" }
+});
+io.on('connection', (socket)=>{
+  console.log("connected");
+  socket.on('joinAsConductor', (data)=>{
+    console.log("joining as conductor")
+    socket.join(data.contestId);
+  })
+  socket.on('joinAsContestant', (data)=>{
+    socket.join(data.contestId);
+    socket.to(data.contestId).emit("userJoined", data.users);
+  })
+  socket.on("userJoined", (data)=>{
+    console.log(data);
+  })
+  socket.on("startGame", (data)=>{
+    socket.to(data.contestId).emit("startGame");
+  })
+})

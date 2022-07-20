@@ -100,8 +100,6 @@ const controller = (userRepository, errorRepository) => {
 
     const checkLogin = async(req, res) => {
         try {
-            console.log("Logging in")
-            console.log(req.body)
             if (!req.body.userId) throw errorRepository(1000);
             if (!req.body.password) throw errorRepository(1000);
             
@@ -134,11 +132,9 @@ const controller = (userRepository, errorRepository) => {
             console.log(req.params.userId)
             let results = {}
             let userInfo = await userRepository.getProfile(req.params.userId);
-            console.log("userInfo:", userInfo)
             results.preferredLanguage = userInfo[0].preferredLanguage
             let modules = await userRepository.getPreferredLanguage(req.params.userId)
             results.modules = modules[0][0]
-            console.log("resutls are ", results)
             res.status(200).json(results)
         } catch (err) {
             res.status(400).json(errorRepository(4000))

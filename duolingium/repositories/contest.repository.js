@@ -59,6 +59,18 @@ joinContest = async (contestId, userId) => {
     }
 }
 
+getContestants = async (contestId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetContestants(?)';
+        let results = await connection.query(sql, [contestId]);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
 startItem = async(contestItemId, contestId, moduleId, itemId, date) => {
     try {
         let connection = await getConnection();
@@ -89,7 +101,6 @@ getContestItemInfo = async(contestId, contestItemId) => {
         let sql = 'CALL getContestItemInfo(?, ?)';
         let results = await connection.query(sql, [contestId, contestItemId]);
         await connection.end();
-        console.log(results[0])
         return results[0];
     } catch (err) {
         throw err;
@@ -125,6 +136,7 @@ module.exports = {
     startContest: startContest,
     endContest: endContest,
     joinContest: joinContest,
+    getContestants: getContestants,
     startItem: startItem,
     checkItem: checkItem,
     answerItem: answerItem,

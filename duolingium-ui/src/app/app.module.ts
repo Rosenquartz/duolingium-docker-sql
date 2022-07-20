@@ -32,6 +32,11 @@ import { DateTimePipe } from './pipes/date-time.pipe';
 import { ScoreScreenComponent } from './components/score-screen/score-screen.component';
 import { HistoryOptimizedComponent } from './components/history-optimized/history-optimized.component';
 
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { ContestLobbyComponent } from './components/contest-lobby/contest-lobby.component';
+// use the port number you used to set up the express app
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,13 +63,15 @@ import { HistoryOptimizedComponent } from './components/history-optimized/histor
     DateTimePipe,
     ScoreScreenComponent,
     HistoryOptimizedComponent,
+    ContestLobbyComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule 
+    BrowserAnimationsModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [
     CookieService

@@ -10,6 +10,7 @@ import { LanguagesComponent } from './components/languages/languages.component';
 import { HistoryComponent } from './components/history/history.component';
 import { TestComponent } from './components/test/test.component';
 import { HistoryOptimizedComponent } from './components/history-optimized/history-optimized.component';
+import { ContestLobbyComponent } from './components/contest-lobby/contest-lobby.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'learn/:moduleId', component: ModuleLearnComponent },
   { path: 'history-offset', component: HistoryComponent },
   { path: 'history', component: HistoryOptimizedComponent },
-  { path: 'test/:moduleId', component: TestComponent }
+  { path: 'test/:moduleId', component: TestComponent },
+  { path: 'contest/lobby', component: ContestLobbyComponent}
 ];
 
 @NgModule({

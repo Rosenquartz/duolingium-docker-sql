@@ -86,7 +86,6 @@ createItem = async (request) => {
     try {
         let connection = await getConnection();
         let sql = 'CALL CreateItem (?, ?, ?, ?)';
-        console.log(request);
         request[2] = '\x82\xAC';
         await connection.query(sql, request);
         await connection.end();

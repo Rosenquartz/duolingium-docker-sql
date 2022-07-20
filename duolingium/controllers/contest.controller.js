@@ -56,7 +56,12 @@ const controller = (contestRepository, errorRepository) => {
                 throw {errno: 4000}
             }            
             await contestRepository.joinContest(req.body.contestId, req.body.userId);
-            res.status(200).json(req.body);
+            let results = await contestRepository.getContestants(req.body.contestId);
+            let users = [];
+            for (let result of results) {
+                users.push(result.userId)
+            }
+            res.status(200).json({users: users, contestId: req.body.contestId});
         } catch (err) {
             console.error(err)
             res.status(400).json(errorRepository(4000));
@@ -70,7 +75,6 @@ const controller = (contestRepository, errorRepository) => {
             }
             let contestItemId = nanoid(8);
             let date = new Date();
-            console.log(contestItemId, req.body.contestId, req.body.moduleId, req.body.itemId, date)
             await contestRepository.startItem(contestItemId, req.body.contestId, req.body.moduleId, req.body.itemId, date);
             res.status(200).json({contestItemId: contestItemId});
         } catch (err) {
@@ -95,7 +99,6 @@ const controller = (contestRepository, errorRepository) => {
             let contestItemInfo = await contestRepository.getContestItemInfo(req.body.contestId, req.body.contestItemId);
             let startDate = contestItemInfo[0][0].startedAt;
             let timer = contestItemInfo[1][0].timer;
-            console.log(startDate, timer)
             if (correct) {
                 score += 50;
                 let seconds = parseInt ((answeredDate - startDate) / 1000);

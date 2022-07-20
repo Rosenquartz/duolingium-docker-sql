@@ -11,7 +11,6 @@ import { map, filter, tap, switchMap } from 'rxjs/operators';
 })
 export class HomePageComponent implements OnInit {
 
-  what: string = '20';
   ready: number = 0;
 
   userId: string = ''

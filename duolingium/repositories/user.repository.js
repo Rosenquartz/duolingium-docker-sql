@@ -51,7 +51,6 @@ updateUser = async (fields, userId) => {
         let connection = await getConnection();
         let sql = 'CALL UpdateUser(?, ?, ?, ?, ?)';
         let resulta = await connection.query(sql, [userId, fields.firstname, fields.lastname, fields.email, fields.preferredLanguage]);
-        console.log("resulta", resulta)
         await connection.end();
         return fields;
     } catch (err) {
@@ -60,7 +59,6 @@ updateUser = async (fields, userId) => {
 }
 
 checkLogin = async (userId) => {
-    console.log("yo")
     try {
         let connection = await getConnection();
         let sql = 'CALL CheckLogin(?)'
