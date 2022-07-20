@@ -1,0 +1,26 @@
+<p>contest-conductor works!</p>
+<p>Total Number of Items: {{totalItems}}</p>
+<p>Current Item: {{currentItem+1}}</p>
+
+<app-countdown-timer [countdownTimer]="countdownTimer"></app-countdown-timer>
+
+<div *ngIf="currentQuestion">
+    <div class="row container mx-auto" *ngIf="currentQuestion.native">
+        <p class="question col-sm-12 col-md-12 col-lg-12">What is the English equivalent of {{currentQuestion.native}}?</p>
+        <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of currentQuestion.choices">
+            <app-button [buttonText]="choice" [classes]="'font-size-2'"></app-button>
+        </div>
+    </div>
+    <div class="row container mx-auto" *ngIf="currentQuestion.english">
+        <p class="question col-sm-12 col-md-12 col-lg-12">What is the native equivalent of '{{currentQuestion.english}}'?</p>
+        <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of currentQuestion.choices">
+            <app-button [buttonText]="choice"></app-button>
+        </div>
+    </div>
+</div>
+
+<p>Users answering:</p>
+<p *ngFor="let contestant of contestantAnswers | keyvalue">
+    {{contestant.key}}: <a *ngIf="!contestant.value">still answering...</a> <a *ngIf="contestant.value">{{contestant.value}}</a>
+</p>
+<button (click)="nextItem()" [disabled]="!nextItemButton">Next item</button>

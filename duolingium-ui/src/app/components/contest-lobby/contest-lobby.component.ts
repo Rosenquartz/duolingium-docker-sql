@@ -59,13 +59,15 @@ export class ContestLobbyComponent implements OnInit {
 
   /* Conductor functions */
   startGameAsConductor(): void {
-    console.log("Emitting startGame")
+    console.log("Emitting startGame as conductor")
     this.contestService.emitStartGame(this.contestId);
+    this.state = "conducting"
   }
 
   /* Contestant functions */
   startGameAsContestant(): void {
-
+    console.log("Starting game as contestant")
+    this.state = "ongoing"
   }
 
 }

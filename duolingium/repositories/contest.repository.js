@@ -131,6 +131,18 @@ updateScore = async(contestId, userId, score) => {
     }
 }
 
+getRankings = async(contestId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetRankings(?)';
+        let results = await connection.query(sql, [contestId]);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
     createContest: createContest,
     startContest: startContest,
@@ -141,5 +153,6 @@ module.exports = {
     checkItem: checkItem,
     answerItem: answerItem,
     getContestItemInfo: getContestItemInfo,
-    updateScore: updateScore
+    updateScore: updateScore,
+    getRankings: getRankings
 }

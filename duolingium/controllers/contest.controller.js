@@ -102,7 +102,8 @@ const controller = (contestRepository, errorRepository) => {
             if (correct) {
                 score += 50;
                 let seconds = parseInt ((answeredDate - startDate) / 1000);
-                score += 50 * Math.max(parseInt((timer-seconds)/100),0)
+                console.log("Seconds is", seconds, timer, parseInt(50/100 * Math.max(parseInt((timer-seconds)*100/30),0)))
+                score += parseInt(50/100 * Math.max(parseInt((timer-seconds)*100/30),0))
             }
             
             /* Insert information into tables */
@@ -115,13 +116,23 @@ const controller = (contestRepository, errorRepository) => {
         }
     }
 
+    const getRankings = async (req, res) => {
+        try {
+            let results = await contestRepository.getRankings(req.query.contestId);
+            res.status(200).json(results);
+        } catch (err) {
+            res.status(400).json(errorRepository(4000));
+        }
+    }
+
     return {
         createContest: createContest,
         startContest: startContest,
         endContest: endContest,
         joinContest: joinContest,
         startItem: startItem,
-        answerItem: answerItem
+        answerItem: answerItem,
+        getRankings: getRankings
     }
 }
 

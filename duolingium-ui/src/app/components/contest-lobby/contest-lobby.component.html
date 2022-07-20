@@ -2,54 +2,70 @@
 
     <app-header class="headerWrapper" [centerText]="'Contest Lobby'"></app-header>
 
-    <div class="bodyWrapper" *ngIf="state=='selectionScreen'">
-        <div class="padding"></div>
-        <div class="temp2">
-            <div class="row mx-auto my-auto justify-content-center mt-n4">                
-                <div class="card col-sm-6 col-md-4 col-lg-2 pt-4 card-block d-flex" (click)="createLobby()">
-                    <div class="card-img align-items-center d-flex justify-content-center">
-                        <img src="https://design.duolingo.com/885521149d32d1cf32c3.svg">
-                    </div>
-                    <div class="card-body align-items-center d-flex justify-content-center">
-                        <p class="card-text">Create Lobby</p>
-                    </div>
-                </div>                
-                <div class="card col-sm-6 col-md-4 col-lg-2 pt-4 card-block d-flex" (click)="joinLobby()">
-                    <form>
-                        <input type="email" id="form2Example11" class="form-control"
-                          placeholder="Contest Id" [(ngModel)]="inputContestId" name="inputContestId"/>
-                    </form>
-                    <div class="card-img align-items-center d-flex justify-content-center">
-                        <img src="https://design.duolingo.com/9a6ea4292d92aebb9c5a.svg">
-                    </div>
-                    <div class="card-body align-items-center d-flex justify-content-center">
-                        <p class="card-text">Join Lobby</p>
+    <div class="lobbyWrapper">
+        
+        <app-contest-conductor 
+            [contestId]="contestId"
+            [languageId]="'kr'"
+            [moduleId]="'947f1764'"
+            [contestants]="users"
+            [timer]="30"
+            *ngIf="state=='conducting'"></app-contest-conductor>
+
+        <app-contest-contestant 
+            [contestId]="contestId"
+            *ngIf="state=='ongoing'"></app-contest-contestant>
+
+        <div class="bodyWrapper" *ngIf="state=='selectionScreen'">
+            <div class="padding"></div>
+            <div class="temp2">
+                <div class="row mx-auto my-auto justify-content-center mt-n4">                
+                    <div class="card col-sm-6 col-md-4 col-lg-2 pt-4 card-block d-flex" (click)="createLobby()">
+                        <div class="card-img align-items-center d-flex justify-content-center">
+                            <img src="https://design.duolingo.com/885521149d32d1cf32c3.svg">
+                        </div>
+                        <div class="card-body align-items-center d-flex justify-content-center">
+                            <p class="card-text">Create Lobby</p>
+                        </div>
+                    </div>                
+                    <div class="card col-sm-6 col-md-4 col-lg-2 pt-4 card-block d-flex" (click)="joinLobby()">
+                        <form>
+                            <input type="email" id="form2Example11" class="form-control"
+                            placeholder="Contest Id" [(ngModel)]="inputContestId" name="inputContestId"/>
+                        </form>
+                        <div class="card-img align-items-center d-flex justify-content-center">
+                            <img src="https://design.duolingo.com/9a6ea4292d92aebb9c5a.svg">
+                        </div>
+                        <div class="card-body align-items-center d-flex justify-content-center">
+                            <p class="card-text">Join Lobby</p>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="padding"></div>
         </div>
-        <div class="padding"></div>
-    </div>
 
-    <div class="bodyWrapper" *ngIf="state=='lobbyConductor'">
-        <div class="padding"></div>
-        <div class="temp2">
-            <p>Lobby: {{contestId}}</p>
-            <p>Users:</p>
-            <p *ngFor="let user of users">-{{user}}</p>
-            <button (click)="startGameAsConductor()">Start Contest</button>
+        <div class="bodyWrapper" *ngIf="state=='lobbyConductor'">
+            <div class="padding"></div>
+            <div class="temp2">
+                <p>Lobby: {{contestId}}</p>
+                <p>Users:</p>
+                <p *ngFor="let user of users">-{{user}}</p>
+                <button (click)="startGameAsConductor()">Start Contest</button>
+            </div>
+            <div class="padding"></div>
         </div>
-        <div class="padding"></div>
-    </div>
 
-    <div class="bodyWrapper" *ngIf="state=='standby'">
-        <div class="padding"></div>
-        <div class="temp2">
-            <p>Lobby: {{contestId}}</p>
-            <p>Users:</p>
-            <p *ngFor="let user of users">-{{user}}</p>
+        <div class="bodyWrapper" *ngIf="state=='standby'">
+            <div class="padding"></div>
+            <div class="temp2">
+                <p>Lobby: {{contestId}}</p>
+                <p>Users:</p>
+                <p *ngFor="let user of users">-{{user}}</p>
+            </div>
+            <div class="padding"></div>
         </div>
-        <div class="padding"></div>
+
     </div>
 
 </div>

@@ -18,32 +18,3 @@
             (buttonClicked)="footerClicked($event)"></app-module-footer>
     </div>
 </div>
-
-<!--
-<div class="beeg" *ngIf="ready">
-    
-    <app-item [question]="questions[currentNumber]" [currentAnswer]="currentAnswer" (buttonClicked)="choiceClicked($event)"></app-item>    
-
-    <footer class="page-footer blue">
-
-        <div *ngIf="!finished" class="row mx-auto justify-content-center py-3">
-            <div class="choice check" *ngIf="!footerVisible" >
-                <button class="choice-button check check{{currentAnswer ? '' : 'Not'}}Available" [disabled]="!this.currentAnswer" 
-                (click)="check()"> CHECK </button>
-            </div>
-            <div class="choice check" *ngIf="footerVisible">
-                <button *ngIf="correct" class="choice-button check correct" (click)="nextItem()"> Correct! </button>
-                <button *ngIf="!correct" class="choice-button check incorrect" (click)="nextItem()"> Try Again!</button>
-            </div>
-        </div>
-
-        <div *ngIf="finished" class="row mx-auto justify-content-center py-3">
-            <div class="choice check">
-                <button class="choice-button check" routerLink="/learn"> Module Finished! </button>
-            </div>
-        </div>
-    
-    </footer>
-
-</div>
--->

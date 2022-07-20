@@ -34,6 +34,9 @@ import { HistoryOptimizedComponent } from './components/history-optimized/histor
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { ContestLobbyComponent } from './components/contest-lobby/contest-lobby.component';
+import { ContestConductorComponent } from './components/contest-conductor/contest-conductor.component';
+import { ContestContestantComponent } from './components/contest-contestant/contest-contestant.component';
+import { CountdownTimerComponent } from './components/countdown-timer/countdown-timer.component';
 // use the port number you used to set up the express app
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -64,6 +67,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     ScoreScreenComponent,
     HistoryOptimizedComponent,
     ContestLobbyComponent,
+    ContestConductorComponent,
+    ContestContestantComponent,
+    CountdownTimerComponent,
   ],
   imports: [
     BrowserModule,

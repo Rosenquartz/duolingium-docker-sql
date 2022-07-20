@@ -1,0 +1,19 @@
+<app-countdown-timer [countdownTimer]="timer"></app-countdown-timer>
+
+<div *ngIf="currentQuestion">
+    <div class="row container mx-auto" *ngIf="currentQuestion.native">
+        <p class="question col-sm-12 col-md-12 col-lg-12">What is the English equivalent of {{currentQuestion.native}}?</p>
+        <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of currentQuestion.choices">
+            <app-button [buttonText]="choice" [selected]="currentAnswer==choice" [classes]="'font-size-2'" (click)="choiceClicked(choice)"></app-button>
+        </div>
+    </div>
+
+    <div class="row container mx-auto" *ngIf="currentQuestion.english">
+        <p class="question col-sm-12 col-md-12 col-lg-12">What is the native equivalent of '{{currentQuestion.english}}'?</p>
+        <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of currentQuestion.choices">
+            <app-button [buttonText]="choice" [selected]="currentAnswer==choice" (click)="choiceClicked(choice)"></app-button>
+        </div>
+    </div>
+</div>
+
+<button (click)="submitClicked()" [disabled]="answered">submit</button>

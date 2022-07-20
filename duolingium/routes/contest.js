@@ -12,5 +12,6 @@ router.put('/end', controller.endContest);
 router.post('/join', controller.joinContest);
 router.post('/startItem', controller.startItem);
 router.post('/answerItem', controller.answerItem);
+router.get('/rankings', controller.getRankings)
 
 module.exports = router;

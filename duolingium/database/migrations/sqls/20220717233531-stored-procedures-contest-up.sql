@@ -100,6 +100,12 @@ END;
 
 /* Stored Procedures for Rankings */
 
-CREATE PROCEDURE `StartItem` (
-
+CREATE PROCEDURE `GetRankings` (
+    IN `inputContestId` VARCHAR(8)
 )
+BEGIN
+    SELECT userId, score
+    FROM `contestant`
+    WHERE contestId = inputContestId
+    ORDER BY score DESC;
+END;
