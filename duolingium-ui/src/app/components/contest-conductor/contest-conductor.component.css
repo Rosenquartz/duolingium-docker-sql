@@ -1,0 +1,72 @@
+.conductorWrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: museo500;
+}
+
+.headerWrapper {
+    flex: 1;
+}
+
+.moduleWrapper {
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.padding {
+    flex: 1;
+}
+
+.contentContainer {
+    flex: 2;
+}
+
+.container {
+    max-width: 960px;
+    font-size: 32px;
+    font-family: Verdana;
+    margin-top: 15vh;
+    justify-content: center;
+    color: #4B4B4B;
+}
+
+p {
+    text-align: center;
+    margin-top: 45px;
+}
+
+.footerWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-top: 3px solid;
+    border-color: #e5e5e5;
+}
+
+.answeringContestants {
+    flex: 5;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;    
+    align-items: center;
+}
+
+.answeringContestants p {
+    font-family: museo500;
+    font-size: 1rem;
+    margin: 0px;
+    text-align: center;
+    vertical-align: center;
+}
+
+.nextButtonContainer {
+    display: flex;
+    justify-content: center;
+    vertical-align: center;
+}

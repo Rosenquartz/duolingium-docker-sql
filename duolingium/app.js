@@ -15,9 +15,12 @@ const appData = require('./sockets');
 const app = appData.app;
 const server = appData.server;
 
+// CORS Fix
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,7 +28,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// CORS Fix
 const cors = require('cors');
 app.use(cors());
 

@@ -41,12 +41,24 @@ io.on('connection', (socket) => {
         socket.to(data.contestId).emit("contestantAnswered", data);
     })
 
-    socket.on("pettyTimerUpdate", (data) => {
-        socket.to(data.contestId).emit("pettyTimer", data)
+    socket.on("startPettyTimer", (data) => {
+        socket.to(data.contestId).emit("startPettyTimer", data)
+    })
+
+    socket.on("startTimer", (data) => {
+        socket.to(data.contestId).emit("startTimer", data)
     })
 
     socket.on("timerUpdate", (data) => {
-        socket.to(data.contestId).emit("timer", data)
+        socket.to(data.contestId).emit("timerUpdate", data)
+    })
+
+    socket.on("showRankings", (data) => {
+        socket.to(data.contestId).emit("userShowRankings", data)
+    })
+
+    socket.on("hideRankings", (data) => {
+        socket.to(data.contestId).emit("hideShowRankings")
     })
 
 });

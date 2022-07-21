@@ -1,0 +1,18 @@
+.rankingWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-top: -50px;
+}
+
+.rankingWrapper div {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.rankingWrapper div p {
+    text-align: center;
+}

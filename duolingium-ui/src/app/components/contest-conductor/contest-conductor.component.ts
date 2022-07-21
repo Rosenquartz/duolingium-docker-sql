@@ -1,9 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { MultipleChoiceQuestion } from 'src/app/models/MultipleChoiceQuestion';
 import { ContestService } from 'src/app/services/contest.service';
 import { LanguageService } from 'src/app/services/language.service';
+
+interface Contestant {
+  userId: string,
+  score: number
+}
 
 @Component({
   selector: 'app-contest-conductor',
@@ -33,9 +38,17 @@ export class ContestConductorComponent implements OnInit {
   pettyTimer: boolean = false;
   countdownTimer: number = 0;
   nextItemButton: boolean = false;
+  headerTimer: number = 10;
+
+  rankings: Contestant[] = [];
+  itemRankings: Array<any> = [];
+  showingRankings: boolean = false;
 
   contestantAnswers: {[key:string]:string} = {};
   _contestantAnswerSub!: Subscription;
+
+  finished: boolean = false;
+  ready: boolean = false;
 
   constructor(
     private languageService: LanguageService,
@@ -44,8 +57,6 @@ export class ContestConductorComponent implements OnInit {
 
   ngOnInit(): void {
     this.getNumberOfItems();
-    this.pettyTimer = true;
-    this.startTimer(5);
     for (let contestant of this.contestants) {
       this.contestantAnswers[contestant] = "";
     }
@@ -64,6 +75,9 @@ export class ContestConductorComponent implements OnInit {
         if (this.hasEverybodySubmitted()) this.showLeaderboards();
       });
     })
+    this.pettyTimer = true;
+    this.startTimer(5);
+    this.ready = true;
   }
 
   /* Initial Setup */
@@ -75,7 +89,7 @@ export class ContestConductorComponent implements OnInit {
       this.items = out.items;
       this.setUpQuestions()
       .then(()=>{
-        this.contestService.emitNextItem(this.contestId, this.currentQuestion)
+        this.contestService.emitNextItem(this.contestId, this.contestItemId, this.currentItem, this.totalItems, this.currentQuestion)
       });
     })
   }
@@ -84,8 +98,15 @@ export class ContestConductorComponent implements OnInit {
 
   startTimer(time: number): void {
     this.countdownTimer = time; 
-    if (this.pettyTimer) this.contestService.emitPettyTimerUpdate(this.contestId, this.countdownTimer)
-    else this.contestService.emitTimerUpdate(this.contestId, this.countdownTimer);
+    this.headerTimer = time;
+    if (this.pettyTimer) {
+      this.contestService.emitStartPettyTimer(this.contestId, this.countdownTimer)
+      this.contestService.emitTimerUpdate(this.contestId, this.countdownTimer)
+    }
+    else {
+      this.contestService.emitStartTimer(this.contestId, this.countdownTimer);
+      this.contestService.emitTimerUpdate(this.contestId, this.countdownTimer)
+    }
     this.interval = setInterval(() => {
       this.updateClock()
     },950)
@@ -97,20 +118,19 @@ export class ContestConductorComponent implements OnInit {
 
   updateClock(): void {
     this.countdownTimer -= 1;
-    if (this.countdownTimer <= 0) {
-      if (this.pettyTimer) {
-        this.countdownTimer = this.timer;
-        this.contestService.emitTimerUpdate(this.contestId, this.countdownTimer)
-        this.pettyTimer = false;
-        this.loadItem();
-      }
-      else {
+    if (this.countdownTimer <= 0 && !this.pettyTimer) {
         this.contestService.emitTimerUpdate(this.contestId, this.countdownTimer)
         this.stopTimer();
         this.showLeaderboards();
-      }
+    } else if (this.countdownTimer < 0 && this.pettyTimer){
+        this.countdownTimer = this.timer;
+        this.headerTimer = this.timer;
+        this.contestService.emitStartTimer(this.contestId, this.countdownTimer)
+        this.contestService.emitTimerUpdate(this.contestId, this.countdownTimer)
+        this.pettyTimer = false;
+        this.loadItem();
     } else {
-      if (this.pettyTimer) this.contestService.emitPettyTimerUpdate(this.contestId, this.countdownTimer)
+      if (this.pettyTimer) this.contestService.emitTimerUpdate(this.contestId, this.countdownTimer)
       else this.contestService.emitTimerUpdate(this.contestId, this.countdownTimer);
     }
   }
@@ -132,16 +152,31 @@ export class ContestConductorComponent implements OnInit {
     this.stopTimer();
     this.countdownTimer = 0;
     this.contestService.emitTimerUpdate(this.contestId, 0);
-    this.nextItemButton = true;
-    this.contestService.emitShowRankings(this.contestId);
+    this.contestService.getRankings(this.contestId)
+    .pipe(switchMap(out=>{
+      console.log("Output of rankings:", out)
+      this.rankings = out;
+      return this.contestService.getItemRanking(this.contestItemId)
+    })).subscribe(out=>{
+      console.log("Output of item rankings", out)
+      this.itemRankings = out;
+      this.showingRankings = true;
+      this.nextItemButton = true;
+      this.contestService.emitShowRankings(this.contestId, this.rankings, this.itemRankings, this.contestantAnswers);
+      // {answers: this.contestantAnswers, totalRanking: this.rankings})
+    });
   }
 
   /* Load Items */
 
   nextItem(): void {
+    console.log("Click next item")
+    this.contestService.emitHideRankings(this.contestId);
+    this.nextItemButton = false;
     this.currentItem += 1;
     this.pettyTimer = true;
     this.startTimer(3);
+    this.showingRankings = false;
   }
 
   loadItem(): void {
@@ -154,12 +189,11 @@ export class ContestConductorComponent implements OnInit {
     .subscribe(out=>{
       this.contestItemId = out.contestItemId;
     })
-    this.contestService.emitNextItem(this.contestId, this.currentQuestion)
+    this.contestService.emitNextItem(this.contestId, this.contestItemId, this.currentItem, this.totalItems, this.currentQuestion)
     this.reset();
   }
 
   submitAnswers(): void {
-    console.log("Submitting:")
     for (let contestant of Object.keys(this.contestantAnswers)) {
       console.log(this.contestItemId, this.contestId, contestant, this.moduleId, this.currentQuestion.itemId, this.currentQuestion.type, this.contestantAnswers[contestant])
       this.contestService.answerItem(
@@ -179,6 +213,7 @@ export class ContestConductorComponent implements OnInit {
       this.contestantAnswers[contestant] = '';
     }
     this.nextItemButton = false;
+    this.showingRankings = false;
   }
 
   /* Item Setup */

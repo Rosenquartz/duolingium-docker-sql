@@ -26,7 +26,7 @@ services:
   angular-app:
     build: ./duolingium-ui
     ports:
-      - "4202:4200"
+      - "4200:4200"
     volumes:
       - ./duolingium-ui/:/ng-app
   redis:

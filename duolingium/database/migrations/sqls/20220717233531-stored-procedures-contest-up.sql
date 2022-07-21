@@ -9,6 +9,15 @@ BEGIN
     VALUES (inputContestId, inputLanguageId, inputModuleId, inputTimer, 'standby');
 END;
 
+CREATE PROCEDURE `CheckContest` (
+    IN `inputContestId` VARCHAR(8)
+)
+BEGIN
+    SELECT *
+    FROM `contest`
+    WHERE contestId = inputContestId;
+END;
+
 CREATE PROCEDURE `JoinContest` (
     IN `inputContestId` VARCHAR(8),
     IN `inputUserId` VARCHAR(16)
@@ -107,5 +116,15 @@ BEGIN
     SELECT userId, score
     FROM `contestant`
     WHERE contestId = inputContestId
+    ORDER BY score DESC;
+END;
+
+CREATE PROCEDURE `GetItemRankings` (
+    IN `inputContestItemId` VARCHAR(8)
+)
+BEGIN
+    SELECT userId, score
+    FROM `contestantProgressItem`
+    WHERE contestItemId = inputContestItemId
     ORDER BY score DESC;
 END;

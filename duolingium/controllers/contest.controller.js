@@ -1,6 +1,7 @@
 const { nanoid } = require('nanoid');
 const _ = require('lodash');
 const { min } = require('lodash');
+const e = require('express');
 
 const controller = (contestRepository, errorRepository) => {
 
@@ -50,6 +51,19 @@ const controller = (contestRepository, errorRepository) => {
         }
     }
 
+    const checkContest = async (req, res) => {
+        try {
+            let results = await contestRepository.checkContest(req.query.contestId);
+            if (results.length == 0) {
+                res.status(200).json({exists: false});
+                return;
+            }
+            res.status(200).json({exists: true})
+        } catch (err) {
+            res.status(400).json(errorRepository(4000))
+        }
+    }
+
     const joinContest = async (req, res) => {
         try {
             if (!req.body.contestId || !req.body.userId) {
@@ -85,6 +99,7 @@ const controller = (contestRepository, errorRepository) => {
 
     const answerItem = async (req, res) => {
         try {
+            console.log("NEW ANSWER ITEM REQUEST", req.body)
             let answeredDate = new Date();
             /* Check item first */
             if (!req.body.english && !req.body.native) throw {errno: 4000};
@@ -118,7 +133,22 @@ const controller = (contestRepository, errorRepository) => {
 
     const getRankings = async (req, res) => {
         try {
-            let results = await contestRepository.getRankings(req.query.contestId);
+            if (req.query.contestItemId) {
+                let results = await contestRepository.getItemRankings(req.query.contestItemId);
+                res.status(200).json(results);
+            } else {
+                let results = await contestRepository.getRankings(req.query.contestId);
+                res.status(200).json(results);
+            }
+        } catch (err) {
+            console.error(err);
+            res.status(400).json(errorRepository(4000));
+        }
+    }
+
+    const getItemRankings = async (req, res) => {
+        try {
+            let results = await contestRepository.getItemRankings(req.query.contestId, req.query.itemId);
             res.status(200).json(results);
         } catch (err) {
             res.status(400).json(errorRepository(4000));
@@ -129,10 +159,12 @@ const controller = (contestRepository, errorRepository) => {
         createContest: createContest,
         startContest: startContest,
         endContest: endContest,
+        checkContest: checkContest,
         joinContest: joinContest,
         startItem: startItem,
         answerItem: answerItem,
-        getRankings: getRankings
+        getRankings: getRankings,
+        getItemRankings: getItemRankings
     }
 }
 

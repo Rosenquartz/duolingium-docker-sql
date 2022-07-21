@@ -1,0 +1,40 @@
+<div class="rankingWrapper">
+    <div class="currentRanking">
+        <p>Current Ranking</p>
+        <table class="table">
+            <thead>
+              <tr>
+                <th style="width: 33%" scope="col">Rank</th>
+                <th style="width: 33%" scope="col">Contestant</th>
+                <th style="width: 3%" scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let result of rankings">
+                <td>Hey</td>
+                <td>{{result.userId}}</td>
+                <td>{{result.score}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="itemRanking">
+        <p>Item Analysis</p>
+        <table class="table">
+            <thead>
+              <tr>
+                <th style="width: 33%" scope="col">Contestant</th>
+                <th style="width: 33%" scope="col">Answer</th>
+                <th style="width: 33%" scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let result of itemRankings">
+                <td>{{result.userId}}</td>
+                <td>{{result.score}}</td>
+                <td>{{answers[result.userId]}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>

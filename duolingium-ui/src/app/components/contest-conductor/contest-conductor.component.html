@@ -1,26 +1,43 @@
-<p>contest-conductor works!</p>
-<p>Total Number of Items: {{totalItems}}</p>
-<p>Current Item: {{currentItem+1}}</p>
+<div class="conductorWrapper" *ngIf="ready">
 
-<app-countdown-timer [countdownTimer]="countdownTimer"></app-countdown-timer>
+    <div class="headerWrapper">
+        <app-contest-header [currentTimer]="countdownTimer" [totalTimer]="headerTimer" [currentItem]="currentItem+1" [totalItems]="totalItems"></app-contest-header>
+    </div>
 
-<div *ngIf="currentQuestion">
-    <div class="row container mx-auto" *ngIf="currentQuestion.native">
-        <p class="question col-sm-12 col-md-12 col-lg-12">What is the English equivalent of {{currentQuestion.native}}?</p>
-        <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of currentQuestion.choices">
-            <app-button [buttonText]="choice" [classes]="'font-size-2'"></app-button>
+    <div class="moduleWrapper">
+        <div class="padding"></div>
+        <div class="contentContainer" *ngIf="!pettyTimer&&!showingRankings">
+            <app-item [question]="currentQuestion" *ngIf="!finished"></app-item>    
         </div>
-    </div>
-    <div class="row container mx-auto" *ngIf="currentQuestion.english">
-        <p class="question col-sm-12 col-md-12 col-lg-12">What is the native equivalent of '{{currentQuestion.english}}'?</p>
-        <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of currentQuestion.choices">
-            <app-button [buttonText]="choice"></app-button>
+        <div class="contentContainer" *ngIf="pettyTimer">
+            <p>Get Ready!</p>
         </div>
+        <div class="contentContainer w-100" *ngIf="showingRankings">
+            <app-contest-leaderboard [answers]="contestantAnswers" [itemRankings]="itemRankings" [rankings]="rankings"></app-contest-leaderboard>
+        </div>   
+        <div class="padding"></div>
     </div>
+
+    <div class="footerWrapper">
+        <div class="padding"></div>
+        <div class="answeringContestants">
+            <p *ngIf="!showingRankings">Still Answering:</p>
+            <p *ngFor="let contestant of contestantAnswers | keyvalue">
+                <a *ngIf="!contestant.value">{{contestant.key}}</a>
+            </p>
+        </div>
+        <div class="padding"></div>
+        <div class="nextButtonContainer">
+            <app-button (click)="nextItem()" [buttonText]="'Next Item'" [classes]="'font-size-1-25'" *ngIf="nextItemButton"></app-button>
+        </div>
+        <div class="padding"></div>
+    </div>
+
 </div>
 
-<p>Users answering:</p>
-<p *ngFor="let contestant of contestantAnswers | keyvalue">
-    {{contestant.key}}: <a *ngIf="!contestant.value">still answering...</a> <a *ngIf="contestant.value">{{contestant.value}}</a>
-</p>
-<button (click)="nextItem()" [disabled]="!nextItemButton">Next item</button>
+<!--
+    <p>Users answering:</p>
+    <p *ngFor="let contestant of contestantAnswers | keyvalue">
+        {{contestant.key}}: <a *ngIf="!contestant.value">still answering...</a> <a *ngIf="contestant.value">{{contestant.value}}</a>
+    </p>
+-->

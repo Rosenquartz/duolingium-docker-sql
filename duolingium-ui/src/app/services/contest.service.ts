@@ -13,8 +13,11 @@ export class ContestService {
   startGame = this.socket.fromEvent<any>('startGame');
   loadItem = this.socket.fromEvent<any>('loadItem');
   contestantAnswered = this.socket.fromEvent<any>('contestantAnswered');
-  pettyTimer = this.socket.fromEvent<any>('pettyTimer');
-  timer = this.socket.fromEvent<any>('timer');
+  startPettyTimer = this.socket.fromEvent<any>('startPettyTimer');
+  startTimer = this.socket.fromEvent<any>('startTimer');
+  timerUpdate = this.socket.fromEvent<any>('timerUpdate');
+  showRankings = this.socket.fromEvent<any>('userShowRankings');
+  hideRankings = this.socket.fromEvent<any>('userHideRankings');
 
   private baseUrl = 'http://localhost:3000/api/contests'
 
@@ -33,6 +36,11 @@ export class ContestService {
     return this.http.post(url, request)
   }
 
+  checkLobby(contestId: string): Observable<any> {
+    let url = `${this.baseUrl}/check?contestId=${contestId}`;
+    return this.http.get(url)
+  }
+
   joinLobby(contestId: string, userId: string): Observable<any> {
     let url = `${this.baseUrl}/join`;
     let request = {
@@ -45,6 +53,16 @@ export class ContestService {
   getContestants(contestId: string): Observable<any> {
     /*Not working*/
     let url = `${this.baseUrl}/join`;
+    return this.http.get(url);
+  }
+
+  getItemRanking(contestItemId: string): Observable<any> {
+    let url = `${this.baseUrl}/rankings?contestItemId=${contestItemId}`;
+    return this.http.get(url)
+  }
+
+  getRankings(contestId: string): Observable<any> {
+    let url = `${this.baseUrl}/rankings?contestId=${contestId}`;
     return this.http.get(url);
   }
 
@@ -95,12 +113,20 @@ export class ContestService {
     this.socket.emit('startGame', {contestId: contestId});
   }
 
-  emitNextItem(contestId: string, question: MultipleChoiceQuestion): void {
-    this.socket.emit('nextItem', {contestId: contestId, question: question});
+  emitNextItem(contestId: string, contestItemId: string, currentItem: number, totalItems: number, question: MultipleChoiceQuestion): void {
+    this.socket.emit('nextItem', {contestId: contestId, contestItemId: contestItemId, currentItem: currentItem, totalItems: totalItems, question: question});
   }
 
   emitContestantAnswer(contestId: string, userId: string, answer: string): void {
     this.socket.emit('contestantAnswer', {contestId: contestId, userId: userId, answer: answer})
+  }
+
+  emitStartPettyTimer(contestId: string, timer: number): void {
+    this.socket.emit('startPettyTimer', {contestId: contestId, timer: timer})
+  }
+
+  emitStartTimer(contestId: string, timer: number): void {
+    this.socket.emit('startTimer', {contestId: contestId, timer: timer})
   }
 
   emitPettyTimerUpdate(contestId: string, timer: number): void {
@@ -111,7 +137,11 @@ export class ContestService {
     this.socket.emit('timerUpdate', {contestId: contestId, timer: timer})
   }
 
-  emitShowRankings(contestId: string): void {
-    this.socket.emit('showRankings', {contestId: contestId})
+  emitShowRankings(contestId: string, rankings: any, itemRankings: any, contestantAnswers: any): void {
+    this.socket.emit('showRankings', {contestId: contestId, rankings: rankings, itemRankings: itemRankings, contestantAnswers: contestantAnswers})
+  }
+
+  emitHideRankings(contestId: string): void {
+    this.socket.emit('hideRankings', {contestId: contestId})
   }
 }

@@ -1,0 +1,36 @@
+.conductorWrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: museo500;
+}
+
+.headerWrapper {
+    flex: 1;
+}
+
+.moduleWrapper {
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.padding {
+    flex: 1;
+}
+
+.contentContainer {
+    flex: 2;
+}
+
+.footerWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-top: 3px solid;
+    border-color: #e5e5e5;
+}

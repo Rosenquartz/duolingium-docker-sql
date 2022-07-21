@@ -1,0 +1,14 @@
+<div class="contestHeader">
+    <div class="exitButton">
+        <p class="exit" routerLink="/learn">X</p>
+    </div>
+    <div class="itemInformation">
+        <p>Item {{currentItem}} of {{totalItems}}</p>
+    </div>
+    <div class="progressBarContainer">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" [ngStyle]='{ width : timerProgress }' aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+    <div class="padding"></div>
+</div>

@@ -47,6 +47,18 @@ endContest = async (contestId) => {
     }
 }
 
+checkContest = async (contestId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL CheckContest(?)';
+        let results = await connection.query(sql, [contestId]);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
 joinContest = async (contestId, userId) => {
     try {
         let connection = await getConnection();
@@ -143,10 +155,23 @@ getRankings = async(contestId) => {
     }
 }
 
+getItemRankings = async(contestItemId) => {
+    try {
+        let connection = await getConnection();
+        let sql = 'CALL GetItemRankings(?)';
+        let results = await connection.query(sql, [contestItemId]);
+        await connection.end();
+        return results[0][0];
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
     createContest: createContest,
     startContest: startContest,
     endContest: endContest,
+    checkContest: checkContest,
     joinContest: joinContest,
     getContestants: getContestants,
     startItem: startItem,
@@ -154,5 +179,6 @@ module.exports = {
     answerItem: answerItem,
     getContestItemInfo: getContestItemInfo,
     updateScore: updateScore,
-    getRankings: getRankings
+    getRankings: getRankings,
+    getItemRankings: getItemRankings
 }

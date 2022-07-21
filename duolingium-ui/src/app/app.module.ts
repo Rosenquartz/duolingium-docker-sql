@@ -37,6 +37,9 @@ import { ContestLobbyComponent } from './components/contest-lobby/contest-lobby.
 import { ContestConductorComponent } from './components/contest-conductor/contest-conductor.component';
 import { ContestContestantComponent } from './components/contest-contestant/contest-contestant.component';
 import { CountdownTimerComponent } from './components/countdown-timer/countdown-timer.component';
+import { ContestLeaderboardComponent } from './components/contest-leaderboard/contest-leaderboard.component';
+import { ContestHeaderComponent } from './components/contest-header/contest-header.component';
+import { ContestFooterComponent } from './components/contest-footer/contest-footer.component';
 // use the port number you used to set up the express app
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -70,6 +73,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     ContestConductorComponent,
     ContestContestantComponent,
     CountdownTimerComponent,
+    ContestLeaderboardComponent,
+    ContestHeaderComponent,
+    ContestFooterComponent,
   ],
   imports: [
     BrowserModule,

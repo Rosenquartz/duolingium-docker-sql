@@ -1,7 +1,7 @@
-.languageWrapper {
+.bodyWrapper {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 80vh;
 }
 
 .padding {
@@ -9,23 +9,161 @@
 }
 
 .temp2 {
-    flex: 5
+    width: 100%;
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 img {
-    height: 150px;
-    width: 200px;
-    border: 2px solid;
-    border-radius: 10px;
+    height: 60%;
+    width: 60%;
 }
 
 .card {
     margin: 25px;
-    border: 0px;
+    border: 2px solid #e5e5e5;
+    border-radius: 25px;
 }
 
 .card:hover{
     cursor: pointer;
-    -webkit-filter: brightness(80%);
-    filter: brightness(80%);
+    -webkit-filter: brightness(95%);
+    filter: brightness(95%);
+}
+
+.cardText {
+    text-align: center;
+    font-family: museo700;
+    font-size: 2rem;
+}
+
+.errorMessage p {
+    font-family: museo700;
+    font-size: 1rem;
+    color: red;
+}
+
+/* Lobby page css */
+.lobbyWrapper {
+    width: 100%;
+    flex: 5;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.lobbyInfo {
+    min-width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #e5e5e5;
+    border-bottom-left-radius: 25px;
+    border-top-left-radius: 25px;
+    margin-right:30px;
+}
+
+.lobbyInfo p {
+    font-family: museo700;
+    font-size: 1.5rem;
+    text-align: center;
+    vertical-align: center;
+    margin: 0px;
+}
+
+.lobbyImg {
+    max-height: 300px;
+}
+
+.userInfo {
+    min-width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 30px;
+    border: 2px solid #e5e5e5;
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 25px;
+}
+
+.userInfo p {
+    font-family: museo700;
+    font-size: 1.5rem;
+    text-align: left;
+    vertical-align: left;
+    margin: 0px;
+}
+
+.ongoing {
+    height: 100vh;
+}
+
+/* FROM w3 */
+/* Style The Dropdown Button */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-button {
+    width: 120px;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+/* Nav items */
+
+.navWrapper {
+    display: flex;
+    width: 70%;
+    justify-content: right;
+}
+
+p {
+    vertical-align: middle; 
+    text-align: center;
+    padding: 8px;
+    padding-right: 20px;
 }

@@ -9,9 +9,11 @@ const controller = contestController(contestRepository, errorRepository);
 router.post('/create', controller.createContest);
 router.put('/start', controller.startContest);
 router.put('/end', controller.endContest);
+router.get('/check', controller.checkContest);
 router.post('/join', controller.joinContest);
 router.post('/startItem', controller.startItem);
 router.post('/answerItem', controller.answerItem);
-router.get('/rankings', controller.getRankings)
+router.get('/rankings', controller.getRankings);
+router.get('/itemRankings', controller.getItemRankings);
 
 module.exports = router;

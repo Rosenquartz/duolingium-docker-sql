@@ -19,7 +19,7 @@ export class ItemComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.currentAnswer = changes['currentAnswer'].currentValue;
+    if (changes['currentAnswer']) this.currentAnswer = changes['currentAnswer'].currentValue;
   }
 
   answerClicked(choice: string): void {

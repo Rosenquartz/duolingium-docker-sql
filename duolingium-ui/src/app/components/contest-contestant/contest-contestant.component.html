@@ -1,3 +1,44 @@
+<div class="conductorWrapper" *ngIf="ready">
+
+    <div class="headerWrapper">
+        <app-contest-header [currentTimer]="countdownTimer" [totalTimer]="totalTimer" [currentItem]="currentItem+1" [totalItems]="totalItems"></app-contest-header>
+    </div>
+
+    <div class="moduleWrapper">
+        <div class="padding"></div>
+        <div class="contentContainer" *ngIf="!getReady&&!showingRankings&&currentQuestion">
+            <app-item [question]="currentQuestion" 
+            *ngIf="!finished" 
+            (buttonClicked)="choiceClicked($event)"
+            [currentAnswer]="currentAnswer"
+            [englishName]="'native'"></app-item>    
+        </div>
+        <div class="contentContainer" *ngIf="getReady">
+            <p>Get Ready!</p>
+        </div>
+        <div class="contentContainer w-100" *ngIf="showingRankings">
+            <app-contest-leaderboard [answers]="contestantAnswers" [itemRankings]="itemRankings" [rankings]="rankings"></app-contest-leaderboard>
+        </div>   
+        <div class="padding"></div>
+    </div>
+
+    <div class="footerWrapper" [ngStyle]="{'background-color': '#' + bgColor}">
+        <div class="padding"></div>
+        <div class="padding inside"></div>
+        <div class="message">
+            <p>{{footerMessage}}</p>
+        </div>
+        <div class="padding"></div>
+        <div class="button">
+            <app-button *ngIf="!showingRankings&&!getReady" [buttonText]="buttonText" [classes]="'border-2'" [disabled]="buttonDisabled" (clicked)="submitClicked()" [classes]="'font-size-1-25'"></app-button>
+        </div>
+        <div class="padding inside"></div>
+        <div class="padding"></div>
+    </div>
+
+</div>
+
+<!--
 <app-countdown-timer [countdownTimer]="timer"></app-countdown-timer>
 
 <div *ngIf="currentQuestion">
@@ -7,7 +48,6 @@
             <app-button [buttonText]="choice" [selected]="currentAnswer==choice" [classes]="'font-size-2'" (click)="choiceClicked(choice)"></app-button>
         </div>
     </div>
-
     <div class="row container mx-auto" *ngIf="currentQuestion.english">
         <p class="question col-sm-12 col-md-12 col-lg-12">What is the native equivalent of '{{currentQuestion.english}}'?</p>
         <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center choice" *ngFor="let choice of currentQuestion.choices">
@@ -17,3 +57,8 @@
 </div>
 
 <button (click)="submitClicked()" [disabled]="answered">submit</button>
+
+<div *ngIf="showingRankings">
+    <app-contest-leaderboard [contestants]="rankings" [user]="userId"></app-contest-leaderboard>
+</div>
+-->
