@@ -16,3 +16,8 @@
 .rankingWrapper div p {
     text-align: center;
 }
+
+.selfResults {
+    background-color: #58CC02;
+    color: snow;
+}

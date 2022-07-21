@@ -25,6 +25,11 @@
     flex: 2;
 }
 
+.contentContainer p {
+    font-family: museo900;
+    font-size: 3rem;
+}
+
 .footerWrapper {
     flex: 1;
     display: flex;

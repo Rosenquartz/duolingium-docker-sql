@@ -34,6 +34,8 @@ export class ContestContestantComponent implements OnInit {
   _timerUpdateSub!: Subscription;
   _showRankingsSub!: Subscription;
   _hideRankingsSub!: Subscription;
+  _showFinalRankingSub!: Subscription;
+  _updateCurrentNumber!: Subscription;
 
   ready: boolean = false;
   getReady: boolean = true;
@@ -43,10 +45,11 @@ export class ContestContestantComponent implements OnInit {
   itemRankings: Array<any> = [];
   contestantAnswers: {[key:string]:string} = {};
   showingRankings: boolean = false;
+  showingFinalRankings: boolean = false;
   userId: string = '';
 
   footerMessage: string = '';
-  bgColor: string = 'e5e5e5';
+  bgColor: string = 'FFFAFA';
   buttonText: string = 'submit';
   buttonDisabled: string = 'false';
 
@@ -63,6 +66,7 @@ export class ContestContestantComponent implements OnInit {
       this.currentQuestion = out.question;
       this.currentItem = out.currentItem;
       this.totalItems = out.totalItems;
+      this.buttonDisabled = 'false';
       this.reset();
       console.log("this.getready from _questionSub is", this.getReady)
     })
@@ -100,6 +104,18 @@ export class ContestContestantComponent implements OnInit {
       this.contestantAnswers = out.contestantAnswers
       this.showingRankings = true;
     })
+    
+    this._showFinalRankingSub = this.contestService.showFinalRankings
+    .subscribe(out=>{
+      this.rankings = out.rankings;
+      this.showingFinalRankings = true;
+      this.buttonText = 'exit';
+    })
+
+    this._updateCurrentNumber = this.contestService.updateCurrentNumber
+    .subscribe(out=>{
+      this.currentItem = out.currentItem;
+    })
 
     this.ready = true;
   }
@@ -117,6 +133,7 @@ export class ContestContestantComponent implements OnInit {
     console.log("Submitting", userId, this.currentAnswer)
     this.contestService.emitContestantAnswer(this.contestId, userId, this.currentAnswer)
     this.answered = true;
+    this.buttonDisabled = 'true';
   }
 
   reset(): void {

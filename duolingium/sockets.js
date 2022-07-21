@@ -61,6 +61,14 @@ io.on('connection', (socket) => {
         socket.to(data.contestId).emit("hideShowRankings")
     })
 
+    socket.on("showFinalRankings", (data) => {
+        socket.to(data.contestId).emit("showFinalRankings", data)
+    })
+
+    socket.on("updateCurrentItem", (data) => {
+        socket.to(data.contestId).emit("updateCurrentItem", data)
+    })
+
 });
 
 const data = {

@@ -1,7 +1,7 @@
 <div class="conductorWrapper" *ngIf="ready">
 
     <div class="headerWrapper">
-        <app-contest-header [currentTimer]="countdownTimer" [totalTimer]="headerTimer" [currentItem]="currentItem+1" [totalItems]="totalItems"></app-contest-header>
+        <app-contest-header [currentTimer]="countdownTimer" [totalTimer]="headerTimer" [currentItem]="currentItem+1" [totalItems]="totalItems" [getReady]="pettyTimer"></app-contest-header>
     </div>
 
     <div class="moduleWrapper">
@@ -13,31 +13,27 @@
             <p>Get Ready!</p>
         </div>
         <div class="contentContainer w-100" *ngIf="showingRankings">
-            <app-contest-leaderboard [answers]="contestantAnswers" [itemRankings]="itemRankings" [rankings]="rankings"></app-contest-leaderboard>
+            <app-contest-leaderboard [answers]="contestantAnswers" [itemRankings]="itemRankings" [rankings]="rankings" [showingFinalRankings]="showingFinalRankings" *ngIf="!showingFinalRankings"></app-contest-leaderboard>
+            <app-contest-leaderboard [rankings]="rankings" [showingFinalRankings]="showingFinalRankings" *ngIf="showingFinalRankings"></app-contest-leaderboard>
         </div>   
         <div class="padding"></div>
     </div>
 
     <div class="footerWrapper">
         <div class="padding"></div>
-        <div class="answeringContestants">
-            <p *ngIf="!showingRankings">Still Answering:</p>
+        <div class="answeringContestants" *ngIf="!showingRankings && !pettyTimer">
+            <p >Still Answering:</p>
             <p *ngFor="let contestant of contestantAnswers | keyvalue">
                 <a *ngIf="!contestant.value">{{contestant.key}}</a>
             </p>
         </div>
         <div class="padding"></div>
         <div class="nextButtonContainer">
-            <app-button (click)="nextItem()" [buttonText]="'Next Item'" [classes]="'font-size-1-25'" *ngIf="nextItemButton"></app-button>
+            <app-button (click)="nextItem()" [buttonText]="'Next Item'" [classes]="'font-size-1-25'" *ngIf="nextItemButton && !finished"></app-button>
+            <app-button (click)="showFinalRankings()" [buttonText]="'Show Final Rankings'" [classes]="'font-size-1-25'" *ngIf="finished && !showingFinalRankings"></app-button>
+            <app-button routerLink="/learn" [buttonText]="'exit'" [classes]="'font-size-1-25'" *ngIf="finished && showingFinalRankings"></app-button>
         </div>
         <div class="padding"></div>
     </div>
 
 </div>
-
-<!--
-    <p>Users answering:</p>
-    <p *ngFor="let contestant of contestantAnswers | keyvalue">
-        {{contestant.key}}: <a *ngIf="!contestant.value">still answering...</a> <a *ngIf="contestant.value">{{contestant.value}}</a>
-    </p>
--->

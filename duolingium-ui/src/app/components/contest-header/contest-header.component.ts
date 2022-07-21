@@ -11,6 +11,7 @@ export class ContestHeaderComponent implements OnInit {
   @Input() totalItems!: number;
   @Input() currentTimer!: number;
   @Input() totalTimer!: number;
+  @Input() getReady: boolean = false;
   
   timerProgress: string = '100%';
   timerProgressBar: number = 100;
@@ -35,6 +36,11 @@ export class ContestHeaderComponent implements OnInit {
       this.timerProgressBar = 100;
       this.timerProgress = '100%';
     }
+    if (changes['getReady']) {
+      this.getReady = changes['getReady'].currentValue;
+    }
   }
+
+
 
 }

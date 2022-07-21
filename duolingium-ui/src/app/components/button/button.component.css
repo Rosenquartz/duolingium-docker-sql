@@ -5,6 +5,8 @@ button {
 
     padding-top: 5px;
     padding-bottom: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
     margin-bottom: 10px;
     transition: all 0.1s;
     min-width: 100%;

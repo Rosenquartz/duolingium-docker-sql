@@ -18,6 +18,8 @@ export class ContestService {
   timerUpdate = this.socket.fromEvent<any>('timerUpdate');
   showRankings = this.socket.fromEvent<any>('userShowRankings');
   hideRankings = this.socket.fromEvent<any>('userHideRankings');
+  showFinalRankings = this.socket.fromEvent<any>('showFinalRankings');
+  updateCurrentNumber = this.socket.fromEvent<any>('updateCurrentItem');
 
   private baseUrl = 'http://localhost:3000/api/contests'
 
@@ -143,5 +145,13 @@ export class ContestService {
 
   emitHideRankings(contestId: string): void {
     this.socket.emit('hideRankings', {contestId: contestId})
+  }
+
+  emitFinalRankings(contestId: string, rankings: any): void {
+    this.socket.emit('showFinalRankings', {contestId: contestId, rankings: rankings})    
+  }
+
+  emitUpdateCurrentNumber(contestId: string, currentItem: number): void {
+    this.socket.emit('updateCurrentItem', {contestId: contestId, currentItem: currentItem})
   }
 }

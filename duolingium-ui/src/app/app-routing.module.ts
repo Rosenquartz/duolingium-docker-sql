@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'history-offset', component: HistoryComponent },
   { path: 'history', component: HistoryOptimizedComponent },
   { path: 'test/:moduleId', component: TestComponent },
-  { path: 'contest/lobby', component: ContestLobbyComponent}
+  { path: 'contest', component: ContestLobbyComponent}
 ];
 
 @NgModule({

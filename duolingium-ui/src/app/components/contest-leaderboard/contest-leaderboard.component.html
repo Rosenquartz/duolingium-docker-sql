@@ -1,7 +1,7 @@
 <div class="rankingWrapper">
-    <div class="currentRanking">
+    <div class="currentRanking" *ngIf="!showingFinalRankings">
         <p>Current Ranking</p>
-        <table class="table">
+          <table class="table">
             <thead>
               <tr>
                 <th style="width: 33%" scope="col">Rank</th>
@@ -10,31 +10,50 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let result of rankings">
-                <td>Hey</td>
+              <tr *ngFor="let result of rankings"  [ngClass]="{selfResults: result.userId == userId}">
+                <td>{{result.rank}}</td>
                 <td>{{result.userId}}</td>
                 <td>{{result.score}}</td>
               </tr>
             </tbody>
           </table>
     </div>
-    <div class="itemRanking">
+    <div class="itemRanking" *ngIf="!showingFinalRankings">
         <p>Item Analysis</p>
         <table class="table">
             <thead>
               <tr>
                 <th style="width: 33%" scope="col">Contestant</th>
-                <th style="width: 33%" scope="col">Answer</th>
                 <th style="width: 33%" scope="col">Score</th>
+                <th style="width: 33%" scope="col">Answer</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let result of itemRankings">
+              <tr *ngFor="let result of itemRankings"  [ngClass]="{selfResults: result.userId == userId}">
                 <td>{{result.userId}}</td>
                 <td>{{result.score}}</td>
                 <td>{{answers[result.userId]}}</td>
               </tr>
             </tbody>
           </table>
+    </div>
+    <div class="finalRanking" *ngIf="showingFinalRankings">
+      <p>Final Ranking</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width: 33%" scope="col">Rank</th>
+              <th style="width: 33%" scope="col">Contestant</th>
+              <th style="width: 3%" scope="col">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of rankings"  [ngClass]="{selfResults: result.userId == userId}">
+              <td>{{result.rank}}</td>
+              <td>{{result.userId}}</td>
+              <td>{{result.score}}</td>
+            </tr>
+          </tbody>
+        </table>
     </div>
 </div>

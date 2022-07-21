@@ -7,7 +7,7 @@
     </div>
     <div class="progressBarContainer">
         <div class="progress">
-          <div class="progress-bar" role="progressbar" [ngStyle]='{ width : timerProgress }' aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar" role="progressbar" [ngStyle]='{ width : timerProgress }' [ngClass]="{yellow: getReady}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     </div>
     <div class="padding"></div>

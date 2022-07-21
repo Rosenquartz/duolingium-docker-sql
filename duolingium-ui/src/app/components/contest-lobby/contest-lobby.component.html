@@ -4,10 +4,10 @@
         <div class="ongoing" *ngIf="state=='conducting'||state=='ongoing'">
             <app-contest-conductor 
                 [contestId]="contestId"
-                [languageId]="'kr'"
-                [moduleId]="'947f1764'"
+                [languageId]="currentLanguage.languageId"
+                [moduleId]="currentModule.moduleId"
                 [contestants]="users"
-                [timer]="30"
+                [timer]="20"
                 *ngIf="state=='conducting'"></app-contest-conductor>
             <app-contest-contestant 
                 [contestId]="contestId"
@@ -21,7 +21,7 @@
                         <div class="card-img align-items-center d-flex justify-content-center">
                             <img src="https://design.duolingo.com/885521149d32d1cf32c3.svg">
                         </div>
-                        <p class="cardText">Create Lobby</p>
+                        <p class="cardText">Create Contest</p>
                         <nav class="navbar navbar-light navbar-expand-md bg-faded justify-content-center">
                             <div class="container">
                                 <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
@@ -60,7 +60,7 @@
                                     <li class="nav-item dropdown px-3">              
                                     <div class="dropdown">
                                         <div class="dropdown-button">
-                                        <app-button [buttonText]="'Create Lobby'" [classes]="'font-size-1'" [disabled]="createLobbyDisabled" (click)="createLobby()"></app-button>
+                                        <app-button [buttonText]="'Create'" [classes]="'font-size-1'" [disabled]="createLobbyDisabled" (click)="createLobby()"></app-button>
                                         </div>
                                     </div>
                                     </li>
@@ -75,7 +75,7 @@
                         <div class="card-img align-items-center d-flex justify-content-center">
                             <img src="https://design.duolingo.com/9a6ea4292d92aebb9c5a.svg">
                         </div>
-                        <p class="cardText">Join Lobby</p>
+                        <p class="cardText">Join Contest</p>
                         <nav class="navbar navbar-light navbar-expand-md bg-faded justify-content-center">
                             <div class="container">
                                 <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
@@ -89,7 +89,7 @@
                                         <li class="nav-item dropdown px-3">              
                                             <div class="dropdown">
                                                 <div class="dropdown-button">
-                                                <app-button [buttonText]="'Join Lobby'" [classes]="'font-size-1'" (click)="joinLobby()"></app-button>
+                                                <app-button [buttonText]="'Join'" [classes]="'font-size-1'" (click)="joinLobby()"></app-button>
                                                 </div>
                                         </div>
                                         </li>

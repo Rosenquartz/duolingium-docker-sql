@@ -1,5 +1,6 @@
+import { ConstantPool } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
-import { Subscription, switchMap } from 'rxjs';
+import { Observable, Subscription, switchMap, forkJoin } from 'rxjs';
 import { Item } from 'src/app/models/Item';
 import { MultipleChoiceQuestion } from 'src/app/models/MultipleChoiceQuestion';
 import { ContestService } from 'src/app/services/contest.service';
@@ -43,6 +44,7 @@ export class ContestConductorComponent implements OnInit {
   rankings: Contestant[] = [];
   itemRankings: Array<any> = [];
   showingRankings: boolean = false;
+  showingFinalRankings: boolean = false;
 
   contestantAnswers: {[key:string]:string} = {};
   _contestantAnswerSub!: Subscription;
@@ -83,6 +85,7 @@ export class ContestConductorComponent implements OnInit {
   /* Initial Setup */
 
   getNumberOfItems(): void {
+    console.log("items are from", this.languageId, this.moduleId)
     this.languageService.getModuleItems(this.languageId, this.moduleId)
     .subscribe(out=>{
       this.totalItems = out.items.length * 2;
@@ -121,7 +124,10 @@ export class ContestConductorComponent implements OnInit {
     if (this.countdownTimer <= 0 && !this.pettyTimer) {
         this.contestService.emitTimerUpdate(this.contestId, this.countdownTimer)
         this.stopTimer();
-        this.showLeaderboards();
+        this.submitEmptyAnswers()
+        .subscribe(out=>{
+          this.showLeaderboards();
+        })
     } else if (this.countdownTimer < 0 && this.pettyTimer){
         this.countdownTimer = this.timer;
         this.headerTimer = this.timer;
@@ -164,7 +170,16 @@ export class ContestConductorComponent implements OnInit {
       this.nextItemButton = true;
       this.contestService.emitShowRankings(this.contestId, this.rankings, this.itemRankings, this.contestantAnswers);
       // {answers: this.contestantAnswers, totalRanking: this.rankings})
+      console.log(this.currentItem +1, this.totalItems)
+      if (this.currentItem + 1 >= this.totalItems) {
+        this.finished = true;
+      }
     });
+  }
+
+  showFinalRankings(): void {
+    this.contestService.emitFinalRankings(this.contestId, this.rankings);
+    this.showingFinalRankings = true;
   }
 
   /* Load Items */
@@ -174,6 +189,7 @@ export class ContestConductorComponent implements OnInit {
     this.contestService.emitHideRankings(this.contestId);
     this.nextItemButton = false;
     this.currentItem += 1;
+    this.contestService.emitUpdateCurrentNumber(this.contestId, this.currentItem);
     this.pettyTimer = true;
     this.startTimer(3);
     this.showingRankings = false;
@@ -193,19 +209,21 @@ export class ContestConductorComponent implements OnInit {
     this.reset();
   }
 
-  submitAnswers(): void {
+  submitEmptyAnswers(): Observable<any> {
+    let observables = [];
     for (let contestant of Object.keys(this.contestantAnswers)) {
-      console.log(this.contestItemId, this.contestId, contestant, this.moduleId, this.currentQuestion.itemId, this.currentQuestion.type, this.contestantAnswers[contestant])
-      this.contestService.answerItem(
-        this.contestItemId,
-        this.contestId,
-        contestant,
-        this.moduleId,
-        this.currentQuestion.itemId,
-        this.currentQuestion.type,
-        this.contestantAnswers[contestant]
-      ).subscribe();
+      if (this.contestantAnswers[contestant] != '') continue;
+      observables.push(this.contestService.answerItem(
+          this.contestItemId,
+          this.contestId,
+          contestant,
+          this.moduleId,
+          this.currentQuestion.itemId,
+          this.currentQuestion.type,
+          '?'
+        ))
     }
+    return forkJoin(observables)
   }
 
   reset(): void {

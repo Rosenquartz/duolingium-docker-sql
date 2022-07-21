@@ -61,7 +61,7 @@ export class ContestLobbyComponent implements OnInit {
     .subscribe(out=>{
       this.contestId = out.contestId;
       this.state = 'lobbyConductor';
-      this.centerText = 'Conductor'
+      this.centerText = 'Contest Conductor'
       this.contestService.emitJoinAsConductor(this.contestId);
     })
   }

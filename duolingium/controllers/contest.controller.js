@@ -15,6 +15,7 @@ const controller = (contestRepository, errorRepository) => {
             }
             /* No error handling at first */
             let contestId = nanoid(8);
+            console.log(contestId, req.body.languageId, req.body.moduleId, req.body.timer)
             let results = await contestRepository.createContest(contestId, req.body.languageId, req.body.moduleId, req.body.timer);
             res.status(200).json({contestId: contestId})
         } catch (err) {
@@ -117,8 +118,8 @@ const controller = (contestRepository, errorRepository) => {
             if (correct) {
                 score += 50;
                 let seconds = parseInt ((answeredDate - startDate) / 1000);
-                console.log("Seconds is", seconds, timer, parseInt(50/100 * Math.max(parseInt((timer-seconds)*100/30),0)))
-                score += parseInt(50/100 * Math.max(parseInt((timer-seconds)*100/30),0))
+                console.log("Seconds is", seconds, timer, parseInt(50/100 * Math.max(parseInt((timer-seconds)*100/timer),0)))
+                score += parseInt(50/100 * Math.max(parseInt((timer-seconds)*100/timer),0))
             }
             
             /* Insert information into tables */
